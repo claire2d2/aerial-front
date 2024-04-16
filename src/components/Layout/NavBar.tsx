@@ -3,7 +3,7 @@ import useUser from "../../context/useUser";
 import { Dropdown } from "flowbite-react";
 import { HiOutlineAdjustments, HiLogout } from "react-icons/hi";
 
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 //TODO : navbar for when user isn't logged in
 // sign up
@@ -53,7 +53,9 @@ const NavBar = () => {
 
   return (
     <nav className="flex h-full w-full justify-between text-white">
-      <div>Air2D2</div>
+      <Link to="/">
+        <div>Air2D2</div>
+      </Link>
       <div>
         <Dropdown label="Pole Dance">
           <Dropdown.Item>Aerial Hoop</Dropdown.Item>
@@ -71,9 +73,7 @@ const NavBar = () => {
       <div className="basis-1/6">
         {isLoggedIn ? showWhenLoggedIn : showWhenLoggedOut}
       </div>
-      <div className="absolute">
-        <DarkLightToggle />
-      </div>
+      <div className="absolute">{/* <DarkLightToggle /> */}</div>
     </nav>
   );
 };

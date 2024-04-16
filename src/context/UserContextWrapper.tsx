@@ -73,7 +73,7 @@ function UserContextWrapper({ children }: { children: ReactNode }) {
 
   const fetchDiscipline = () => {
     const getDiscipline = location.pathname.split("/")[1];
-    if (getDiscipline) {
+    if (getDiscipline || currDiscipline) {
       switch (getDiscipline) {
         case "pole":
           setCurrDiscipline("Pole Dance");
@@ -85,7 +85,6 @@ function UserContextWrapper({ children }: { children: ReactNode }) {
           setCurrDiscipline("Contorsion");
           break;
         default:
-          setCurrDiscipline(null);
           break;
       }
     } else {
