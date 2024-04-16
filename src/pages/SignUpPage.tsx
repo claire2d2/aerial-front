@@ -51,7 +51,6 @@ const SignUpPage = () => {
 
   return (
     <div className="SignUpForm dark:text-white">
-      <p>Using data from %VITE_BACKEND_URL%</p>
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="email">Email:</label>
