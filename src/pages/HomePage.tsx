@@ -7,7 +7,7 @@ const HomePage = () => {
   const fetchHealth = async () => {
     try {
       const response = await aerialApi.get(`/health`);
-      console.log(response.data.message);
+      console.log(response.data);
     } catch (error) {
       console.log(error);
     }

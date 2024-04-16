@@ -34,11 +34,8 @@ const SignUpPage = () => {
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     try {
-      const fd = new FormData();
-      fd.append("email", formState.email);
-      fd.append("password", formState.password);
-      fd.append("username", formState.username);
-      const response = await aerialApi.post("/auth/signup", fd);
+      console.log(formState);
+      const response = await aerialApi.post("/auth/signup", formState);
       console.log(response);
       if (response.status === 201) {
         console.log("user created", response.data);
