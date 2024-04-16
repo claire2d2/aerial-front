@@ -69,21 +69,29 @@ function UserContextWrapper({ children }: { children: ReactNode }) {
   };
 
   // check and store in local storage the discipline being used (by default, none and just default homepage)
+  const [currDiscipline, setCurrDiscipline] = useState<string | null>(null);
+
   const fetchDiscipline = () => {
     const getDiscipline = location.pathname.split("/")[1];
-    if (
-      getDiscipline &&
-      (getDiscipline === "pole" ||
-        getDiscipline === "aerial-hoop" ||
-        getDiscipline === "contorsion")
-    ) {
-      setCurrDiscipline(getDiscipline);
+    if (getDiscipline) {
+      switch (getDiscipline) {
+        case "pole":
+          setCurrDiscipline("Pole Dance");
+          break;
+        case "aerial-hoop":
+          setCurrDiscipline("Aerial Hoop");
+          break;
+        case "contorsion":
+          setCurrDiscipline("Contorsion");
+          break;
+        default:
+          setCurrDiscipline(null);
+          break;
+      }
     } else {
       setCurrDiscipline(null);
     }
   };
-
-  const [currDiscipline, setCurrDiscipline] = useState<string | null>(null);
 
   return (
     <UserContext.Provider
