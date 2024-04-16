@@ -3,6 +3,8 @@ import { Routes, Route } from "react-router-dom";
 import Layout from "./components/Layout/Layout";
 
 import HomePage from "./pages/HomePage";
+import PoleDance from "./pages/PoleDance";
+import OneFigure from "./pages/OneFigure";
 import SignUpPage from "./pages/SignUpPage";
 import LogInPage from "./pages/LogInPage";
 
@@ -16,6 +18,11 @@ function App() {
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<HomePage />} />
+            <Route path="/pole">
+              <Route index element={<PoleDance />} />
+              <Route path=":figureRef" element={<OneFigure />} />
+            </Route>
+
             <Route element={<IsLoggedOut />}>
               <Route path="/signup" element={<SignUpPage />} />
               <Route path="/login" element={<LogInPage />} />
