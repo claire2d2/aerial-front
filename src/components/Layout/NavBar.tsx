@@ -1,4 +1,5 @@
 import DarkLightToggle from "./DarkLightToggle";
+import useUser from "../../context/useUser";
 
 //TODO : navbar for when user isn't logged in
 // sign up
@@ -17,10 +18,30 @@ import DarkLightToggle from "./DarkLightToggle";
 //TODO: styling, navbar that changes height when scrolling down and that appears when scrolling up
 
 const NavBar = () => {
+  const { isLoggedIn, user } = useUser();
+
+  const showWhenLoggedOut = (
+    <div className="flex gap-2">
+      <div>Sign up</div>
+      <div>Log In</div>
+    </div>
+  );
+
+  const showWhenLoggedIn = (
+    <div className="h-full p-1 flex justify-center items-center gap-2">
+      <div>{user?.username}</div>
+      <img src={user?.image} alt="" className="h-full object-cover" />
+      //TODO add dropdown when clcking on the div
+    </div>
+  );
+
   return (
-    <nav>
-      This is ze navbar
-      <DarkLightToggle />
+    <nav className="flex h-full justify-between text-white">
+      <div>Air2D2</div>
+      <div>{isLoggedIn ? showWhenLoggedIn : showWhenLoggedOut}</div>
+      <div className="absolute">
+        <DarkLightToggle />
+      </div>
     </nav>
   );
 };

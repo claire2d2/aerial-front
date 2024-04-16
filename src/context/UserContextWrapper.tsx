@@ -5,6 +5,7 @@ type userType = {
   id: number;
   username: string;
   email: string;
+  image: string;
 };
 
 // define beforehand the types for the states
