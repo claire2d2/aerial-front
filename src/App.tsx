@@ -22,6 +22,14 @@ function App() {
               <Route index element={<PoleDance />} />
               <Route path=":figureRef" element={<OneFigure />} />
             </Route>
+            <Route path="/aerial-hoop">
+              <Route index element={<PoleDance />} />
+              <Route path=":figureRef" element={<OneFigure />} />
+            </Route>
+            <Route path="/contorsion">
+              <Route index element={<PoleDance />} />
+              <Route path=":figureRef" element={<OneFigure />} />
+            </Route>
 
             <Route element={<IsLoggedOut />}>
               <Route path="/signup" element={<SignUpPage />} />

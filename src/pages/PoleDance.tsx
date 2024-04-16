@@ -1,9 +1,12 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import aerialApi from "../service/aerialApi";
+import useUser from "../context/useUser";
 
 type figType = {
   id: string;
   name: string;
+  ref: string;
   image: string;
   discipline: string;
   difficulty: string;
@@ -12,6 +15,7 @@ type figType = {
 };
 
 const PoleDance = () => {
+  const { currDiscipline } = useUser();
   const [figures, setFigures] = useState<figType[] | null>(null);
   async function fetchFigures() {
     try {
@@ -34,10 +38,13 @@ const PoleDance = () => {
       {figures.map((fig, index) => {
         return (
           <div key={index}>
-            <div>{fig.name}</div>
+            <Link to={fig.ref}>
+              <div>{fig.name}</div>
+            </Link>
           </div>
         );
       })}
+      <div>{currDiscipline}</div>
     </div>
   );
 };

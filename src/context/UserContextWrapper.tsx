@@ -19,6 +19,8 @@ type UserContextProps = {
   isLoading: boolean;
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
   authenticateUser: () => void;
+  currDiscipline: string | null;
+  setCurrDiscipline: React.Dispatch<React.SetStateAction<string | null>>;
 };
 
 export const UserContext = createContext<UserContextProps | null>(null);
@@ -32,6 +34,7 @@ function UserContextWrapper({ children }: { children: ReactNode }) {
   // call authenticate function when loading page
   useEffect(() => {
     authenticateUser();
+    fetchDiscipline();
   }, []);
 
   const storeToken = (token: string) => localStorage.setItem("token", token);
@@ -65,6 +68,23 @@ function UserContextWrapper({ children }: { children: ReactNode }) {
     }
   };
 
+  // check and store in local storage the discipline being used (by default, none and just default homepage)
+  const fetchDiscipline = () => {
+    const getDiscipline = location.pathname.split("/")[1];
+    if (
+      getDiscipline &&
+      (getDiscipline === "pole" ||
+        getDiscipline === "aerial-hoop" ||
+        getDiscipline === "contorsion")
+    ) {
+      setCurrDiscipline(getDiscipline);
+    } else {
+      setCurrDiscipline(null);
+    }
+  };
+
+  const [currDiscipline, setCurrDiscipline] = useState<string | null>(null);
+
   return (
     <UserContext.Provider
       value={{
@@ -77,6 +97,8 @@ function UserContextWrapper({ children }: { children: ReactNode }) {
         setIsLoggedIn,
         isLoading,
         setIsLoading,
+        currDiscipline,
+        setCurrDiscipline,
       }}
     >
       {children}
