@@ -51,7 +51,7 @@ const StatusToggle = () => {
         }`}
       />
       <p id="rangeValue">{status}</p>
-      <p>{status === "One Side" ? </p>
+      <p> </p>
     </div>
   );
 };

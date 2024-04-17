@@ -20,8 +20,12 @@ function App() {
       <div className="App h-screen w-screen">
         <Routes>
           <Route path="/" element={<Layout />}>
+            <Route element={<IsLoggedOut />}>
+              <Route path="signup" element={<SignUpPage />} />
+              <Route path="login" element={<LogInPage />} />
+            </Route>
             <Route index element={<HomePage />} />
-            <Route path="/pole">
+            <Route path="pole">
               <Route index element={<PoleDance />} />
               <Route path="figures">
                 <Route index element={<Figures />} />
@@ -42,11 +46,6 @@ function App() {
                 <Route path=":figureRef" element={<OneFigure />} />
               </Route>
             </Route>
-          </Route>
-
-          <Route element={<IsLoggedOut />}>
-            <Route path="/signup" element={<SignUpPage />} />
-            <Route path="/login" element={<LogInPage />} />
           </Route>
         </Routes>
       </div>

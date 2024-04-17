@@ -55,7 +55,7 @@ const NavBar = () => {
   );
 
   return (
-    <nav className="flex h-full w-full justify-between text-white">
+    <nav className="flex h-full w-full justify-between text-whit">
       <Link to="/">
         <div>Air2D2</div>
       </Link>
