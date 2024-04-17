@@ -4,8 +4,17 @@ import { useNavigate, Link } from "react-router-dom";
 import useUser from "../context/useUser";
 import { AxiosError } from "axios";
 
+// imports relative to styling
 import { Toast } from "flowbite-react";
 import { HiExclamation } from "react-icons/hi";
+import {
+  formStyle,
+  formContainerStyle,
+  fieldStyle,
+  labelStyle,
+  inputStyle,
+  buttonStyle,
+} from "./../components/AuthComponents/AuthStyle";
 
 type figType = {
   id: string;
@@ -82,18 +91,9 @@ const SignUpPage = () => {
 
   const { email, username, password } = formState;
 
-  // styling
-  const fieldStyle = "flex flex-col";
-  const labelStyle = "font-semibold mb-2";
-  const inputStyle =
-    "shadow appearance-none border border-disabled rounded w-full py-2 px-3 text-inputfield leading-tight focus:outline-none focus:shadow-outline";
-
   return (
-    <div className="SignUpForm h-full lg:w-1/3 mx-auto lg:my-10">
-      <form
-        onSubmit={handleSubmit}
-        className="shadow-md h-2/3 w-full justify-between rounded px-8 pt-6 pb-8 my-10 mx-10 flex flex-col gap-3 bg-white dark:bg-opacity-10 dark:border dark:border-textdark"
-      >
+    <div className={`SignUpForm ${formContainerStyle}`}>
+      <form onSubmit={handleSubmit} className={formStyle}>
         <h2 className="font-bold text-center">Sign up</h2>
         <div className={fieldStyle}>
           <label htmlFor="email" className={labelStyle}>
@@ -139,7 +139,7 @@ const SignUpPage = () => {
         </div>
         <button
           disabled={email === "" || password === "" || username === ""}
-          className="bg-main px-4 py-1 rounded-lg text-white font-bold drop-shadow-md disabled:bg-disabled"
+          className={buttonStyle}
         >
           Create account
         </button>

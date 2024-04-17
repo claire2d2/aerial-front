@@ -1,7 +1,17 @@
 import { useState, ChangeEvent, FormEvent } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import aerialApi from "../service/aerialApi";
 import useUser from "../context/useUser";
+
+// import relative to styling
+import {
+  formContainerStyle,
+  formStyle,
+  fieldStyle,
+  labelStyle,
+  inputStyle,
+  buttonStyle,
+} from "./../components/AuthComponents/AuthStyle";
 
 type formType = {
   email: string;
@@ -53,10 +63,13 @@ const LogInPage = () => {
   const { email, password } = formState;
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="email">Email:</label>
+    <div className={`LogIn ${formContainerStyle}`}>
+      <form onSubmit={handleSubmit} className={formStyle}>
+        <h2 className="font-bold text-center">Log in</h2>
+        <div className={fieldStyle}>
+          <label htmlFor="email" className={labelStyle}>
+            Email:
+          </label>
           <input
             type="email"
             id="email"
@@ -64,10 +77,13 @@ const LogInPage = () => {
             name="email"
             value={email}
             onChange={handleChange}
+            className={inputStyle}
           />
         </div>
-        <div>
-          <label htmlFor="password">Password</label>
+        <div className={fieldStyle}>
+          <label htmlFor="password" className={labelStyle}>
+            Password
+          </label>
           <input
             type="password"
             id="password"
@@ -75,9 +91,21 @@ const LogInPage = () => {
             name="password"
             value={password}
             onChange={handleChange}
+            className={inputStyle}
           />
         </div>
-        <button>Log in</button>
+        <button
+          disabled={email === "" || password === ""}
+          className={buttonStyle}
+        >
+          Log in
+        </button>
+        <div className="text-sm text-center">
+          Don't have an account yet? {""}
+          <Link to="/signup">
+            <span className="underline cursor-pointer">Sign up!</span>
+          </Link>
+        </div>
       </form>
     </div>
   );
