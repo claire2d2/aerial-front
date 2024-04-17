@@ -1,29 +1,44 @@
 import aerialApi from "../service/aerialApi";
-import { useState, FormEvent, ChangeEvent } from "react";
+import { useState, useEffect, FormEvent, ChangeEvent } from "react";
 import { useNavigate } from "react-router-dom";
+import useUser from "../context/useUser";
+
+type figType = {
+  id: string;
+  name: string;
+  ref: string;
+  image: string;
+  discipline: string;
+  difficulty: string;
+  imgArtist: string;
+  imgArtistUrl: string;
+};
 
 type formType = {
   username: string;
   email: string;
   password: string;
+  figures: figType[];
 };
-
 const SignUpPage = () => {
+  // fetch figures
+  const { allFigures } = useUser();
+
   // set states to handle form changes and submission
   const [formState, setFormState] = useState<formType>({
     email: "",
     username: "",
     password: "",
+    figures: [],
   });
 
   const navigate = useNavigate();
 
   // change the form state when user inputs
-
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
     const key = e.currentTarget.id;
     const value = e.currentTarget.value;
-    setFormState({ ...formState, [key]: value });
+    setFormState({ ...formState, [key]: value, figures: allFigures });
   }
 
   /* function to handle form submission (=> user creation)

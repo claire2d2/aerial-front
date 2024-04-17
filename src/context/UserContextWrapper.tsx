@@ -14,6 +14,16 @@ type disciplType = {
   name: string;
 };
 
+type figType = {
+  id: string;
+  name: string;
+  ref: string;
+  image: string;
+  discipline: string;
+  difficulty: string;
+  imgArtist: string;
+  imgArtistUrl: string;
+};
 // define beforehand the types for the states
 type UserContextProps = {
   user: userType | null;
@@ -25,6 +35,8 @@ type UserContextProps = {
   isLoading: boolean;
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
   authenticateUser: () => void;
+  allFigures: figType[];
+  setAllFigures: React.Dispatch<React.SetStateAction<figType[]>>;
   allDisciplines: disciplType[] | null;
   setAllDisciplines: React.Dispatch<React.SetStateAction<disciplType[] | null>>;
   currDiscipline: string | null;
@@ -45,6 +57,7 @@ function UserContextWrapper({ children }: { children: ReactNode }) {
   useEffect(() => {
     authenticateUser();
     fetchAllDisciplines();
+    fetchFigures();
   }, []);
 
   useEffect(() => {
@@ -114,6 +127,18 @@ function UserContextWrapper({ children }: { children: ReactNode }) {
     }
   }
 
+  // fetch all the figures
+  const [allFigures, setAllFigures] = useState<figType[]>([]);
+
+  async function fetchFigures() {
+    try {
+      const response = await aerialApi.get(`/figures/`);
+      setAllFigures(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
     <UserContext.Provider
       value={{
@@ -126,6 +151,8 @@ function UserContextWrapper({ children }: { children: ReactNode }) {
         setIsLoggedIn,
         isLoading,
         setIsLoading,
+        allFigures,
+        setAllFigures,
         allDisciplines,
         setAllDisciplines,
         currDiscipline,
