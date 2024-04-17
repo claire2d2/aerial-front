@@ -18,7 +18,7 @@ const Discipline: React.FC<DisciplineProps> = ({
   return (
     <button
       onClick={() => navigate(link)}
-      className="relative h-1/4 lg:h-1/2 flex items-center justify-center"
+      className="relative h-64 lg:h-80 flex items-center justify-center"
     >
       <img
         src={image}

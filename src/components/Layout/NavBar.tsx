@@ -26,7 +26,7 @@ import { HiBars3 } from "react-icons/hi2";
 
 const customNavbarTheme = {
   root: {
-    base: "h-full bg-main px-2 dark:border-maindark dark:bg-maindark sm:px-4",
+    base: "h-full bg-transparent px-2  sm:px-4",
     rounded: {
       on: "rounded",
       off: "",
@@ -53,10 +53,6 @@ const customNavbarTheme = {
       on: "hidden",
       off: "",
     },
-  },
-  toggle: {
-    base: "inline-flex items-center rounded-lg p-2 text-sm text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600 md:hidden",
-    icon: "h-6 w-6 shrink-0",
   },
 };
 
@@ -156,8 +152,13 @@ const NavBar = () => {
         </span>
         <span className="block truncate text-sm">{user?.email}</span>
       </Dropdown.Header>
-      <Dropdown.Item>Settings</Dropdown.Item>
-      <Dropdown.Item>Log out</Dropdown.Item>
+      <Dropdown.Item>
+        <HiOutlineAdjustments /> Settings
+      </Dropdown.Item>
+      <Dropdown.Item>
+        <HiLogout />
+        Log out
+      </Dropdown.Item>
     </Dropdown>
   );
 
@@ -167,7 +168,7 @@ const NavBar = () => {
         <img src={mermaidIcon} className="mr-3 h-6 sm:h-9" alt="site logo" />
         <span>Air2d2</span>
       </Navbar.Brand>
-      {/* <DarkLightToggle /> */}
+      <DarkLightToggle />
       <div className="flex md:order-2">
         {isLoggedIn ? showWhenLoggedIn : showWhenLoggedOut}
         <div className="lg:hidden">
@@ -190,7 +191,7 @@ const NavBar = () => {
         </div>
       </div>
       <div className="hidden xl:block xl:w-2/3">
-        <ul className="flex gap-4 items-center font-semibold w-full">
+        <ul className="flex gap-4 items-center font-semibold w-full text-white">
           <li>
             <NavBarDiscDropDown />
           </li>
@@ -206,31 +207,6 @@ const NavBar = () => {
         </ul>
       </div>
     </Navbar>
-    // <nav className="flex h-full w-full justify-between text-whit">
-    //   <Link to="/">
-    //     <div>Air2D2</div>
-    //   </Link>
-    //   <div>
-    //
-    //   </div>
-    //   <div>
-    //     {currDiscipline ? (
-    //       <ul className="flex">
-    //         <Link to={`${loc}/figures`}>
-    //           <li>Figures</li>
-    //         </Link>
-    //         <li>Generate a combo</li>
-    //         <li>Combos</li>
-    //       </ul>
-    //     ) : (
-    //       ""
-    //     )}
-    //   </div>
-
-    //   <div className="absolute">
-    //
-    //   </div>
-    // </nav>
   );
 };
 
