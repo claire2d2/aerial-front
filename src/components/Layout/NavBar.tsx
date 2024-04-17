@@ -2,9 +2,9 @@ import DarkLightToggle from "./DarkLightToggle";
 import { useNavigate, Link } from "react-router-dom";
 import useUser from "../../context/useUser";
 
-import { Navbar, Avatar, Dropdown } from "flowbite-react";
+import { Avatar, Dropdown } from "flowbite-react";
 import NavBarDiscDropDown from "./NavBarDiscDropDown";
-import mermaidIcon from "./../../../public/mermaid_icon.png";
+import cloudIcon from "./../../../public/cloud.png";
 import { HiOutlineAdjustments, HiLogout } from "react-icons/hi";
 import { HiBars3 } from "react-icons/hi2";
 
@@ -23,38 +23,6 @@ import { HiBars3 } from "react-icons/hi2";
 // search bar to search a move
 
 //TODO: styling, navbar that changes height when scrolling down and that appears when scrolling up
-
-const customNavbarTheme = {
-  root: {
-    base: "h-full bg-transparent px-2  sm:px-4",
-    rounded: {
-      on: "rounded",
-      off: "",
-    },
-    bordered: {
-      on: "border",
-      off: "",
-    },
-    inner: {
-      base: "mx-auto flex flex-wrap items-center justify-between pr-4",
-      fluid: {
-        on: "",
-        off: "container",
-      },
-    },
-  },
-  brand: {
-    base: "flex items-center font-bold h-full",
-  },
-  collapse: {
-    base: "w-full md:block md:w-auto",
-    list: "mt-4 flex flex-col md:mt-0 md:flex-row md:space-x-8 md:text-sm md:font-medium",
-    hidden: {
-      on: "hidden",
-      off: "",
-    },
-  },
-};
 
 const dropDownTheme = {
   floating: {
@@ -119,7 +87,7 @@ const avatarTheme = {
 };
 
 const NavBar = () => {
-  const { isLoggedIn, user, currDiscipline } = useUser();
+  const { isLoggedIn, user, currDiscipline, currDisciplineRef } = useUser();
   const navigate = useNavigate();
   const showWhenLoggedOut = (
     <div className="flex gap-2 w-full">
@@ -163,11 +131,16 @@ const NavBar = () => {
   );
 
   return (
-    <Navbar fluid rounded theme={customNavbarTheme}>
-      <Navbar.Brand href="http://localhost:5173">
-        <img src={mermaidIcon} className="mr-3 h-6 sm:h-9" alt="site logo" />
-        <span>Air2d2</span>
-      </Navbar.Brand>
+    <nav className="flex items-center px-1">
+      <div className="w-1/6 flex">
+        <Link to="/">
+          <div className="flex w-full items-center">
+            <img src={cloudIcon} className="mr-3 h-6" alt="site logo" />
+            <span className="text-xl text-white font-bold">Air2d2</span>
+          </div>
+        </Link>
+      </div>
+
       <DarkLightToggle />
       <div className="flex md:order-2">
         {isLoggedIn ? showWhenLoggedIn : showWhenLoggedOut}
@@ -184,7 +157,9 @@ const NavBar = () => {
             <Dropdown.Header>
               <span className="capitalize">{currDiscipline}</span>
             </Dropdown.Header>
-            <Dropdown.Item>Figures</Dropdown.Item>
+            <Dropdown.Item>
+              <Link to={`/${currDisciplineRef}/figures`}>Figures</Link>
+            </Dropdown.Item>
             <Dropdown.Item>Generate Combo</Dropdown.Item>
             <Dropdown.Item>Combos</Dropdown.Item>
           </Dropdown>
@@ -196,17 +171,32 @@ const NavBar = () => {
             <NavBarDiscDropDown />
           </li>
           <li>
-            <button className="hover:text-linkhover">Figures</button>
+            <button
+              className="hover:text-linkhover"
+              onClick={() => navigate(`/${currDisciplineRef}/figures`)}
+            >
+              Figures
+            </button>
           </li>
           <li>
-            <button className="hover:text-linkhover">Generate Combo</button>
+            <button
+              className="hover:text-linkhover"
+              onClick={() => navigate(`/${currDisciplineRef}/combo-generator`)}
+            >
+              Generate Combo
+            </button>
           </li>
           <li>
-            <button className="hover:text-linkhover">Combos</button>
+            <button
+              className="hover:text-linkhover"
+              onClick={() => navigate(`/${currDisciplineRef}/all-combos`)}
+            >
+              Combos
+            </button>
           </li>
         </ul>
       </div>
-    </Navbar>
+    </nav>
   );
 };
 

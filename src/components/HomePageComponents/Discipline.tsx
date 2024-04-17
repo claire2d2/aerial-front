@@ -1,5 +1,6 @@
 // Links
 import { useNavigate } from "react-router-dom";
+import useUser from "../../context/useUser";
 
 type DisciplineProps = {
   image: string;
@@ -14,10 +15,16 @@ const Discipline: React.FC<DisciplineProps> = ({
   active,
   link,
 }) => {
+  const { setCurrDiscipline } = useUser();
   const navigate = useNavigate();
+
+  function goToDiscipline() {
+    setCurrDiscipline(link);
+    navigate(link);
+  }
   return (
     <button
-      onClick={() => navigate(link)}
+      onClick={goToDiscipline}
       className="relative h-64 lg:h-80 flex items-center justify-center"
     >
       <img

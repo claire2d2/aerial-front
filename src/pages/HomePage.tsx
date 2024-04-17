@@ -53,19 +53,19 @@ const HomePage = () => {
         name="Pole Dance"
         image={PoleDanceImg}
         active={true}
-        link="/pole"
+        link="pole"
       />
       <Discipline
         name="Aerial Hoop"
         image={AerialHoopImg}
         active={false}
-        link="/comingsoon"
+        link="aerial-hoop"
       />
       <Discipline
         name="Contorsion"
         image={PoleDanceImg}
         active={false}
-        link="/comingsoon"
+        link="contorsion"
       />
     </div>
   );
