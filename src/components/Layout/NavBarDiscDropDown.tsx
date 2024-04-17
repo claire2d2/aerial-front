@@ -24,8 +24,8 @@ const NavBarDiscDropDown = () => {
       {allDisciplines
         ? allDisciplines
             .filter((disc) => disc.name !== currDiscipline)
-            .map((disc) => (
-              <Dropdown.Item>
+            .map((disc, index) => (
+              <Dropdown.Item key={index}>
                 <span className="capitalize">{disc.name}</span>
               </Dropdown.Item>
             ))
