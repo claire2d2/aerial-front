@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect, ReactNode } from "react";
+import React, { createContext, useState, useEffect, ReactNode } from "react";
 import aerialApi from "../service/aerialApi";
 
 type userType = {
@@ -6,6 +6,12 @@ type userType = {
   username: string;
   email: string;
   image: string;
+};
+
+type disciplType = {
+  id: string;
+  ref: string;
+  name: string;
 };
 
 // define beforehand the types for the states
@@ -19,8 +25,12 @@ type UserContextProps = {
   isLoading: boolean;
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
   authenticateUser: () => void;
+  allDisciplines: disciplType[] | null;
+  setAllDisciplines: React.Dispatch<React.SetStateAction<disciplType[] | null>>;
   currDiscipline: string | null;
   setCurrDiscipline: React.Dispatch<React.SetStateAction<string | null>>;
+  currDisciplineRef: string | null;
+  setCurrDisciplineRef: React.Dispatch<React.SetStateAction<string | null>>;
 };
 
 export const UserContext = createContext<UserContextProps | null>(null);
@@ -34,8 +44,12 @@ function UserContextWrapper({ children }: { children: ReactNode }) {
   // call authenticate function when loading page
   useEffect(() => {
     authenticateUser();
-    fetchDiscipline();
+    fetchAllDisciplines();
   }, []);
+
+  useEffect(() => {
+    fetchCurrDiscipline();
+  }, [fetchCurrDiscipline]);
 
   const storeToken = (token: string) => localStorage.setItem("token", token);
   const removeToken = () => localStorage.removeItem("token");
@@ -68,29 +82,37 @@ function UserContextWrapper({ children }: { children: ReactNode }) {
     }
   };
 
-  // check and store in local storage the discipline being used (by default, none and just default homepage)
+  // check the discipline being used (by default, none and just default homepage)
   const [currDiscipline, setCurrDiscipline] = useState<string | null>(null);
+  const [currDisciplineRef, setCurrDisciplineRef] = useState<string | null>(
+    null
+  );
+  const [allDisciplines, setAllDisciplines] = useState<disciplType[] | null>(
+    null
+  );
 
-  const fetchDiscipline = () => {
+  async function fetchAllDisciplines() {
+    try {
+      const response = await aerialApi.get("/disciplines");
+      setAllDisciplines(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  function fetchCurrDiscipline() {
     const getDiscipline = location.pathname.split("/")[1];
-    if (getDiscipline || currDiscipline) {
-      switch (getDiscipline) {
-        case "pole":
-          setCurrDiscipline("Pole Dance");
-          break;
-        case "aerial-hoop":
-          setCurrDiscipline("Aerial Hoop");
-          break;
-        case "contorsion":
-          setCurrDiscipline("Contorsion");
-          break;
-        default:
-          break;
+    if (getDiscipline) {
+      const found = allDisciplines?.find((disc) => disc.ref === getDiscipline);
+      if (found) {
+        setCurrDiscipline(found.name);
+        setCurrDisciplineRef(found.ref);
       }
     } else {
       setCurrDiscipline(null);
     }
-  };
+  }
 
   return (
     <UserContext.Provider
@@ -104,8 +126,12 @@ function UserContextWrapper({ children }: { children: ReactNode }) {
         setIsLoggedIn,
         isLoading,
         setIsLoading,
+        allDisciplines,
+        setAllDisciplines,
         currDiscipline,
         setCurrDiscipline,
+        currDisciplineRef,
+        setCurrDisciplineRef,
       }}
     >
       {children}

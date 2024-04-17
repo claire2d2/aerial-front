@@ -1,4 +1,4 @@
-import useUser from "../../../context/useUser";
+import useUser from "../../context/useUser";
 import { Navigate, Outlet } from "react-router-dom";
 
 function IsLoggedOut() {

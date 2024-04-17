@@ -36,7 +36,7 @@ const LogInPage = () => {
       console.log(response);
       const token = response.data.authToken;
       if (response.status === 400) {
-        console.log(response.message);
+        console.log(response.data.message);
       }
       storeToken(token);
       await authenticateUser();

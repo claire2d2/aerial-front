@@ -1,9 +1,10 @@
 import DarkLightToggle from "./DarkLightToggle";
+import { useNavigate, Link } from "react-router-dom";
 import useUser from "../../context/useUser";
+
+import NavBarDiscDropDown from "./NavBarDiscDropDown";
 import { Dropdown } from "flowbite-react";
 import { HiOutlineAdjustments, HiLogout } from "react-icons/hi";
-
-import { useNavigate, Link } from "react-router-dom";
 
 //TODO : navbar for when user isn't logged in
 // sign up
@@ -22,7 +23,7 @@ import { useNavigate, Link } from "react-router-dom";
 //TODO: styling, navbar that changes height when scrolling down and that appears when scrolling up
 
 const NavBar = () => {
-  const { isLoggedIn, user } = useUser();
+  const { isLoggedIn, user, currDiscipline } = useUser();
   const navigate = useNavigate();
   const showWhenLoggedOut = (
     <div className="flex gap-2 w-full">
@@ -30,6 +31,8 @@ const NavBar = () => {
       <div onClick={() => navigate("/login")}>Log In</div>
     </div>
   );
+
+  const loc = location.pathname.split("/")[1];
 
   const showWhenLoggedIn = (
     <div className="h-full flex w-full">
@@ -57,23 +60,27 @@ const NavBar = () => {
         <div>Air2D2</div>
       </Link>
       <div>
-        <Dropdown label="Pole Dance">
-          <Dropdown.Item>Aerial Hoop</Dropdown.Item>
-          <Dropdown.Item>Pole Dance</Dropdown.Item>
-          <Dropdown.Item>Contorsion</Dropdown.Item>
-        </Dropdown>
+        <NavBarDiscDropDown />
       </div>
       <div>
-        <ul className="flex">
-          <li>Figures</li>
-          <li>Generate a combo</li>
-          <li>Combos</li>
-        </ul>
+        {currDiscipline ? (
+          <ul className="flex">
+            <Link to={`${loc}/figures`}>
+              <li>Figures</li>
+            </Link>
+            <li>Generate a combo</li>
+            <li>Combos</li>
+          </ul>
+        ) : (
+          ""
+        )}
       </div>
       <div className="basis-1/6">
         {isLoggedIn ? showWhenLoggedIn : showWhenLoggedOut}
       </div>
-      <div className="absolute">{/* <DarkLightToggle /> */}</div>
+      <div className="absolute">
+        <DarkLightToggle />
+      </div>
     </nav>
   );
 };
