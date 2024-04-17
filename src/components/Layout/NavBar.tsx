@@ -87,7 +87,8 @@ const avatarTheme = {
 };
 
 const NavBar = () => {
-  const { isLoggedIn, user, currDiscipline, currDisciplineRef } = useUser();
+  const { isLoggedIn, user, currDiscipline, currDisciplineRef, logOut } =
+    useUser();
   const navigate = useNavigate();
   const showWhenLoggedOut = (
     <div className="flex gap-2 w-full">
@@ -124,8 +125,10 @@ const NavBar = () => {
         <HiOutlineAdjustments /> Settings
       </Dropdown.Item>
       <Dropdown.Item>
-        <HiLogout />
-        Log out
+        <button className="flex gap-2" onClick={logOut}>
+          <HiLogout />
+          Log out
+        </button>
       </Dropdown.Item>
     </Dropdown>
   );
@@ -170,30 +173,38 @@ const NavBar = () => {
           <li>
             <NavBarDiscDropDown />
           </li>
-          <li>
-            <button
-              className="hover:text-linkhover"
-              onClick={() => navigate(`/${currDisciplineRef}/figures`)}
-            >
-              Figures
-            </button>
-          </li>
-          <li>
-            <button
-              className="hover:text-linkhover"
-              onClick={() => navigate(`/${currDisciplineRef}/combo-generator`)}
-            >
-              Generate Combo
-            </button>
-          </li>
-          <li>
-            <button
-              className="hover:text-linkhover"
-              onClick={() => navigate(`/${currDisciplineRef}/all-combos`)}
-            >
-              Combos
-            </button>
-          </li>
+          {currDiscipline ? (
+            <div className="flex gap-4">
+              <li>
+                <button
+                  className="hover:text-linkhover"
+                  onClick={() => navigate(`/${currDisciplineRef}/figures`)}
+                >
+                  Figures
+                </button>
+              </li>
+              <li>
+                <button
+                  className="hover:text-linkhover"
+                  onClick={() =>
+                    navigate(`/${currDisciplineRef}/combo-generator`)
+                  }
+                >
+                  Generate Combo
+                </button>
+              </li>
+              <li>
+                <button
+                  className="hover:text-linkhover"
+                  onClick={() => navigate(`/${currDisciplineRef}/all-combos`)}
+                >
+                  Combos
+                </button>
+              </li>
+            </div>
+          ) : (
+            ""
+          )}
         </ul>
       </div>
     </nav>

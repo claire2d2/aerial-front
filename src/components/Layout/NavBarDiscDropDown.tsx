@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { Dropdown } from "flowbite-react";
 import useUser from "../../context/useUser";
 
@@ -53,7 +54,9 @@ const NavBarDiscDropDown = () => {
             .filter((disc) => disc.name !== currDiscipline)
             .map((disc, index) => (
               <Dropdown.Item key={index}>
-                <span className="capitalize">{disc.name}</span>
+                <Link to={`${disc.ref}`}>
+                  <span className="capitalize">{disc.name}</span>
+                </Link>
               </Dropdown.Item>
             ))
         : "Loading"}

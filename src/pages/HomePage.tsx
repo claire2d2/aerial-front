@@ -31,7 +31,7 @@ const HomePage = () => {
         style={{
           backgroundImage: "url('./../../public/cloudsBG.jpg')",
         }}
-        className="flex flex-col  bg-cover lg:flex-row lg:justify-between h-80  text-center gap-2 items-center justify-center"
+        className="flex flex-col lg:py-40 bg-cover lg:flex-row lg:justify-between  text-center gap-2 items-center justify-center"
       >
         <div
           className={`z-9 h-1/2 lg:h-full flex flex-col justify-center ${

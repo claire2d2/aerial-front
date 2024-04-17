@@ -1,4 +1,5 @@
 import React, { createContext, useState, useEffect, ReactNode } from "react";
+import { useNavigate } from "react-router-dom";
 import aerialApi from "../service/aerialApi";
 
 type userType = {
@@ -33,6 +34,7 @@ type UserContextProps = {
   removeToken: () => void;
   isLoggedIn: boolean;
   setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
+  logOut: () => void;
   isLoading: boolean;
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
   authenticateUser: () => void;
@@ -96,6 +98,16 @@ function UserContextWrapper({ children }: { children: ReactNode }) {
     }
   };
 
+  // function to log out
+
+  const navigate = useNavigate();
+  const logOut = () => {
+    removeToken();
+    setUser(null);
+    setIsLoggedIn(false);
+    navigate("/");
+  };
+
   // check the discipline being used (by default, none and just default homepage)
   const [currDiscipline, setCurrDiscipline] = useState<string | null>(null);
   const [currDisciplineRef, setCurrDisciplineRef] = useState<string | null>(
@@ -117,14 +129,12 @@ function UserContextWrapper({ children }: { children: ReactNode }) {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   function fetchCurrDiscipline() {
     const getDiscipline = location.pathname.split("/")[1];
-    if (getDiscipline) {
+    if (getDiscipline !== "") {
       const found = allDisciplines?.find((disc) => disc.ref === getDiscipline);
       if (found) {
         setCurrDiscipline(found.name);
         setCurrDisciplineRef(found.ref);
       }
-    } else {
-      setCurrDiscipline(null);
     }
   }
 
@@ -150,6 +160,7 @@ function UserContextWrapper({ children }: { children: ReactNode }) {
         authenticateUser,
         isLoggedIn,
         setIsLoggedIn,
+        logOut,
         isLoading,
         setIsLoading,
         allFigures,

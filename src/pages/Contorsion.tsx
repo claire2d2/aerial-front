@@ -1,5 +1,5 @@
 const Contorsion = () => {
-  return <div>Contorsion homepage</div>;
+  return <div className="h-full">Contorsion homepage</div>;
 };
 
 export default Contorsion;
