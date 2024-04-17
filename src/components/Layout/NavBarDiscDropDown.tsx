@@ -34,7 +34,9 @@ const NavBarDiscDropDown = () => {
             {currDiscipline}
           </span>
         ) : (
-          "Aerial arts"
+          <span className="capitalize font-bold text-lg hover:text-linkhover">
+            Aerial Arts
+          </span>
         )
       }
     >
