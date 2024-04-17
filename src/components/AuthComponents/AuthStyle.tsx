@@ -1,6 +1,6 @@
 export const formContainerStyle = "h-full w-full lg:w-1/3 lg:mx-auto lg:my-10";
 export const formStyle =
-  "shadow-md h-2/3 justify-between rounded px-8 pt-6 pb-8 my-10 mx-4 lg:mx-10 flex flex-col gap-3 bg-white dark:bg-opacity-10 dark:border dark:border-textdark";
+  "shadow-md h-5/6 lg:h-2/3 justify-between rounded px-8 pt-6 pb-8 my-10 mx-4 lg:mx-10 flex flex-col gap-3 bg-white dark:bg-opacity-10 dark:border dark:border-textdark";
 export const fieldStyle = "flex flex-col";
 export const labelStyle = "font-semibold mb-2";
 export const inputStyle =

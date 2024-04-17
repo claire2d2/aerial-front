@@ -12,7 +12,7 @@ const Layout = () => {
         <Outlet />
       </div>
 
-      <div className="dark:bg-bgmaindark text-white">
+      <div className="text-text dark:bg-bgmaindark dark:text-white">
         <Footer />
       </div>
     </div>

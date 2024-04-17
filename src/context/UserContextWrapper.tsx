@@ -3,7 +3,8 @@ import aerialApi from "../service/aerialApi";
 
 type userType = {
   id: number;
-  username: string;
+  firstName: string;
+  lastName: string;
   email: string;
   image: string;
 };

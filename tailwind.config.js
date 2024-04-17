@@ -10,6 +10,7 @@ export default {
       bgmaindark: "#0F172A",
       text: "#121927",
       textdark: "#7D8A9F",
+      linkhover: "#ffc900",
       inputfield: "#7a7672",
       disabled: "#e2e2e2",
       // Default Tailwind colors

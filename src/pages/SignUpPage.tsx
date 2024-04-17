@@ -28,6 +28,8 @@ type figType = {
 };
 
 type formType = {
+  firstName: string;
+  lastName: string;
   username: string;
   email: string;
   password: string;
@@ -40,6 +42,8 @@ const SignUpPage = () => {
 
   // set states to handle form changes and submission
   const [formState, setFormState] = useState<formType>({
+    firstName: "",
+    lastName: "",
     email: "",
     username: "",
     password: "",
@@ -89,7 +93,7 @@ const SignUpPage = () => {
     }
   }
 
-  const { email, username, password } = formState;
+  const { email, firstName, lastName, password } = formState;
 
   return (
     <div className={`SignUpForm ${formContainerStyle}`}>
@@ -110,15 +114,29 @@ const SignUpPage = () => {
           />
         </div>
         <div className={fieldStyle}>
-          <label htmlFor="username" className={labelStyle}>
-            Username
+          <label htmlFor="firstName" className={labelStyle}>
+            First Name
           </label>
           <input
             type="text"
-            id="username"
-            placeholder="Username"
-            name="username"
-            value={username}
+            id="firstName"
+            placeholder="First Name"
+            name="firstName"
+            value={firstName}
+            onChange={handleChange}
+            className={inputStyle}
+          />
+        </div>
+        <div className={fieldStyle}>
+          <label htmlFor="lastName" className={labelStyle}>
+            Last Name
+          </label>
+          <input
+            type="text"
+            id="lastName"
+            placeholder="Last Name"
+            name="lastName"
+            value={lastName}
             onChange={handleChange}
             className={inputStyle}
           />
@@ -138,7 +156,12 @@ const SignUpPage = () => {
           />
         </div>
         <button
-          disabled={email === "" || password === "" || username === ""}
+          disabled={
+            email === "" ||
+            password === "" ||
+            firstName === "" ||
+            lastName === ""
+          }
           className={buttonStyle}
         >
           Create account
