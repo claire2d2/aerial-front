@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { FormEvent } from "react";
 import aerialApi from "../../service/aerialApi";
-import { AxiosRequestConfig } from "axios";
 import useUser from "../../context/useUser";
 
 type statusType = {
@@ -29,7 +28,7 @@ const StatusToggle: React.FC<StatusToggle> = ({
   const { authenticateUser } = useUser();
 
   const [range, setRange] = useState<number>(0);
-  const [stateToEdit, setStateToEdit] = useState<string>("");
+  // const [setStateToEdit] = useState<string>("");
 
   // handle changing the state for the current figure when user switches between ranges
   const handleInputChange = (e: FormEvent<HTMLInputElement>) => {
@@ -79,7 +78,7 @@ const StatusToggle: React.FC<StatusToggle> = ({
         `/states/fig/${currFigId}`
       );
       console.log(response.data);
-      setStateToEdit(response.data.id);
+      // setStateToEdit(response.data.id);
     } catch (error) {
       console.log(error);
     }
