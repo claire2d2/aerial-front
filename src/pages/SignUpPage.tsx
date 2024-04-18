@@ -1,29 +1,63 @@
 import aerialApi from "../service/aerialApi";
 import { useState, FormEvent, ChangeEvent } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import useUser from "../context/useUser";
+import { AxiosError } from "axios";
+
+// imports relative to styling
+import { Toast } from "flowbite-react";
+import { HiExclamation } from "react-icons/hi";
+import {
+  formStyle,
+  formContainerStyle,
+  fieldStyle,
+  labelStyle,
+  inputStyle,
+  buttonStyle,
+} from "./../components/AuthComponents/AuthStyle";
+
+type figType = {
+  id: string;
+  name: string;
+  ref: string;
+  image: string;
+  discipline: string;
+  difficulty: string;
+  imgArtist: string;
+  imgArtistUrl: string;
+};
 
 type formType = {
-  username: string;
+  firstName: string;
+  lastName: string;
   email: string;
   password: string;
+  figures: figType[];
 };
 
 const SignUpPage = () => {
+  // fetch figures
+  const { allFigures } = useUser();
+
   // set states to handle form changes and submission
   const [formState, setFormState] = useState<formType>({
+    firstName: "",
+    lastName: "",
     email: "",
-    username: "",
     password: "",
+    figures: [],
   });
+
+  //set states to show error from backend if something wrong with input
+  const [errorMsg, setErrorMsg] = useState<string>("");
 
   const navigate = useNavigate();
 
   // change the form state when user inputs
-
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
     const key = e.currentTarget.id;
     const value = e.currentTarget.value;
-    setFormState({ ...formState, [key]: value });
+    setFormState({ ...formState, [key]: value, figures: allFigures });
   }
 
   /* function to handle form submission (=> user creation)
@@ -41,19 +75,32 @@ const SignUpPage = () => {
         console.log("user created", response.data);
         navigate("/");
       }
-    } catch (error) {
-      console.log(error);
-      //TODO show error message with what is wrong
+    } catch (error: unknown) {
+      if (error instanceof AxiosError) {
+        // Handle error if it is an instance of Error
+        console.error(error);
+        setErrorMsg(error.response?.data.message); // Use type assertion to access message property
+      } else {
+        // Handle other types of errors
+        console.error(error);
+        setErrorMsg("An unknown error occurred");
+      }
+      setTimeout(() => {
+        setErrorMsg("");
+      }, 2000);
     }
   }
 
-  const { email, username, password } = formState;
+  const { email, firstName, lastName, password } = formState;
 
   return (
-    <div className="SignUpForm dark:text-white">
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="email">Email:</label>
+    <div className={`SignUpForm ${formContainerStyle}`}>
+      <form onSubmit={handleSubmit} className={formStyle}>
+        <h2 className="font-bold text-center">Sign up</h2>
+        <div className={fieldStyle}>
+          <label htmlFor="email" className={labelStyle}>
+            Email:
+          </label>
           <input
             type="email"
             id="email"
@@ -61,21 +108,41 @@ const SignUpPage = () => {
             name="email"
             value={email}
             onChange={handleChange}
+            className={inputStyle}
           />
         </div>
-        <div>
-          <label htmlFor="username">Username</label>
+        <div className={fieldStyle}>
+          <label htmlFor="firstName" className={labelStyle}>
+            First Name
+          </label>
           <input
             type="text"
-            id="username"
-            placeholder="Username"
-            name="username"
-            value={username}
+            id="firstName"
+            placeholder="First Name"
+            name="firstName"
+            value={firstName}
             onChange={handleChange}
+            className={inputStyle}
           />
         </div>
-        <div>
-          <label htmlFor="password">Password</label>
+        <div className={fieldStyle}>
+          <label htmlFor="lastName" className={labelStyle}>
+            Last Name
+          </label>
+          <input
+            type="text"
+            id="lastName"
+            placeholder="Last Name"
+            name="lastName"
+            value={lastName}
+            onChange={handleChange}
+            className={inputStyle}
+          />
+        </div>
+        <div className={`${fieldStyle}`}>
+          <label htmlFor="password" className={labelStyle}>
+            Password
+          </label>
           <input
             type="password"
             id="password"
@@ -83,10 +150,38 @@ const SignUpPage = () => {
             name="password"
             value={password}
             onChange={handleChange}
+            className={inputStyle}
           />
         </div>
-        <button>Create account</button>
+        <button
+          disabled={
+            email === "" ||
+            password === "" ||
+            firstName === "" ||
+            lastName === ""
+          }
+          className={buttonStyle}
+        >
+          Create account
+        </button>
+        <div className="text-sm text-center">
+          Already have an account?{" "}
+          <Link to="/login">
+            <span className="underline cursor-pointer">Log in!</span>
+          </Link>
+        </div>
       </form>
+      {errorMsg !== "" ? (
+        <Toast>
+          <div className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-cyan-100 text-cyan-500 dark:bg-cyan-800 dark:text-cyan-200">
+            <HiExclamation className="h-5 w-5" />
+          </div>
+          <div className="ml-3 text-sm font-normal">{errorMsg}</div>
+          <Toast.Toggle />
+        </Toast>
+      ) : (
+        ""
+      )}
     </div>
   );
 };

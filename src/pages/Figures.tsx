@@ -17,12 +17,12 @@ type figType = {
 const Figures = () => {
   const { currDiscipline, currDisciplineRef } = useUser();
 
-  const [figures, setFigures] = useState<figType[] | null>(null);
+  const [figures, setFigures] = useState<figType[]>([]);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   async function fetchFigures() {
     try {
-      console.log(currDisciplineRef);
       const response = await aerialApi.get(`/figures/by/${currDisciplineRef}`);
+      console.log(response.data);
       setFigures(response.data);
     } catch (error) {
       console.log(error);
@@ -31,9 +31,9 @@ const Figures = () => {
 
   useEffect(() => {
     fetchFigures();
-  }, [figures]);
+  }, [currDiscipline]);
 
-  if (!figures) {
+  if (figures.length === 0) {
     return <p>Loading!</p>;
   }
   return (

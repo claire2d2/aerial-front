@@ -1,9 +1,11 @@
 import React, { createContext, useState, useEffect, ReactNode } from "react";
+import { useNavigate } from "react-router-dom";
 import aerialApi from "../service/aerialApi";
 
 type userType = {
   id: number;
-  username: string;
+  firstName: string;
+  lastName: string;
   email: string;
   image: string;
 };
@@ -14,6 +16,16 @@ type disciplType = {
   name: string;
 };
 
+type figType = {
+  id: string;
+  name: string;
+  ref: string;
+  image: string;
+  discipline: string;
+  difficulty: string;
+  imgArtist: string;
+  imgArtistUrl: string;
+};
 // define beforehand the types for the states
 type UserContextProps = {
   user: userType | null;
@@ -22,9 +34,12 @@ type UserContextProps = {
   removeToken: () => void;
   isLoggedIn: boolean;
   setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
+  logOut: () => void;
   isLoading: boolean;
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
   authenticateUser: () => void;
+  allFigures: figType[];
+  setAllFigures: React.Dispatch<React.SetStateAction<figType[]>>;
   allDisciplines: disciplType[] | null;
   setAllDisciplines: React.Dispatch<React.SetStateAction<disciplType[] | null>>;
   currDiscipline: string | null;
@@ -45,6 +60,7 @@ function UserContextWrapper({ children }: { children: ReactNode }) {
   useEffect(() => {
     authenticateUser();
     fetchAllDisciplines();
+    fetchFigures();
   }, []);
 
   useEffect(() => {
@@ -82,6 +98,17 @@ function UserContextWrapper({ children }: { children: ReactNode }) {
     }
   };
 
+  // function to log out
+
+  const navigate = useNavigate();
+  const logOut = () => {
+    removeToken();
+    setUser(null);
+    setIsLoggedIn(false);
+    setCurrDiscipline(null);
+    navigate("/");
+  };
+
   // check the discipline being used (by default, none and just default homepage)
   const [currDiscipline, setCurrDiscipline] = useState<string | null>(null);
   const [currDisciplineRef, setCurrDisciplineRef] = useState<string | null>(
@@ -103,14 +130,24 @@ function UserContextWrapper({ children }: { children: ReactNode }) {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   function fetchCurrDiscipline() {
     const getDiscipline = location.pathname.split("/")[1];
-    if (getDiscipline) {
+    if (getDiscipline !== "") {
       const found = allDisciplines?.find((disc) => disc.ref === getDiscipline);
       if (found) {
         setCurrDiscipline(found.name);
         setCurrDisciplineRef(found.ref);
       }
-    } else {
-      setCurrDiscipline(null);
+    }
+  }
+
+  // fetch all the figures
+  const [allFigures, setAllFigures] = useState<figType[]>([]);
+
+  async function fetchFigures() {
+    try {
+      const response = await aerialApi.get(`/figures/`);
+      setAllFigures(response.data);
+    } catch (error) {
+      console.log(error);
     }
   }
 
@@ -124,8 +161,11 @@ function UserContextWrapper({ children }: { children: ReactNode }) {
         authenticateUser,
         isLoggedIn,
         setIsLoggedIn,
+        logOut,
         isLoading,
         setIsLoading,
+        allFigures,
+        setAllFigures,
         allDisciplines,
         setAllDisciplines,
         currDiscipline,

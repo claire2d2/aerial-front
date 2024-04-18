@@ -8,8 +8,11 @@ import AerialHoop from "./pages/AerialHoop";
 import Contorsion from "./pages/Contorsion";
 import Figures from "./pages/Figures";
 import OneFigure from "./pages/OneFigure";
+
 import SignUpPage from "./pages/SignUpPage";
 import LogInPage from "./pages/LogInPage";
+
+import NotFound from "./pages/NotFound";
 
 /* Rerouting if necessary */
 import IsLoggedOut from "./components/Routing/IsLoggedOut";
@@ -17,11 +20,15 @@ import IsLoggedOut from "./components/Routing/IsLoggedOut";
 function App() {
   return (
     <>
-      <div className="App h-screen w-screen">
+      <div className="App h-screen w-screen overscroll-auto no-scrollbar">
         <Routes>
           <Route path="/" element={<Layout />}>
+            <Route element={<IsLoggedOut />}>
+              <Route path="signup" element={<SignUpPage />} />
+              <Route path="login" element={<LogInPage />} />
+            </Route>
             <Route index element={<HomePage />} />
-            <Route path="/pole">
+            <Route path="pole">
               <Route index element={<PoleDance />} />
               <Route path="figures">
                 <Route index element={<Figures />} />
@@ -42,11 +49,7 @@ function App() {
                 <Route path=":figureRef" element={<OneFigure />} />
               </Route>
             </Route>
-          </Route>
-
-          <Route element={<IsLoggedOut />}>
-            <Route path="/signup" element={<SignUpPage />} />
-            <Route path="/login" element={<LogInPage />} />
+            <Route path="/*" element={<NotFound />} />
           </Route>
         </Routes>
       </div>

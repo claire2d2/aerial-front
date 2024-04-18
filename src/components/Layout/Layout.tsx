@@ -3,16 +3,18 @@ import Footer from "./Footer";
 import { Outlet } from "react-router-dom";
 const Layout = () => {
   return (
-    <div className="flex flex-col h-full w-full overflow-scroll no-scrollbar bg-blue-50 dark:bg-slate-800">
-      <div className="h-12 w-full bg-cyan-700 dark:bg-cyan-950 dark:text-white">
-        <NavBar />
+    <div className="Layout h-full overflow-scroll no-scrollbar">
+      <div className="text-text bg-bgmain dark:bg-bgmaindark dark:text-textdark h-full overscroll-auto no-scrollbar">
+        <div className="sticky top-0 z-10 h-12 w-full bg-gradient-to-r from-main via-mainvariant to-main shadow-md">
+          <NavBar />
+        </div>
+        <div className="overflow-scroll no-scrollbar ">
+          <div className="h-outlet">
+            <Outlet />
+          </div>
+        </div>
+        <Footer />
       </div>
-
-      <div className="Outlet overflow-auto no-scrollbar h-full">
-        <Outlet />
-      </div>
-
-      <Footer />
     </div>
   );
 };
