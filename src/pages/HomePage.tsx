@@ -1,8 +1,8 @@
 import useUser from "../context/useUser";
 
 import Discipline from "../components/HomePageComponents/Discipline";
-import PoleDanceImg from "../assets/poleDanceBg.jpg";
-import AerialHoopImg from "../assets/aerialHoopBg.jpg";
+import PoleDanceImg from "./../assets/poleDanceBg.jpg";
+import AerialHoopImg from "./../assets/aerialHoopBg.jpg";
 
 //TODO change curr discipline when navigating between pages
 const HomePage = () => {

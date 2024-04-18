@@ -4,7 +4,6 @@ import useUser from "../../context/useUser";
 
 import { Avatar, Dropdown } from "flowbite-react";
 import NavBarDiscDropDown from "./NavBarDiscDropDown";
-import cloudIcon from "./../../../public/cloud.png";
 import { HiOutlineAdjustments, HiLogout } from "react-icons/hi";
 import { HiBars3 } from "react-icons/hi2";
 
