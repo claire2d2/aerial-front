@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import aerialApi from "../service/aerialApi";
 
 type userType = {
-  id: number;
+  _id: string;
   firstName: string;
   lastName: string;
   email: string;

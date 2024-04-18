@@ -7,15 +7,10 @@ import StatusToggle from "../components/FigureElements/StatusToggle";
 import ProgressLog from "../components/FigureElements/ProgressLog";
 import { HiHeart } from "react-icons/hi2";
 
-type logType = {
-  content: string;
-  date: string;
-  image: string;
-};
-
 type figType = {
   _id: string;
   name: string;
+  ref: string;
   image: string;
   discipline: {
     name: string;
@@ -35,7 +30,6 @@ const OneFigure = () => {
   const [status, setStatus] = useState<string>("Not seen yet");
   const [oneSideStatus, setOneSideStatus] = useState<string | null>(null);
   // imported in ProgressLog component
-  const [logs, setLogs] = useState<logType[]>([]);
 
   const navigate = useNavigate();
 
@@ -44,8 +38,7 @@ const OneFigure = () => {
     try {
       const response = await aerialApi.get(`/figures/${figureRef}`);
       console.log(response.data);
-      setFigData(response.data.oneFigure);
-      setLogs(response.data.progressLogs);
+      setFigData(response.data);
     } catch (error) {
       console.log(error);
     }
@@ -109,12 +102,7 @@ const OneFigure = () => {
           <HiHeart className="text-golden" />
           Add to favorites
         </div>
-        <ProgressLog
-          logs={logs}
-          setLogs={setLogs}
-          currFigId={figData._id}
-          currFigRef={figureRef}
-        />
+        <ProgressLog currFigId={figData._id} />
       </div>
       <div className="RightSide bg-green-200 lg:basis-1/3">
         <div>Entries</div>

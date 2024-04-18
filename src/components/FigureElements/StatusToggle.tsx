@@ -28,7 +28,8 @@ const StatusToggle: React.FC<StatusToggle> = ({
   const { authenticateUser } = useUser();
 
   const [range, setRange] = useState<number>(0);
-  // const [setStateToEdit] = useState<string>("");
+  // get the initial state to edit (to get back to initial state if needed, or disable saving if status = stateToEdit)
+  const [stateToEdit, setStateToEdit] = useState<string>("");
 
   // handle changing the state for the current figure when user switches between ranges
   const handleInputChange = (e: FormEvent<HTMLInputElement>) => {
@@ -69,7 +70,7 @@ const StatusToggle: React.FC<StatusToggle> = ({
   useEffect(() => {
     authenticateUser();
     setOneSideStatus(oneSideStatus);
-  }, [oneSideStatus]);
+  }, [status]);
 
   // find state id to modify
   async function findStateToEdit() {
@@ -77,8 +78,7 @@ const StatusToggle: React.FC<StatusToggle> = ({
       const response = await aerialApi.get<statusType>(
         `/states/fig/${currFigId}`
       );
-      console.log(response.data);
-      // setStateToEdit(response.data.id);
+      setStateToEdit(response.data.id);
     } catch (error) {
       console.log(error);
     }
@@ -97,9 +97,6 @@ const StatusToggle: React.FC<StatusToggle> = ({
         name: status,
         oneSide: oneSideStatus,
       });
-      if (response.status === 400) {
-        console.log(response.data.message);
-      }
     } catch (error) {
       console.log(error);
       //TODO show error message with what is wrong
@@ -151,7 +148,12 @@ const StatusToggle: React.FC<StatusToggle> = ({
           </button>
         </div>
       </div>
-      <button className="bg-main text-white px-4 py-2 rounded-lg">Save</button>
+      <button
+        className="bg-main text-white px-4 py-2 rounded-lg disabled:bg-disabled"
+        disabled={stateToEdit === status}
+      >
+        Save
+      </button>
     </form>
   );
 };
