@@ -7,7 +7,8 @@ export default {
       // for all styling
       main: "#003162",
       maindark: "#123f52",
-      mainvariant: "#03386e",
+      mainvar: "#03386e",
+      mainlight: "#5176BA",
       bgmain: "#F7FCFC",
       bgmaindark: "#0F172A",
       text: "#121927",
@@ -20,6 +21,11 @@ export default {
       golden: "#f8b400",
       gray: "#b6cdbd",
       darkgray: "#5c715e",
+
+      // tailwind default
+      white: "white",
+      transparent: "transparent",
+      black: "black",
     },
     extend: {
       backgroundImage: {
