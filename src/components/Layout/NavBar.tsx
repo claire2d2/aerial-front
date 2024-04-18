@@ -90,14 +90,28 @@ const NavBar = () => {
   const { isLoggedIn, user, currDiscipline, currDisciplineRef, logOut } =
     useUser();
   const navigate = useNavigate();
+  const currentLink = location.pathname.split("/")[1];
+
   const showWhenLoggedOut = (
-    <div className="flex gap-2 w-full">
-      <div onClick={() => navigate("/signup")}>Sign up</div>
-      <div onClick={() => navigate("/login")}>Log In</div>
+    <div className="flex gap-6 w-full text-white font-semibold mr-10">
+      <div
+        onClick={() => navigate("/signup")}
+        className={`hover:text-linkhover cursor-pointer ${
+          currentLink === "signup" ? "text-linkhover" : "text-white"
+        }`}
+      >
+        Sign up
+      </div>
+      <div
+        onClick={() => navigate("/login")}
+        className={`hover:text-linkhover cursor-pointer caret-none ${
+          currentLink === "login" ? "text-linkhover" : "text-white"
+        }`}
+      >
+        Log In
+      </div>
     </div>
   );
-
-  // const loc = location.pathname.split("/")[1];
 
   const showWhenLoggedIn = (
     <Dropdown
@@ -134,7 +148,7 @@ const NavBar = () => {
   );
 
   return (
-    <nav className="flex items-center px-1">
+    <nav className="flex items-center px-1 w-full justify-between">
       <div className="w-1/6 flex">
         <Link to="/">
           <div className="flex w-full items-center">

@@ -9,7 +9,7 @@ const HomePage = () => {
   const { isLoggedIn } = useUser();
 
   const showIfLoggedOut = (
-    <div className="flex flex-col gap-1 h-1/2  w-5/6 lg:h-full lg:w-1/2 text-center z-9 bg-bgmain mb-2 rounded-lg lg:rounded-none">
+    <div className="flex flex-col lg:justify-center gap-1 h-1/2  w-5/6  lg:py-40 lg:px-20 lg:w-1/3 text-center z-9 bg-bgmain rounded-lg ">
       <div>
         <p className="font-semibold">New to the website?</p>
         <button className="bg-main px-4 py-2 text-white font-bold rounded-lg">
@@ -31,10 +31,10 @@ const HomePage = () => {
         style={{
           backgroundImage: "url('./../../public/cloudsBG.jpg')",
         }}
-        className="flex flex-col lg:py-40 bg-cover lg:flex-row lg:justify-between  text-center gap-2 items-center justify-center"
+        className="flex flex-col bg-cover lg:flex-row lg:justify-center  text-center gap-2 items-center justify-center"
       >
         <div
-          className={`z-9 h-1/2 lg:h-full flex flex-col justify-center ${
+          className={`z-9 h-1/2 lg:h-full flex flex-col justify-center lg:py-40 ${
             isLoggedIn ? "w-full" : "w-1/2"
           }`}
         >
