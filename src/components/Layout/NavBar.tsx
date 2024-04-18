@@ -152,7 +152,7 @@ const NavBar = () => {
       <div className="w-1/6 flex">
         <Link to="/">
           <div className="flex w-full items-center">
-            <img src={cloudIcon} className="mr-3 h-6" alt="site logo" />
+            <img src="/cloud.png" className="mr-3 h-6" alt="site logo" />
             <span className="text-xl text-white font-bold">Air2d2</span>
           </div>
         </Link>

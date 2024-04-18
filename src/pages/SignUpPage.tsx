@@ -30,7 +30,6 @@ type figType = {
 type formType = {
   firstName: string;
   lastName: string;
-  username: string;
   email: string;
   password: string;
   figures: figType[];
@@ -45,7 +44,6 @@ const SignUpPage = () => {
     firstName: "",
     lastName: "",
     email: "",
-    username: "",
     password: "",
     figures: [],
   });
