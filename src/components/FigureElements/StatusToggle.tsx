@@ -40,14 +40,14 @@ const StatusToggle = () => {
         value={range}
         step="10"
         onInput={handleInputChange}
-        className={`range ${
+        className={`range w-full h-2 mb-6 appearance-none bg-disabled rounded-lg cursor-pointer range-sm  ${
           range < 20
-            ? "accent-slate-500"
+            ? "accent-gray"
             : range < 30
-            ? "accent-slate-700"
+            ? "accent-darkgray"
             : range < 40
-            ? "accent-emerald-600 "
-            : "accent-yellow-500"
+            ? "accent-green "
+            : "accent-golden"
         }`}
       />
       <p id="rangeValue">{status}</p>
