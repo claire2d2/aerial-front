@@ -22,6 +22,9 @@ export default {
       gray: "#b6cdbd",
       darkgray: "#5c715e",
 
+      // for fave button
+      isFave: "#ff0066",
+
       // tailwind default
       white: "white",
       transparent: "transparent",

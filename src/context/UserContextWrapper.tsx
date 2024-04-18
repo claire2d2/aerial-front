@@ -26,6 +26,12 @@ type figType = {
   imgArtist: string;
   imgArtistUrl: string;
 };
+
+type favoriteType = {
+  id: string;
+  figure: string;
+  user: string;
+};
 // define beforehand the types for the states
 type UserContextProps = {
   user: userType | null;
@@ -46,6 +52,8 @@ type UserContextProps = {
   setCurrDiscipline: React.Dispatch<React.SetStateAction<string | null>>;
   currDisciplineRef: string | null;
   setCurrDisciplineRef: React.Dispatch<React.SetStateAction<string | null>>;
+  favorites: favoriteType[];
+  setFavorites: React.Dispatch<React.SetStateAction<favoriteType[]>>;
 };
 
 export const UserContext = createContext<UserContextProps | null>(null);
@@ -61,6 +69,7 @@ function UserContextWrapper({ children }: { children: ReactNode }) {
     authenticateUser();
     fetchAllDisciplines();
     fetchFigures();
+    fetchFavorites();
   }, []);
 
   useEffect(() => {
@@ -151,6 +160,18 @@ function UserContextWrapper({ children }: { children: ReactNode }) {
     }
   }
 
+  // fetch the favorites for logged in user
+  const [favorites, setFavorites] = useState<favoriteType[]>([]);
+
+  async function fetchFavorites() {
+    try {
+      const response = await aerialApi.get("/favorites");
+      setFavorites(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
     <UserContext.Provider
       value={{
@@ -172,6 +193,8 @@ function UserContextWrapper({ children }: { children: ReactNode }) {
         setCurrDiscipline,
         currDisciplineRef,
         setCurrDisciplineRef,
+        favorites,
+        setFavorites,
       }}
     >
       {children}
