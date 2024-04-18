@@ -1,8 +1,6 @@
 import useUser from "../context/useUser";
 
 import Discipline from "../components/HomePageComponents/Discipline";
-import PoleDanceImg from "./../assets/poleDanceBg.jpg";
-import AerialHoopImg from "./../assets/aerialHoopBg.jpg";
 
 //TODO change curr discipline when navigating between pages
 const HomePage = () => {
@@ -51,19 +49,19 @@ const HomePage = () => {
 
       <Discipline
         name="Pole Dance"
-        image={PoleDanceImg}
+        image="/poleDanceBg.jpg"
         active={true}
         link="pole"
       />
       <Discipline
         name="Aerial Hoop"
-        image={AerialHoopImg}
+        image="/aerialHoopBg.jpg"
         active={false}
         link="aerial-hoop"
       />
       <Discipline
         name="Contorsion"
-        image={PoleDanceImg}
+        image="/poleDanceBg.jpg"
         active={false}
         link="contorsion"
       />
