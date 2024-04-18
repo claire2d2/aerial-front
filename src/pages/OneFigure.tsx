@@ -5,6 +5,7 @@ import aerialApi from "../service/aerialApi";
 
 import StatusToggle from "../components/FigureElements/StatusToggle";
 import ProgressLog from "../components/FigureElements/ProgressLog";
+import EntriesExits from "../components/FigureElements/EntriesExits";
 import { HiHeart } from "react-icons/hi2";
 
 type figType = {
@@ -166,10 +167,7 @@ const OneFigure = () => {
 
         <ProgressLog currFigId={figData._id} />
       </div>
-      <div className="RightSide bg-green-200 lg:basis-1/3">
-        <div>Entries</div>
-        <div>Exits</div>
-      </div>
+      <EntriesExits currFigId={figData._id} />
     </div>
   );
 };
