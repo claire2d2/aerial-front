@@ -93,7 +93,7 @@ const NavBar = () => {
   const currentLink = location.pathname.split("/")[1];
 
   const showWhenLoggedOut = (
-    <div className="flex gap-6 w-full text-white font-semibold mr-10">
+    <div className="flex gap-6 w-full text-white font-semibold mr-10 h-full">
       <div
         onClick={() => navigate("/signup")}
         className={`hover:text-linkhover cursor-pointer ${
@@ -159,7 +159,7 @@ const NavBar = () => {
       </div>
 
       <DarkLightToggle />
-      <div className="flex md:order-2">
+      <div className="flex md:order-2 basis-1/6">
         {isLoggedIn ? showWhenLoggedIn : showWhenLoggedOut}
         <div className="lg:hidden">
           <Dropdown

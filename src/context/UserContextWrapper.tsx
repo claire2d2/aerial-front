@@ -105,6 +105,7 @@ function UserContextWrapper({ children }: { children: ReactNode }) {
     removeToken();
     setUser(null);
     setIsLoggedIn(false);
+    setCurrDiscipline(null);
     navigate("/");
   };
 
