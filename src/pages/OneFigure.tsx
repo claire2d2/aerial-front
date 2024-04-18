@@ -126,21 +126,23 @@ const OneFigure = () => {
     <div className="w-full flex flex-col lg:flex-row">
       <div className="FigInfo flex flex-col gap-2 justify-center items-center lg:basis-2/3">
         <h1 className="font-bold text-4xl capitalize">{figData?.name}</h1>
-        <div className="aspect-square h-60 drop-shadow-md">
+        <div className="aspect-square h-60 drop-shadow-md dark:brightness-90">
           <img
             src={figData.image}
             alt={`image of ${figData?.name}`}
             className="object-cover h-full w-full rounded-lg"
           />
         </div>
-        <div className="font-semibold text-lg text-center text-main">
+        <div className="font-semibold text-lg text-center text-main dark:text-textdark">
           <p>Level:</p>{" "}
-          <p className="capitalize font-normal text-text">
+          <p className="capitalize font-normal text-text dark:text-textdark">
             {figData?.difficulty}
           </p>
         </div>
         <div className="w-full px-20 py-2 flex flex-col text-center">
-          <p className="font-semibold text-lg text-main">Status:</p>
+          <p className="font-semibold text-lg text-main dark:text-textdark">
+            Status:
+          </p>
           <StatusToggle
             status={status}
             setStatus={setStatus}
