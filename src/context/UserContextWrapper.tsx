@@ -8,6 +8,7 @@ type userType = {
   lastName: string;
   email: string;
   image: string;
+  role: string[];
 };
 
 type disciplType = {

@@ -8,14 +8,14 @@ import AerialHoop from "./pages/AerialHoop";
 import Contorsion from "./pages/Contorsion";
 import Figures from "./pages/Figures";
 import OneFigure from "./pages/OneFigure";
-
-import SignUpPage from "./pages/SignUpPage";
-import LogInPage from "./pages/LogInPage";
+import UserSettings from "./pages/UserSettings";
 
 import NotFound from "./pages/NotFound";
 
 /* Rerouting if necessary */
 import IsLoggedOut from "./components/Routing/IsLoggedOut";
+import SignUpPage from "./pages/SignUpPage";
+import LogInPage from "./pages/LogInPage";
 
 function App() {
   return (
@@ -28,6 +28,7 @@ function App() {
               <Route path="login" element={<LogInPage />} />
             </Route>
             <Route index element={<HomePage />} />
+            <Route path="settings" element={<UserSettings />} />
             <Route path="pole">
               <Route index element={<PoleDance />} />
               <Route path="figures">
