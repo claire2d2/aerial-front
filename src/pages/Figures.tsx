@@ -2,54 +2,35 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import aerialApi from "../service/aerialApi";
 import useUser from "../context/useUser";
-import { figType } from "../components/Types";
+import { figType, statusType, faveType } from "../components/Types";
+
+// import external functions
+import { fetchFigures } from "../components/AllFiguresPageComponents/FetchAllFigsData";
 
 // imports for styling
 import SortBy from "../components/AllFiguresPageComponents/SortBy";
 import MobileFilter from "../components/AllFiguresPageComponents/MobileFilter";
 
-type statusType = {
-  _id: string;
-  figure: figType;
-  user: string;
-  name: string;
-};
-
-type faveType = {
-  _id: string;
-  figure: figType;
-  user: string;
-};
-
 const Figures = () => {
-  const { currDiscipline, currDisciplineRef, activeFilters } = useUser();
+  const { currDiscipline, currDisciplineRef, activeFilters, sortBy } =
+    useUser();
   const [figures, setFigures] = useState<figType[]>([]);
   const [statesData, setStatesData] = useState<statusType[]>([]);
   const [faveData, setFaveData] = useState<faveType[]>([]);
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  async function fetchFigures() {
-    try {
-      const response = await aerialApi.get(`/figures/by/${currDisciplineRef}`);
-      setFigures(response.data);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
   // fetch figures when page renders
   useEffect(() => {
-    fetchFigures();
+    fetchFigures(currDisciplineRef, setFigures);
   }, [currDiscipline]);
 
   // when filters are chosen and unchosen, set the "states" to fetch the figures that are concerned by the statuses
   useEffect(() => {
     if (activeFilters.length !== 0) {
-      fetchFigures();
+      fetchFigures(currDisciplineRef, setFigures);
       fetchFigStatus();
       fetchFaves();
     } else {
-      fetchFigures();
+      fetchFigures(currDisciplineRef, setFigures);
     }
   }, [activeFilters]);
 

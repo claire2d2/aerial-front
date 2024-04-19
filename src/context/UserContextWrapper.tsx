@@ -56,6 +56,8 @@ type UserContextProps = {
   setFavorites: React.Dispatch<React.SetStateAction<favoriteType[]>>;
   activeFilters: string[];
   setActiveFilters: React.Dispatch<React.SetStateAction<string[]>>;
+  sortBy: string;
+  setSortBy: React.Dispatch<React.SetStateAction<string>>;
 };
 
 export const UserContext = createContext<UserContextProps | null>(null);
@@ -174,8 +176,9 @@ function UserContextWrapper({ children }: { children: ReactNode }) {
     }
   }
 
-  //
+  // global states for the active filters and sort preferences, in case user wants to save them
   const [activeFilters, setActiveFilters] = useState<string[]>([]);
+  const [sortBy, setSortBy] = useState<string>("level");
 
   return (
     <UserContext.Provider
@@ -202,6 +205,8 @@ function UserContextWrapper({ children }: { children: ReactNode }) {
         setFavorites,
         activeFilters,
         setActiveFilters,
+        sortBy,
+        setSortBy,
       }}
     >
       {children}
