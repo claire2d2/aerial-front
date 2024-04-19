@@ -9,7 +9,7 @@ import {
   fetchFaves,
   filterFigures,
   sortFiguresAlpha,
-} from "../components/PagesComponents/AllFiguresPageComponents/AllFiguresFunctions";
+} from "../components/PagesComponents/FiguresFunctions";
 
 // imports for styling
 import SortBy from "../components/PagesComponents/AllFiguresPageComponents/SortBy";

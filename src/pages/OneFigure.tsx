@@ -6,7 +6,7 @@ import aerialApi from "../service/aerialApi";
 import StatusToggle from "../components/PagesComponents/FigureElements/StatusToggle";
 import ProgressLog from "../components/PagesComponents/FigureElements/ProgressLog";
 import EntriesExits from "../components/PagesComponents/FigureElements/EntriesExits";
-import { HiHeart } from "react-icons/hi2";
+import FavoriteButton from "../components/PagesComponents/FavoriteButton";
 
 type figType = {
   _id: string;
@@ -23,12 +23,6 @@ type figType = {
   // comments:
 };
 
-type favoriteType = {
-  _id: string;
-  user: string;
-  figure: string;
-};
-
 const OneFigure = () => {
   const { currDiscipline, currDisciplineRef } = useUser();
   const { figureRef } = useParams<string>();
@@ -37,15 +31,12 @@ const OneFigure = () => {
   const [status, setStatus] = useState<string>("Not seen yet");
   const [oneSideStatus, setOneSideStatus] = useState<string | null>(null);
   // to import in future Favorite component
-  const [favorites, setFavorites] = useState<favoriteType[]>([]);
-  const [isFave, setIsFave] = useState<boolean>(false);
   const navigate = useNavigate();
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   async function fetchFigData() {
     try {
       const response = await aerialApi.get(`/figures/${figureRef}`);
-      console.log(response.data);
       setFigData(response.data);
     } catch (error) {
       console.log(error);
@@ -54,51 +45,7 @@ const OneFigure = () => {
 
   useEffect(() => {
     fetchFigData();
-    fetchFavorites();
-    if (favorites?.find((fave) => fave.figure === figData?._id)) {
-      setIsFave(true);
-    }
   }, []);
-
-  /**
-   * Favorites function here
-   */
-
-  async function handleFavorite(e: React.MouseEvent<HTMLElement>) {
-    e.preventDefault;
-    if (isFave) {
-      setIsFave(false);
-      removeFave();
-    } else {
-      setIsFave(true);
-      makeFave();
-    }
-    fetchFavorites();
-  }
-
-  async function fetchFavorites() {
-    try {
-      const response = await aerialApi.get("/favorites");
-      setFavorites(response.data);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-  async function removeFave() {
-    try {
-      await aerialApi.delete(`/favorites/${figData?._id}`);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  async function makeFave() {
-    try {
-      await aerialApi.post(`/favorites/${figData?._id}`);
-    } catch (error) {
-      console.log(error);
-    }
-  }
 
   /* if user tries to access a figure that does not match the current discipline, redirect:
    ** find the location name that is being accessed
@@ -153,17 +100,9 @@ const OneFigure = () => {
               currFigId={figData._id}
             />
           </div>
-          <button
-            onClick={(e) => handleFavorite(e)}
-            className={`w-1/3 flex  justify-center gap-2 items-center rounded-lg px-1 py-2 border text-lg font-semibold shadow-sm ${
-              isFave ? "border-gray text-main" : "border-disabled text-gray"
-            }`}
-          >
-            <HiHeart
-              className={`text-2xl ${isFave ? "text-isFave" : "text-disabled"}`}
-            />
-            Favorite
-          </button>
+          <div className="w-1/3 flex">
+            <FavoriteButton fullButton={true} figId={figData._id} />
+          </div>
         </div>
         <div className="">
           <ProgressLog currFigId={figData._id} />
