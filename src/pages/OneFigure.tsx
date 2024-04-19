@@ -66,12 +66,12 @@ const OneFigure = () => {
 
   async function handleFavorite(e: React.MouseEvent<HTMLElement>) {
     e.preventDefault;
-    if (favorites?.find((fave) => fave.figure === figData?._id)) {
+    if (isFave) {
       setIsFave(false);
       removeFave();
     } else {
-      makeFave();
       setIsFave(true);
+      makeFave();
     }
     fetchFavorites();
   }
@@ -154,7 +154,7 @@ const OneFigure = () => {
             />
           </div>
           <button
-            onClick={handleFavorite}
+            onClick={(e) => handleFavorite(e)}
             className={`w-1/3 flex  justify-center gap-2 items-center rounded-lg px-1 py-2 border text-lg font-semibold shadow-sm ${
               isFave ? "border-gray text-main" : "border-disabled text-gray"
             }`}

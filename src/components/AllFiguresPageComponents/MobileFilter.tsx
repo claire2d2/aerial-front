@@ -1,3 +1,4 @@
+import useUser from "../../context/useUser";
 // imports for styling
 import MobileFilterButton from "./MobileFilterButton";
 import {
@@ -30,6 +31,13 @@ const titleTheme = {
 };
 
 const MobileFilter = () => {
+  const { activeFilters, setActiveFilters } = useUser();
+
+  async function resetFilters(e: React.MouseEvent<HTMLElement>) {
+    e.preventDefault;
+    setActiveFilters([]);
+  }
+
   return (
     <Accordion theme={customTheme}>
       <AccordionPanel theme={customTheme}>
@@ -47,21 +55,28 @@ const MobileFilter = () => {
                 <MobileFilterButton status="Training">
                   Training
                 </MobileFilterButton>
-                <MobileFilterButton status="Not seen yet">
-                  Not seen yet
-                </MobileFilterButton>
-              </div>
-              <div className="basis-1/2">
+
                 <MobileFilterButton status="Favorites">
                   Favorites
                 </MobileFilterButton>
+              </div>
+              <div className="basis-1/2">
                 <MobileFilterButton status="Right side">
                   Right side
                 </MobileFilterButton>
                 <MobileFilterButton status="Wishlist">
                   Wishlist
                 </MobileFilterButton>
-                <button className="text-gray w-full">Reset filters</button>
+                <MobileFilterButton status="Not seen yet">
+                  Not seen yet
+                </MobileFilterButton>
+                <button
+                  onClick={(e) => resetFilters(e)}
+                  disabled={activeFilters.length === 0}
+                  className="text-main w-full disabled:text-gray"
+                >
+                  Reset filters
+                </button>
               </div>
             </div>
           </div>

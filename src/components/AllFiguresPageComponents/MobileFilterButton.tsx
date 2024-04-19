@@ -10,32 +10,30 @@ const MobileFilterButton: React.FC<{
 
   // initial, when component loads, see if filter is already active or not
   useEffect(() => {
-    console.log(activeFilters);
     if (activeFilters.includes(status)) {
       setIsActive(true);
     } else {
       setIsActive(false);
     }
-  }, []);
+  }, [activeFilters]);
 
-  function handleFilter(e: React.MouseEvent<HTMLElement>) {
+  async function handleFilter(e: React.MouseEvent<HTMLElement>) {
     e.preventDefault;
     // if filter already active, remove filter
     if (isActive) {
+      setIsActive(false);
       const copy = activeFilters.filter((fil) => fil !== status);
       setActiveFilters(copy);
-      setIsActive(false);
     }
     // if not, add filter
     else {
-      setActiveFilters([...activeFilters, status]);
       setIsActive(true);
+      setActiveFilters([...activeFilters, status]);
     }
-    console.log(activeFilters);
   }
   return (
     <button
-      onClick={handleFilter}
+      onClick={(e) => handleFilter(e)}
       className={`w-full my-1 rounded-sm drop-shadow-sm ${
         isActive ? "bg-main text-white" : "bg-mainlight text-white"
       }`}
