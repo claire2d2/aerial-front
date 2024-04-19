@@ -1,5 +1,5 @@
 export type figType = {
-  id: string;
+  _id: string;
   name: string;
   ref: string;
   image: string;

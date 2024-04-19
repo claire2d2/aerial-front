@@ -30,9 +30,8 @@ const ProgressLog: React.FC<Logs> = ({ currFigId }) => {
     fetchLogData();
   }, []);
 
-  console.log(logs);
   return (
-    <div className="w-full">
+    <div className="w-full h-full">
       <h2 className="font-bold text-2xl capitalize text-center">
         Progress log
       </h2>

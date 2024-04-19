@@ -93,7 +93,7 @@ const StatusToggle: React.FC<StatusToggle> = ({
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     try {
-      const response = await aerialApi.post(`/states/${currFigId}`, {
+      await aerialApi.post(`/states/${currFigId}`, {
         name: status,
         oneSide: oneSideStatus,
       });
