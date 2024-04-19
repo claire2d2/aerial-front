@@ -27,7 +27,7 @@ const HomePage = () => {
     <div className="h-full w-full flex flex-col bg-main">
       <div
         style={{
-          backgroundImage: "url('./../../public/cloudsBG.jpg')",
+          backgroundImage: "url('cloudsBG.jpg')",
         }}
         className="flex flex-col bg-cover lg:flex-row lg:justify-center  text-center gap-2 items-center justify-center"
       >

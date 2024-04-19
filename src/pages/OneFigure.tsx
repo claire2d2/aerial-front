@@ -5,17 +5,13 @@ import aerialApi from "../service/aerialApi";
 
 import StatusToggle from "../components/FigureElements/StatusToggle";
 import ProgressLog from "../components/FigureElements/ProgressLog";
+import EntriesExits from "../components/FigureElements/EntriesExits";
 import { HiHeart } from "react-icons/hi2";
-
-type logType = {
-  content: string;
-  date: string;
-  image: string;
-};
 
 type figType = {
   _id: string;
   name: string;
+  ref: string;
   image: string;
   discipline: {
     name: string;
@@ -27,6 +23,12 @@ type figType = {
   // comments:
 };
 
+type favoriteType = {
+  _id: string;
+  user: string;
+  figure: string;
+};
+
 const OneFigure = () => {
   const { currDiscipline, currDisciplineRef } = useUser();
   const { figureRef } = useParams<string>();
@@ -34,9 +36,9 @@ const OneFigure = () => {
   // imported in StatusToggle component
   const [status, setStatus] = useState<string>("Not seen yet");
   const [oneSideStatus, setOneSideStatus] = useState<string | null>(null);
-  // imported in ProgressLog component
-  const [logs, setLogs] = useState<logType[]>([]);
-
+  // to import in future Favorite component
+  const [favorites, setFavorites] = useState<favoriteType[]>([]);
+  const [isFave, setIsFave] = useState<boolean>(false);
   const navigate = useNavigate();
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -44,8 +46,7 @@ const OneFigure = () => {
     try {
       const response = await aerialApi.get(`/figures/${figureRef}`);
       console.log(response.data);
-      setFigData(response.data.oneFigure);
-      setLogs(response.data.progressLogs);
+      setFigData(response.data);
     } catch (error) {
       console.log(error);
     }
@@ -53,7 +54,51 @@ const OneFigure = () => {
 
   useEffect(() => {
     fetchFigData();
+    fetchFavorites();
+    if (favorites?.find((fave) => fave.figure === figData?._id)) {
+      setIsFave(true);
+    }
   }, []);
+
+  /**
+   * Favorites function here
+   */
+
+  async function handleFavorite(e: React.MouseEvent<HTMLElement>) {
+    e.preventDefault;
+    if (isFave) {
+      setIsFave(false);
+      removeFave();
+    } else {
+      setIsFave(true);
+      makeFave();
+    }
+    fetchFavorites();
+  }
+
+  async function fetchFavorites() {
+    try {
+      const response = await aerialApi.get("/favorites");
+      setFavorites(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  async function removeFave() {
+    try {
+      await aerialApi.delete(`/favorites/${figData?._id}`);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function makeFave() {
+    try {
+      await aerialApi.post(`/favorites/${figData?._id}`);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   /* if user tries to access a figure that does not match the current discipline, redirect:
    ** find the location name that is being accessed
@@ -79,46 +124,54 @@ const OneFigure = () => {
   }
   // style figure page here
   return (
-    <div className="w-full flex flex-col lg:flex-row">
-      <div className="FigInfo flex flex-col gap-2 justify-center items-center lg:basis-2/3">
-        <h1 className="font-bold text-4xl capitalize">{figData?.name}</h1>
-        <div className="aspect-square h-60 drop-shadow-md">
-          <img
-            src={figData.image}
-            alt={`image of ${figData?.name}`}
-            className="object-cover h-full w-full rounded-lg"
-          />
+    <div className="w-full flex flex-col lg:flex-row lg:h-full">
+      <div className="LeftTopSide flex flex-col lg:h-full lg:basis-2/3 overflow-scroll no-scrollbar">
+        <div className="FigInfo flex flex-col gap-2 justify-center items-center ">
+          <h1 className="font-bold text-4xl capitalize">{figData?.name}</h1>
+          <div className="aspect-square h-60 drop-shadow-md dark:brightness-90 ">
+            <img
+              src={figData.image}
+              alt={`image of ${figData?.name}`}
+              className="object-cover h-full w-full rounded-lg"
+            />
+          </div>
+          <div className="font-semibold text-lg text-center text-main dark:text-textdark">
+            <p>Level:</p>{" "}
+            <p className="capitalize font-normal text-text dark:text-textdark">
+              {figData?.difficulty}
+            </p>
+          </div>
+          <div className="w-full px-20 py-2 flex flex-col text-center">
+            <p className="font-semibold text-lg text-main dark:text-textdark">
+              Status:
+            </p>
+            <StatusToggle
+              status={status}
+              setStatus={setStatus}
+              oneSideStatus={oneSideStatus}
+              setOneSideStatus={setOneSideStatus}
+              currFigId={figData._id}
+            />
+          </div>
+          <button
+            onClick={(e) => handleFavorite(e)}
+            className={`w-1/3 flex  justify-center gap-2 items-center rounded-lg px-1 py-2 border text-lg font-semibold shadow-sm ${
+              isFave ? "border-gray text-main" : "border-disabled text-gray"
+            }`}
+          >
+            <HiHeart
+              className={`text-2xl ${isFave ? "text-isFave" : "text-disabled"}`}
+            />
+            Favorite
+          </button>
         </div>
-        <div className="font-semibold text-lg text-center text-main">
-          <p>Level:</p>{" "}
-          <p className="capitalize font-normal text-text">
-            {figData?.difficulty}
-          </p>
+        <div className="">
+          <ProgressLog currFigId={figData._id} />
         </div>
-        <div className="w-full px-20 py-2 flex flex-col text-center">
-          <p className="font-semibold text-lg text-main">Status:</p>
-          <StatusToggle
-            status={status}
-            setStatus={setStatus}
-            oneSideStatus={oneSideStatus}
-            setOneSideStatus={setOneSideStatus}
-            currFigId={figData._id}
-          />
-        </div>
-        <div className="w-full flex gap-4 items-center justify-center">
-          <HiHeart className="text-golden" />
-          Add to favorites
-        </div>
-        <ProgressLog
-          logs={logs}
-          setLogs={setLogs}
-          currFigId={figData._id}
-          currFigRef={figureRef}
-        />
       </div>
-      <div className="RightSide bg-green-200 lg:basis-1/3">
-        <div>Entries</div>
-        <div>Exits</div>
+
+      <div className="RightBottomSide flex flex-col lg:h-full lg:basis-1/3">
+        <EntriesExits currFigId={figData._id} />
       </div>
     </div>
   );

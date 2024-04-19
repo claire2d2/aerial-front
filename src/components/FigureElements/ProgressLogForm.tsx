@@ -1,4 +1,5 @@
 import React, { useState, ChangeEvent, FormEvent } from "react";
+import useUser from "../../context/useUser";
 import aerialApi from "../../service/aerialApi";
 import { Datepicker } from "flowbite-react";
 const datePickerTheme = {
@@ -96,10 +97,11 @@ type logType = {
 
 type formProps = {
   currFigId: string;
-  fetchFigData: () => void;
+  fetchLogData: () => void;
 };
 
-const ProgressLogForm: React.FC<formProps> = ({ currFigId, fetchFigData }) => {
+const ProgressLogForm: React.FC<formProps> = ({ currFigId, fetchLogData }) => {
+  const { user } = useUser();
   // initialize form to be empty at first
   const [formState, setFormState] = useState<logType>({
     date: Date(),
@@ -116,11 +118,13 @@ const ProgressLogForm: React.FC<formProps> = ({ currFigId, fetchFigData }) => {
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     try {
-      const response = await aerialApi.post(`/logs/${currFigId}`, formState);
-      if (response.status === 400) {
-        console.log(response.data.message);
+      if (user) {
+        const response = await aerialApi.post(`/logs/${currFigId}`, formState);
+        if (response.status === 400) {
+          console.log(response.data.message);
+        }
       }
-      fetchFigData();
+      fetchLogData();
     } catch (error) {
       console.log(error);
       //TODO show error message with what is wrong

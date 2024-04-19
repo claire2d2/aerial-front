@@ -10,9 +10,9 @@ export default {
       mainvar: "#03386e",
       mainlight: "#5176BA",
       bgmain: "#F7FCFC",
-      bgmaindark: "#0F172A",
+      bgmaindark: "#33334d",
       text: "#121927",
-      textdark: "#7D8A9F",
+      textdark: "#f0f0f5",
       linkhover: "#ffc900",
       inputfield: "#7a7672",
       disabled: "#e2e2e2",
@@ -21,6 +21,9 @@ export default {
       golden: "#f8b400",
       gray: "#b6cdbd",
       darkgray: "#5c715e",
+
+      // for fave button
+      isFave: "#ff0066",
 
       // tailwind default
       white: "white",

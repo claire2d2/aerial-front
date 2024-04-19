@@ -1,55 +1,49 @@
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 // import { Accordion } from "flowbite-react";
 import aerialApi from "../../service/aerialApi";
 import ProgressLogForm from "./ProgressLogForm";
 
 type logType = {
+  owner: string;
   content: string;
   date: string;
   image: string;
 };
 type Logs = {
-  logs: logType[];
-  setLogs: React.Dispatch<React.SetStateAction<logType[]>>;
   currFigId: string;
-  currFigRef: string;
 };
 
-const ProgressLog: React.FC<Logs> = ({
-  logs,
-  setLogs,
-  currFigId,
-  currFigRef,
-}) => {
+const ProgressLog: React.FC<Logs> = ({ currFigId }) => {
+  const [logs, setLogs] = useState<logType[]>([]);
+  //   const { isLoggedIn, user } = useUser();
   // fetch data from figures for the log
-  async function fetchFigData() {
+  async function fetchLogData() {
     try {
-      const response = await aerialApi.get(`/figures/${currFigRef}`);
-      console.log(response.data);
-      setLogs(response.data.progressLogs);
+      const response = await aerialApi.get(`/logs/${currFigId}`);
+      setLogs(response.data);
     } catch (error) {
       console.log(error);
     }
   }
 
   useEffect(() => {
-    fetchFigData();
+    fetchLogData();
   }, []);
 
   return (
-    <div className="w-full">
+    <div className="w-full h-full">
       <h2 className="font-bold text-2xl capitalize text-center">
         Progress log
       </h2>
       <div className="w-full">
-        <ProgressLogForm currFigId={currFigId} fetchFigData={fetchFigData} />
+        <ProgressLogForm currFigId={currFigId} fetchLogData={fetchLogData} />
       </div>
       <h3 className="font-bold">Logs</h3>
       <div className="h-80 overflow-scroll">
         {logs.length !== 0
           ? logs?.map((log) => (
               <div className="OneLog flex flex-col h-20">
-                <div>{log.date.split("T")[0]}</div>
+                {/* <div>{log.date.split("T")[0]}</div> */}
                 <div className="flex h-32">
                   {log.image ? (
                     <div>
@@ -63,6 +57,7 @@ const ProgressLog: React.FC<Logs> = ({
                     ""
                   )}
                   <div>{log.content}</div>
+                  <div>{log.owner}</div>
                 </div>
               </div>
             ))

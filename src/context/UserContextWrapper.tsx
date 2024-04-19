@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import aerialApi from "../service/aerialApi";
 
 type userType = {
-  id: number;
+  _id: string;
   firstName: string;
   lastName: string;
   email: string;
@@ -26,6 +26,12 @@ type figType = {
   imgArtist: string;
   imgArtistUrl: string;
 };
+
+type favoriteType = {
+  id: string;
+  figure: string;
+  user: string;
+};
 // define beforehand the types for the states
 type UserContextProps = {
   user: userType | null;
@@ -46,6 +52,12 @@ type UserContextProps = {
   setCurrDiscipline: React.Dispatch<React.SetStateAction<string | null>>;
   currDisciplineRef: string | null;
   setCurrDisciplineRef: React.Dispatch<React.SetStateAction<string | null>>;
+  favorites: favoriteType[];
+  setFavorites: React.Dispatch<React.SetStateAction<favoriteType[]>>;
+  activeFilters: string[];
+  setActiveFilters: React.Dispatch<React.SetStateAction<string[]>>;
+  sortBy: string;
+  setSortBy: React.Dispatch<React.SetStateAction<string>>;
 };
 
 export const UserContext = createContext<UserContextProps | null>(null);
@@ -61,6 +73,7 @@ function UserContextWrapper({ children }: { children: ReactNode }) {
     authenticateUser();
     fetchAllDisciplines();
     fetchFigures();
+    fetchFavorites();
   }, []);
 
   useEffect(() => {
@@ -151,6 +164,22 @@ function UserContextWrapper({ children }: { children: ReactNode }) {
     }
   }
 
+  // fetch the favorites for logged in user
+  const [favorites, setFavorites] = useState<favoriteType[]>([]);
+
+  async function fetchFavorites() {
+    try {
+      const response = await aerialApi.get("/favorites");
+      setFavorites(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  // global states for the active filters and sort preferences, in case user wants to save them
+  const [activeFilters, setActiveFilters] = useState<string[]>([]);
+  const [sortBy, setSortBy] = useState<string>("level");
+
   return (
     <UserContext.Provider
       value={{
@@ -172,6 +201,12 @@ function UserContextWrapper({ children }: { children: ReactNode }) {
         setCurrDiscipline,
         currDisciplineRef,
         setCurrDisciplineRef,
+        favorites,
+        setFavorites,
+        activeFilters,
+        setActiveFilters,
+        sortBy,
+        setSortBy,
       }}
     >
       {children}
