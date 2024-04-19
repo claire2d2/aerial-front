@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import useUser from "../context/useUser";
 import { figType, statusType, faveType } from "../components/Types";
 

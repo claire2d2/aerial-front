@@ -2,7 +2,7 @@ import { ChangeEvent } from "react";
 import useUser from "../../context/useUser";
 
 const SortBy = () => {
-  const { sortBy, setSortBy } = useUser<>();
+  const { sortBy, setSortBy } = useUser();
 
   const sortOptions = [
     ["level", "By level"],
