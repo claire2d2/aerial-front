@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import aerialApi from "../../service/aerialApi";
+import aerialApi from "../../../service/aerialApi";
 import EntryExitForm from "./EntryExitForm";
 
 type entryExit = {

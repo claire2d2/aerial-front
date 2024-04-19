@@ -3,9 +3,9 @@ import { useParams, useNavigate } from "react-router-dom";
 import useUser from "../context/useUser";
 import aerialApi from "../service/aerialApi";
 
-import StatusToggle from "../components/FigureElements/StatusToggle";
-import ProgressLog from "../components/FigureElements/ProgressLog";
-import EntriesExits from "../components/FigureElements/EntriesExits";
+import StatusToggle from "../components/PagesComponents/FigureElements/StatusToggle";
+import ProgressLog from "../components/PagesComponents/FigureElements/ProgressLog";
+import EntriesExits from "../components/PagesComponents/FigureElements/EntriesExits";
 import { HiHeart } from "react-icons/hi2";
 
 type figType = {

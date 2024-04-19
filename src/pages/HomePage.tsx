@@ -1,6 +1,6 @@
 import useUser from "../context/useUser";
 
-import Discipline from "../components/HomePageComponents/Discipline";
+import Discipline from "../components/PagesComponents/HomePageComponents/Discipline";
 
 //TODO change curr discipline when navigating between pages
 const HomePage = () => {

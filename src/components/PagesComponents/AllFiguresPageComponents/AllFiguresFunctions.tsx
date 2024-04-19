@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from "react";
-import aerialApi from "../../service/aerialApi";
-import { figType, statusType, faveType } from "../Types";
+import aerialApi from "../../../service/aerialApi";
+import { figType, statusType, faveType } from "../../Types";
 
 type SetFigures = Dispatch<SetStateAction<figType[]>>;
 type SetStatesData = Dispatch<SetStateAction<statusType[]>>;

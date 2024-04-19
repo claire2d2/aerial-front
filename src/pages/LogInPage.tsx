@@ -11,7 +11,7 @@ import {
   labelStyle,
   inputStyle,
   buttonStyle,
-} from "./../components/AuthComponents/AuthStyle";
+} from "../components/PagesComponents/AuthComponents/AuthStyle";
 
 type formType = {
   email: string;

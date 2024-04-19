@@ -1,5 +1,5 @@
 import React from "react";
-import { figType } from "../Types";
+import { figType } from "../../Types";
 
 import FigureCard from "./FigureCard";
 

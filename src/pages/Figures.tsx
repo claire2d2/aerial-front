@@ -9,13 +9,13 @@ import {
   fetchFaves,
   filterFigures,
   sortFiguresAlpha,
-} from "../components/AllFiguresPageComponents/AllFiguresFunctions";
+} from "../components/PagesComponents/AllFiguresPageComponents/AllFiguresFunctions";
 
 // imports for styling
-import SortBy from "../components/AllFiguresPageComponents/SortBy";
-import MobileFilter from "../components/AllFiguresPageComponents/MobileFilter";
-import ShowFigures from "../components/AllFiguresPageComponents/ShowFigures";
-import LevelAccordion from "../components/AllFiguresPageComponents/LevelAccordion";
+import SortBy from "../components/PagesComponents/AllFiguresPageComponents/SortBy";
+import MobileFilter from "../components/PagesComponents/AllFiguresPageComponents/MobileFilter";
+import ShowFigures from "../components/PagesComponents/AllFiguresPageComponents/ShowFigures";
+import LevelAccordion from "../components/PagesComponents/AllFiguresPageComponents/LevelAccordion";
 
 const Figures = () => {
   const { currDiscipline, currDisciplineRef, activeFilters, sortBy } =

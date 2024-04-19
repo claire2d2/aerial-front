@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { FormEvent } from "react";
-import aerialApi from "../../service/aerialApi";
-import useUser from "../../context/useUser";
+import aerialApi from "../../../service/aerialApi";
+import useUser from "../../../context/useUser";
 
 type statusType = {
   id: string;

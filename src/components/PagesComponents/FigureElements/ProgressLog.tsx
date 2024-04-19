@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 // import { Accordion } from "flowbite-react";
-import aerialApi from "../../service/aerialApi";
+import aerialApi from "../../../service/aerialApi";
 import ProgressLogForm from "./ProgressLogForm";
 
 type logType = {
