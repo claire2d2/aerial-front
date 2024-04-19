@@ -15,6 +15,7 @@ import {
 import SortBy from "../components/AllFiguresPageComponents/SortBy";
 import MobileFilter from "../components/AllFiguresPageComponents/MobileFilter";
 import ShowFigures from "../components/AllFiguresPageComponents/ShowFigures";
+import LevelAccordion from "../components/AllFiguresPageComponents/LevelAccordion";
 
 const Figures = () => {
   const { currDiscipline, currDisciplineRef, activeFilters, sortBy } =
@@ -70,7 +71,9 @@ const Figures = () => {
         <MobileFilter />
       </div>
 
-      {shownFigures.length === 0 ? (
+      {sortBy === "level" ? (
+        <LevelAccordion figures={shownFigures} />
+      ) : shownFigures.length === 0 ? (
         <div>There are no figures to display with the given filters</div>
       ) : (
         <ShowFigures shownFigures={shownFigures} />
