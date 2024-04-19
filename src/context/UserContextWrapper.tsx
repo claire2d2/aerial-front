@@ -54,6 +54,8 @@ type UserContextProps = {
   setCurrDisciplineRef: React.Dispatch<React.SetStateAction<string | null>>;
   favorites: favoriteType[];
   setFavorites: React.Dispatch<React.SetStateAction<favoriteType[]>>;
+  activeFilters: string[];
+  setActiveFilters: React.Dispatch<React.SetStateAction<string[]>>;
 };
 
 export const UserContext = createContext<UserContextProps | null>(null);
@@ -172,6 +174,9 @@ function UserContextWrapper({ children }: { children: ReactNode }) {
     }
   }
 
+  //
+  const [activeFilters, setActiveFilters] = useState<string[]>([]);
+
   return (
     <UserContext.Provider
       value={{
@@ -195,6 +200,8 @@ function UserContextWrapper({ children }: { children: ReactNode }) {
         setCurrDisciplineRef,
         favorites,
         setFavorites,
+        activeFilters,
+        setActiveFilters,
       }}
     >
       {children}

@@ -2,17 +2,10 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import aerialApi from "../service/aerialApi";
 import useUser from "../context/useUser";
+import { figType } from "../components/Types";
 
-type figType = {
-  id: string;
-  name: string;
-  ref: string;
-  image: string;
-  discipline: string;
-  difficulty: string;
-  imgArtist: string;
-  imgArtistUrl: string;
-};
+// imports for styling
+import MobileFilter from "../components/AllFiguresPageComponents/MobileFilter";
 
 const Figures = () => {
   const { currDiscipline, currDisciplineRef } = useUser();
@@ -37,14 +30,36 @@ const Figures = () => {
     return <p>Loading!</p>;
   }
   return (
-    <div className="flex">
-      <div>{currDiscipline} figures here!</div>
-      <div>
+    <div className="flex flex-col items-center">
+      <div className="flex justify-between w-full">
+        <h1 className="text-2xl">
+          <span className="capitalize">{currDiscipline}</span> figures
+        </h1>
+        <div>Sort by</div>
+      </div>
+      <div className="hidden">Search bar (drop down when mobile)</div>
+      <div className="w-full">
+        <MobileFilter />
+      </div>
+
+      <div className="AllFigs w-full px-2 overflow-scroll no-scrollbar grid grid-cols-2 lg:grid-cols-5 grid-flow-row gap-3">
         {figures.map((fig, index) => {
           return (
-            <div key={index}>
+            <div
+              key={index}
+              className="aspect-square h-full rounded-lg drop-shadow-xl"
+            >
               <Link to={fig.ref}>
-                <div>{fig.name}</div>
+                <div
+                  style={{
+                    backgroundImage: `url(${fig.image})`,
+                  }}
+                  className="relative h-full bg-cover bg-center aspect-square rounded-lg"
+                >
+                  <div className="absolute uppercase flex items-center justify-center text-white text-xl inset-0 text-center font-bold bg-maindark bg-opacity-50 hover:bg-opacity-20 active:bg-opacity-20">
+                    {fig.name}
+                  </div>
+                </div>
               </Link>
             </div>
           );
