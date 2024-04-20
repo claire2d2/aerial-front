@@ -23,7 +23,7 @@ const OneFigure = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   async function fetchFigData() {
     try {
-      const response = await aerialApi.get(`/figures/${figureRef}`);
+      const response = await aerialApi.get(`/figures/fig/${figureRef}`);
       setFigData(response.data);
     } catch (error) {
       console.log(error);
@@ -89,6 +89,14 @@ const OneFigure = () => {
               <p className="capitalize font-normal text-text dark:text-textdark">
                 {figData?.difficulty}
               </p>
+            </div>
+            <div className="font-semibold text-lg text-center text-main dark:text-textdark">
+              <p>Focuses on:</p>
+              <ul className="text-text font-normal flex flex-row gap-2 capitalize">
+                {figData.focus.map((focus) => {
+                  return <li>{focus.name}</li>;
+                })}
+              </ul>
             </div>
             <div className="w-full px-20 py-2 flex flex-col text-center">
               <p className="font-semibold text-lg text-main dark:text-textdark">

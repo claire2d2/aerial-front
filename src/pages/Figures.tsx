@@ -54,7 +54,7 @@ const Figures = () => {
   }, [sortBy]);
 
   if (figures.length === 0) {
-    return <p>Loading!</p>;
+    return <p>Loading! </p>;
   }
   return (
     <div className="flex flex-col items-center">

@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
-// import { Accordion } from "flowbite-react";
+import useUser from "../../../context/useUser";
 import aerialApi from "../../../service/aerialApi";
 import ProgressLogForm from "./ProgressLogForm";
 
 // style imports
-import { HiOutlinePencil, HiOutlineTrash } from "react-icons/hi";
+import { HiOutlineTrash } from "react-icons/hi";
 
 type logType = {
   _id: string;
@@ -19,7 +19,7 @@ type Logs = {
 
 const ProgressLog: React.FC<Logs> = ({ currFigId }) => {
   const [logs, setLogs] = useState<logType[]>([]);
-  //   const { isLoggedIn, user } = useUser();
+  const { isLoggedIn } = useUser();
 
   /* fetch progress log informations for the related figure
    **(configured on backend will only show logs made by current user)
@@ -57,39 +57,47 @@ const ProgressLog: React.FC<Logs> = ({ currFigId }) => {
       <h2 className="font-bold text-2xl capitalize text-center">
         Progress log
       </h2>
-      <div className="w-full">
-        <ProgressLogForm currFigId={currFigId} fetchLogData={fetchLogData} />
-      </div>
-      <h3 className="font-bold">Logs</h3>
-      <div className="h-80 overflow-scroll">
-        {logs.length !== 0
-          ? logs?.map((log) => (
-              <div className="OneLog flex flex-col h-20">
-                {/* <div>{log.date.split("T")[0]}</div> */}
-                <div className="flex h-32">
-                  {log.image ? (
-                    <div>
-                      <img
-                        src={log.image}
-                        alt="image of figure"
-                        className="object-cover h-full"
-                      />
+      {!isLoggedIn ? (
+        <div className="w-full">
+          You must be logged in to access progress logs
+        </div>
+      ) : (
+        <div>
+          <div className="w-full">
+            <ProgressLogForm
+              currFigId={currFigId}
+              fetchLogData={fetchLogData}
+            />
+          </div>
+          <h3 className="font-bold">Logs</h3>
+          <div className="h-80 overflow-scroll">
+            {logs.length !== 0
+              ? logs?.map((log) => (
+                  <div className="OneLog flex flex-col h-20">
+                    {/* <div>{log.date.split("T")[0]}</div> */}
+                    <div className="flex h-32">
+                      {log.image ? (
+                        <div>
+                          <img
+                            src={log.image}
+                            alt="image of figure"
+                            className="object-cover h-full"
+                          />
+                        </div>
+                      ) : (
+                        ""
+                      )}
+                      <div>{log.content}</div>
+                      <button onClick={(e) => handleDeleteLog(e, log._id)}>
+                        <HiOutlineTrash />
+                      </button>
                     </div>
-                  ) : (
-                    ""
-                  )}
-                  <div>{log.content}</div>
-                  <button>
-                    <HiOutlinePencil />
-                  </button>
-                  <button onClick={(e) => handleDeleteLog(e, log._id)}>
-                    <HiOutlineTrash />
-                  </button>
-                </div>
-              </div>
-            ))
-          : "No progress logs yet ..."}
-      </div>
+                  </div>
+                ))
+              : "No progress logs yet ..."}
+          </div>
+        </div>
+      )}
     </div>
   );
 };

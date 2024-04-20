@@ -1,3 +1,7 @@
+type focusType = {
+  _id: string;
+  name: string;
+};
 export type figType = {
   _id: string;
   name: string;
@@ -10,6 +14,7 @@ export type figType = {
   difficulty: string;
   imgArtist: string;
   imgArtistUrl: string;
+  focus: focusType[];
 };
 
 export type statusType = {
