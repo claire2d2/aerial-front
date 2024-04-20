@@ -211,7 +211,7 @@ const NavBar = () => {
               <li>
                 <button
                   className="hover:text-linkhover"
-                  onClick={() => navigate(`/${currDisciplineRef}/all-combos`)}
+                  onClick={() => navigate(`/${currDisciplineRef}/combos`)}
                 >
                   Combos
                 </button>
