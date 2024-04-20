@@ -92,7 +92,6 @@ const datePickerTheme = {
 type logType = {
   content: string;
   date: string;
-  image: string;
 };
 
 type formProps = {
@@ -106,8 +105,9 @@ const ProgressLogForm: React.FC<formProps> = ({ currFigId, fetchLogData }) => {
   const [formState, setFormState] = useState<logType>({
     date: Date(),
     content: "",
-    image: "",
   });
+
+  const [file, setFile] = useState<File | null>(null);
   // change the form state when user inputs
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
     const key = e.currentTarget.id;
@@ -119,7 +119,13 @@ const ProgressLogForm: React.FC<formProps> = ({ currFigId, fetchLogData }) => {
     e.preventDefault();
     try {
       if (user) {
-        const response = await aerialApi.post(`/logs/${currFigId}`, formState);
+        const fd = new FormData();
+        fd.append("date", formState.date);
+        fd.append("content", formState.content);
+        if (file) {
+          fd.append("image", file);
+        }
+        const response = await aerialApi.post(`/logs/${currFigId}`, fd);
         if (response.status === 400) {
           console.log(response.data.message);
         }
@@ -130,7 +136,7 @@ const ProgressLogForm: React.FC<formProps> = ({ currFigId, fetchLogData }) => {
       //TODO show error message with what is wrong
     }
   }
-  const { date, content, image } = formState;
+  const { date, content } = formState;
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col">
@@ -152,7 +158,15 @@ const ProgressLogForm: React.FC<formProps> = ({ currFigId, fetchLogData }) => {
         maxLength={200}
       />
       <label htmlFor="">Add a photo</label>
-      <input id="image" type="file" value={image} onChange={handleChange} />
+      <input
+        id="file"
+        type="file"
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+          if (e.currentTarget.files) {
+            setFile(e.currentTarget.files[0]);
+          }
+        }}
+      />
       <button
         disabled={content === ""}
         className="disabled:bg-disabled bg-main"

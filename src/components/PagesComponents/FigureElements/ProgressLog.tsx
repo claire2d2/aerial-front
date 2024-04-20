@@ -3,7 +3,11 @@ import { useState, useEffect } from "react";
 import aerialApi from "../../../service/aerialApi";
 import ProgressLogForm from "./ProgressLogForm";
 
+// style imports
+import { HiOutlinePencil, HiOutlineTrash } from "react-icons/hi";
+
 type logType = {
+  _id: string;
   owner: string;
   content: string;
   date: string;
@@ -16,7 +20,11 @@ type Logs = {
 const ProgressLog: React.FC<Logs> = ({ currFigId }) => {
   const [logs, setLogs] = useState<logType[]>([]);
   //   const { isLoggedIn, user } = useUser();
-  // fetch data from figures for the log
+
+  /* fetch progress log informations for the related figure
+   **(configured on backend will only show logs made by current user)
+   */
+
   async function fetchLogData() {
     try {
       const response = await aerialApi.get(`/logs/${currFigId}`);
@@ -29,6 +37,20 @@ const ProgressLog: React.FC<Logs> = ({ currFigId }) => {
   useEffect(() => {
     fetchLogData();
   }, []);
+
+  /*
+   ** Handle deleting existing log (only accessible to current user)
+   */
+
+  async function handleDeleteLog(e: React.MouseEvent<HTMLElement>, id: string) {
+    e.preventDefault;
+    try {
+      const response = await aerialApi.delete(`/logs/${id}`);
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <div className="w-full h-full">
@@ -57,7 +79,12 @@ const ProgressLog: React.FC<Logs> = ({ currFigId }) => {
                     ""
                   )}
                   <div>{log.content}</div>
-                  <div>{log.owner}</div>
+                  <button>
+                    <HiOutlinePencil />
+                  </button>
+                  <button onClick={(e) => handleDeleteLog(e, log._id)}>
+                    <HiOutlineTrash />
+                  </button>
                 </div>
               </div>
             ))
