@@ -1,6 +1,7 @@
 import React, { createContext, useState, useEffect, ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import aerialApi from "../service/aerialApi";
+import { figType, faveType } from "../components/Types";
 
 type userType = {
   _id: string;
@@ -8,6 +9,7 @@ type userType = {
   lastName: string;
   email: string;
   image: string;
+  role: string[];
 };
 
 type disciplType = {
@@ -16,22 +18,6 @@ type disciplType = {
   name: string;
 };
 
-type figType = {
-  id: string;
-  name: string;
-  ref: string;
-  image: string;
-  discipline: string;
-  difficulty: string;
-  imgArtist: string;
-  imgArtistUrl: string;
-};
-
-type favoriteType = {
-  id: string;
-  figure: string;
-  user: string;
-};
 // define beforehand the types for the states
 type UserContextProps = {
   user: userType | null;
@@ -52,9 +38,10 @@ type UserContextProps = {
   setCurrDiscipline: React.Dispatch<React.SetStateAction<string | null>>;
   currDisciplineRef: string | null;
   setCurrDisciplineRef: React.Dispatch<React.SetStateAction<string | null>>;
-  favorites: favoriteType[];
-  setFavorites: React.Dispatch<React.SetStateAction<favoriteType[]>>;
+  favorites: faveType[];
+  setFavorites: React.Dispatch<React.SetStateAction<faveType[]>>;
   activeFilters: string[];
+  fetchFavorites: () => void;
   setActiveFilters: React.Dispatch<React.SetStateAction<string[]>>;
   sortBy: string;
   setSortBy: React.Dispatch<React.SetStateAction<string>>;
@@ -165,7 +152,7 @@ function UserContextWrapper({ children }: { children: ReactNode }) {
   }
 
   // fetch the favorites for logged in user
-  const [favorites, setFavorites] = useState<favoriteType[]>([]);
+  const [favorites, setFavorites] = useState<faveType[]>([]);
 
   async function fetchFavorites() {
     try {
@@ -203,6 +190,7 @@ function UserContextWrapper({ children }: { children: ReactNode }) {
         setCurrDisciplineRef,
         favorites,
         setFavorites,
+        fetchFavorites,
         activeFilters,
         setActiveFilters,
         sortBy,

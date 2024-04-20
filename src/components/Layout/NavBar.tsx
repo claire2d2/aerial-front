@@ -135,7 +135,9 @@ const NavBar = () => {
         <span className="block truncate text-sm">{user?.email}</span>
       </Dropdown.Header>
       <Dropdown.Item>
-        <HiOutlineAdjustments /> Settings
+        <button className="flex gap-2" onClick={() => navigate("/settings")}>
+          <HiOutlineAdjustments /> Settings
+        </button>
       </Dropdown.Item>
       <Dropdown.Item>
         <button className="flex gap-2" onClick={logOut}>
@@ -209,7 +211,7 @@ const NavBar = () => {
               <li>
                 <button
                   className="hover:text-linkhover"
-                  onClick={() => navigate(`/${currDisciplineRef}/all-combos`)}
+                  onClick={() => navigate(`/${currDisciplineRef}/combos`)}
                 >
                   Combos
                 </button>

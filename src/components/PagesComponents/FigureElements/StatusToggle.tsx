@@ -1,16 +1,9 @@
 import { useState, useEffect } from "react";
 import { FormEvent } from "react";
-import aerialApi from "../../service/aerialApi";
-import useUser from "../../context/useUser";
+import aerialApi from "../../../service/aerialApi";
+import { statusType } from "../../Types";
 
-type statusType = {
-  id: string;
-  name: string;
-  owner: string;
-  figure: string;
-};
-
-type StatusToggle = {
+type StatusToggleProps = {
   status: string;
   setStatus: React.Dispatch<React.SetStateAction<string>>;
   oneSideStatus: string | null;
@@ -18,20 +11,20 @@ type StatusToggle = {
   currFigId: string;
 };
 
-const StatusToggle: React.FC<StatusToggle> = ({
+const StatusToggle: React.FC<StatusToggleProps> = ({
   status,
   setStatus,
   oneSideStatus,
   setOneSideStatus,
   currFigId,
 }) => {
-  const { authenticateUser } = useUser();
-
-  const [range, setRange] = useState<number>(0);
   // get the initial state to edit (to get back to initial state if needed, or disable saving if status = stateToEdit)
-  const [stateToEdit, setStateToEdit] = useState<string>("");
-
+  const [range, setRange] = useState<number>(0);
+  const [stateToEdit, setStateToEdit] = useState<statusType | null>(null);
   // handle changing the state for the current figure when user switches between ranges
+  const [initialRange, setInitialRange] = useState<number>(0);
+  const [initialOneSide, setInitialOneSide] = useState<string | null>(null);
+
   const handleInputChange = (e: FormEvent<HTMLInputElement>) => {
     const selectedInput = Number(e.currentTarget.value);
     setRange(selectedInput);
@@ -67,18 +60,17 @@ const StatusToggle: React.FC<StatusToggle> = ({
     setOneSideStatus(side);
   };
 
-  useEffect(() => {
-    authenticateUser();
-    setOneSideStatus(oneSideStatus);
-  }, [status]);
-
   // find state id to modify
   async function findStateToEdit() {
     try {
       const response = await aerialApi.get<statusType>(
         `/states/fig/${currFigId}`
       );
-      setStateToEdit(response.data.id);
+      setStateToEdit(response.data);
+      setRange(response.data.range);
+      setInitialRange(response.data.range);
+      setOneSideStatus(response.data.oneSide);
+      setInitialOneSide(response.data.oneSide);
     } catch (error) {
       console.log(error);
     }
@@ -86,17 +78,19 @@ const StatusToggle: React.FC<StatusToggle> = ({
 
   useEffect(() => {
     findStateToEdit();
-  }, [status]);
+  }, []);
 
   // handle form submission
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     try {
-      await aerialApi.post(`/states/${currFigId}`, {
+      await aerialApi.put(`/states/${stateToEdit?._id}`, {
         name: status,
         oneSide: oneSideStatus,
+        range: range,
       });
+      findStateToEdit();
     } catch (error) {
       console.log(error);
       //TODO show error message with what is wrong
@@ -125,13 +119,13 @@ const StatusToggle: React.FC<StatusToggle> = ({
             : "accent-golden"
         }`}
       />
-      <div id="rangeValue" className="w-full mt-2 flex">
+      <div id="rangeValue" className="w-full my-2 flex">
         <div className="w-full font-semibold">{status}</div>
-        <div className={`${range === 30 ? "w-full flex gap-2" : "hidden"}`}>
+        <div className={` ${range === 30 ? "w-full flex gap-2" : "hidden"}`}>
           <button
             type="button"
             onClick={(e) => setOneSide(e, "Left Side")}
-            className={`px-2 py-1 text-white rounded-md ${
+            className={`w-20 px-1 text-white rounded-md ${
               oneSideStatus !== "Left Side" ? "bg-disabled" : "bg-mainlight"
             }`}
           >
@@ -140,7 +134,7 @@ const StatusToggle: React.FC<StatusToggle> = ({
           <button
             type="button"
             onClick={(e) => setOneSide(e, "Right Side")}
-            className={`px-2 py-1 text-white rounded-md ${
+            className={`w-20 px-1 text-white rounded-md ${
               oneSideStatus !== "Right Side" ? "bg-disabled" : "bg-mainlight"
             }`}
           >
@@ -150,7 +144,10 @@ const StatusToggle: React.FC<StatusToggle> = ({
       </div>
       <button
         className="bg-main text-white px-4 py-2 rounded-lg disabled:bg-disabled"
-        disabled={stateToEdit === status}
+        disabled={
+          (initialRange === range && range !== 30) ||
+          (range === 30 && initialOneSide === oneSideStatus)
+        }
       >
         Save
       </button>

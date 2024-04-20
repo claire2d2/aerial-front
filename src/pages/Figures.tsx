@@ -9,12 +9,13 @@ import {
   fetchFaves,
   filterFigures,
   sortFiguresAlpha,
-} from "../components/AllFiguresPageComponents/AllFiguresFunctions";
+} from "../components/PagesComponents/FiguresFunctions";
 
 // imports for styling
-import SortBy from "../components/AllFiguresPageComponents/SortBy";
-import MobileFilter from "../components/AllFiguresPageComponents/MobileFilter";
-import ShowFigures from "../components/AllFiguresPageComponents/ShowFigures";
+import SortBy from "../components/PagesComponents/AllFiguresPageComponents/SortBy";
+import MobileFilter from "../components/PagesComponents/AllFiguresPageComponents/MobileFilter";
+import ShowFigures from "../components/PagesComponents/AllFiguresPageComponents/ShowFigures";
+import LevelAccordion from "../components/PagesComponents/AllFiguresPageComponents/LevelAccordion";
 
 const Figures = () => {
   const { currDiscipline, currDisciplineRef, activeFilters, sortBy } =
@@ -53,7 +54,7 @@ const Figures = () => {
   }, [sortBy]);
 
   if (figures.length === 0) {
-    return <p>Loading!</p>;
+    return <p>Loading! </p>;
   }
   return (
     <div className="flex flex-col items-center">
@@ -70,7 +71,9 @@ const Figures = () => {
         <MobileFilter />
       </div>
 
-      {shownFigures.length === 0 ? (
+      {sortBy === "level" ? (
+        <LevelAccordion figures={shownFigures} />
+      ) : shownFigures.length === 0 ? (
         <div>There are no figures to display with the given filters</div>
       ) : (
         <ShowFigures shownFigures={shownFigures} />

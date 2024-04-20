@@ -1,12 +1,20 @@
+type focusType = {
+  _id: string;
+  name: string;
+};
 export type figType = {
   _id: string;
   name: string;
   ref: string;
   image: string;
-  discipline: string;
+  discipline: {
+    name: string;
+    ref: string;
+  };
   difficulty: string;
   imgArtist: string;
   imgArtistUrl: string;
+  focus: focusType[];
 };
 
 export type statusType = {
@@ -14,6 +22,8 @@ export type statusType = {
   figure: figType;
   user: string;
   name: string;
+  oneSide: string;
+  range: number;
 };
 
 export type faveType = {

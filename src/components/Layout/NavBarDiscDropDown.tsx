@@ -25,7 +25,12 @@ const dropDownTheme = {
 };
 
 const NavBarDiscDropDown = () => {
-  const { currDiscipline, allDisciplines } = useUser();
+  const { currDiscipline, currDisciplineRef, allDisciplines } = useUser();
+  let restOfPath = "";
+  const isSpecificPage = location.pathname.split("/")[2];
+  if (isSpecificPage) {
+    restOfPath = `/${isSpecificPage}`;
+  }
   return (
     <Dropdown
       theme={dropDownTheme}
@@ -41,24 +46,28 @@ const NavBarDiscDropDown = () => {
         )
       }
     >
-      {currDiscipline ? (
+      {/* {currDiscipline ? (
         <Dropdown.Item>
           <span className="capitalize font-semibold">{currDiscipline}</span>
         </Dropdown.Item>
       ) : (
         ""
-      )}
+      )} */}
 
       {allDisciplines
-        ? allDisciplines
-            .filter((disc) => disc.name !== currDiscipline)
-            .map((disc, index) => (
-              <Dropdown.Item key={index}>
-                <Link to={`${disc.ref}`}>
-                  <span className="capitalize">{disc.name}</span>
-                </Link>
-              </Dropdown.Item>
-            ))
+        ? allDisciplines.map((disc, index) => (
+            <Dropdown.Item key={index}>
+              <Link
+                to={`/${
+                  disc.ref === currDisciplineRef
+                    ? `${disc.ref}`
+                    : `${disc.ref}${restOfPath}`
+                }`}
+              >
+                <span className="capitalize">{disc.name}</span>
+              </Link>
+            </Dropdown.Item>
+          ))
         : "Loading"}
     </Dropdown>
   );

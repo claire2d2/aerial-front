@@ -1,6 +1,6 @@
 // Links
 import { useNavigate } from "react-router-dom";
-import useUser from "../../context/useUser";
+import useUser from "../../../context/useUser";
 
 type DisciplineProps = {
   image: string;

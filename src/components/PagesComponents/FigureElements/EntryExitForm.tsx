@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import aerialApi from "../../service/aerialApi";
+import aerialApi from "../../../service/aerialApi";
 // import useUser from "../../context/useUser";
 
-import { figType } from "../Types";
+import { figType } from "../../Types";
 
 // use debouncing to avoid handling too many requests at the same time
 

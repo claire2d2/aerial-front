@@ -1,4 +1,4 @@
-import { figType } from "../Types";
+import { figType } from "../../Types";
 
 export const sortFiguresAlpha = (figuresArray: figType[], sortBy: string) => {
   const sortedFigures = [...figuresArray].sort((a, b) => {

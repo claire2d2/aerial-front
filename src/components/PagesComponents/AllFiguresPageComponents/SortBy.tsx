@@ -1,5 +1,5 @@
 import { ChangeEvent } from "react";
-import useUser from "../../context/useUser";
+import useUser from "../../../context/useUser";
 
 const SortBy = () => {
   const { sortBy, setSortBy } = useUser();

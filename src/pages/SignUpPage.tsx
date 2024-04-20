@@ -3,6 +3,7 @@ import { useState, FormEvent, ChangeEvent } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import useUser from "../context/useUser";
 import { AxiosError } from "axios";
+import { figType } from "../components/Types";
 
 // imports relative to styling
 import { Toast } from "flowbite-react";
@@ -14,18 +15,7 @@ import {
   labelStyle,
   inputStyle,
   buttonStyle,
-} from "./../components/AuthComponents/AuthStyle";
-
-type figType = {
-  id: string;
-  name: string;
-  ref: string;
-  image: string;
-  discipline: string;
-  difficulty: string;
-  imgArtist: string;
-  imgArtistUrl: string;
-};
+} from "../components/PagesComponents/AuthComponents/AuthStyle";
 
 type formType = {
   firstName: string;
