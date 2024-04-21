@@ -6,22 +6,30 @@ import {
   fetchZones,
 } from "../components/PagesComponents/FiguresFunctions";
 
-// import elements for styling
+// elements for styling
 import FilterAccordion from "../components/PagesComponents/GenerateComboPage/FilterAccordion";
-
+const filtButtonStyle =
+  "rounded-lg bg-white drop-shadow-sm py-1 px-2 capitalize hover:bg-bgmainlight active:bg-main active:text-white";
 const GenerateCombo = () => {
   const { currDisciplineRef } = useUser();
   const [zones, setZones] = useState<zoneType[]>([]);
+  // initial state for filters array
+  const difficulties = ["beginner", "intermediate", "advanced"];
+
+  const statuses = [
+    "Not seen yet",
+    "Wishlist",
+    "Training",
+    "Left Side",
+    "Right Side",
+  ];
+  const [initialZoneFilts, setInitialZoneFilts] = useState<string[]>([]);
 
   // states for filters
   const [activeFilts, setAllActiveFilts] = useState<string[]>(["Mastered"]);
   const [zoneFilts, setZoneFilts] = useState<string[]>([]);
-  const [levelFilts, setLevelFilts] = useState<string[]>([
-    "beginner",
-    "intermediate",
-    "advanced",
-  ]);
-  const [statusFilts, setStatusFilts] = useState<string[]>(["Mastered"]);
+  const [levelFilts, setLevelFilts] = useState<string[]>(difficulties);
+  const [statusFilts, setStatusFilts] = useState<string[]>(statuses);
   const [comboFigs, setComboFigs] = useState<figType[]>([]);
 
   // determine how many moves the combo generator should generate
@@ -75,6 +83,7 @@ const GenerateCombo = () => {
     fetchZones(setZones);
     const zoneFiltNames: string[] = [];
     zones.forEach((zone) => zoneFiltNames.push(zone.name));
+    setInitialZoneFilts(zoneFiltNames);
     setZoneFilts(zoneFiltNames);
   }, [currDisciplineRef]);
 
@@ -85,15 +94,6 @@ const GenerateCombo = () => {
       fetchFigures(currDisciplineRef, setComboFigs, [], []);
     }
   }, [levelFilts, zoneFilts]);
-
-  const statuses = [
-    "Not seen yet",
-    "Wishlist",
-    "Training",
-    "Left Side",
-    "Right Side",
-    "Mastered",
-  ];
 
   async function handleClickFilter(
     e: React.MouseEvent<HTMLElement>,
@@ -109,33 +109,71 @@ const GenerateCombo = () => {
     setFiltersArray(copy);
   }
 
+  async function handleRemoveActiveFilter(
+    e: React.MouseEvent<HTMLElement>,
+    clickedFilterToRemove
+  ) {
+    const copy = activeFilts.filter((filt) => filt !== clickedFilterToRemove);
+    setAllActiveFilts(copy);
+    if (difficulties.includes(clickedFilterToRemove)) {
+      setLevelFilts([...levelFilts, clickedFilterToRemove]);
+    }
+    if (initialZoneFilts.includes(clickedFilterToRemove)) {
+      setZoneFilts([...zoneFilts, clickedFilterToRemove]);
+    }
+    if (statuses.includes(clickedFilterToRemove)) {
+      setStatusFilts([...statusFilts, clickedFilterToRemove]);
+    }
+  }
   return (
-    <div className="flex flex-col lg:flex-row w-full h-full">
-      <div className="lg:basis-1/2">
-        <h1 className="w-full text-center text-main font-bold text-3xl font-display">
+    <div className="GenerateCombo flex flex-col lg:flex-row w-full h-full">
+      <div className="ComboExplanations lg:h-full flex flex-col justify-center items-center lg:px-10">
+        <h1 className="w-full text-center text-main font-bold text-3xl font-display py-4">
           Combo Generator
         </h1>
-        <h2 className="font-display text-2xl font-semibold text-main">
-          How it works
-        </h2>
-        <div>
-          <p>Choose the filters for the figures you want.</p>{" "}
-          <p>
-            By default, we only select figures that are set to "Mastered".
-            Please note that if there aren't enough figures for a combo, it
-            won't work!
-          </p>
+        <div className="flex flex-col text-left">
+          <h2 className="font-display text-2xl font-semibold text-main py-2 text-center">
+            How it works
+          </h2>
+          <div className="flex flex-col gap-2">
+            <p>
+              Start by setting the number of figures you want in your combo
+              (limited to 8)
+            </p>
+            <p>Then select the filters for the figures you want.</p>{" "}
+            <p>
+              By default, we only select figures that are set to "Mastered".
+              Please note that if there aren't enough figures for a combo, it
+              won't work!
+            </p>
+          </div>
         </div>
         {/*
          ** Section to determine how many figures you want
          */}
         <div>
-          <h2>Combo parameters</h2>
-          <div>Set how many figures you want in your combo (max 8):</div>
-          <div className="flex">
-            <button onClick={subNbMoves}>-</button>
-            <div>{nbOfMoves}</div>
-            <button onClick={addNbMoves}>+</button>
+          <h2 className="font-display text-2xl font-semibold text-main py-2">
+            Number of figures
+          </h2>
+
+          <div className="flex w-20 h-10 justify-center items-center px-5 mx-auto drop-shadow">
+            <button
+              onClick={subNbMoves}
+              className=" bg-white rounded-l-lg px-2 border border-gray font-bold text-xl text-main transition-all hover:bg-bgmainlight active:bg-main active:text-white disabled:bg-disabled disabled:text-white"
+              disabled={nbOfMoves === 1}
+            >
+              -
+            </button>
+            <div className=" bg-white basis-1/2 border border-gray px-3 text-xl font-bold text-main">
+              {nbOfMoves}
+            </div>
+            <button
+              onClick={addNbMoves}
+              className=" bg-white rounded-r-lg px-2 border border-gray font-bold text-xl text-main transition-all hover:bg-bgmainlight active:bg-main active:text-white disabled:bg-disabled disabled:text-white"
+              disabled={nbOfMoves === 8}
+            >
+              +
+            </button>
           </div>
         </div>
         {/*
@@ -144,88 +182,104 @@ const GenerateCombo = () => {
         <h2 className="text-2xl font-display text-main font-semibold">
           Filters
         </h2>
-        <div>
-          <h3>Active filters</h3>
-          {activeFilts.length !== 0 ? (
-            <div>
-              {" "}
-              {activeFilts.map((filt) => {
-                return <div>{filt}</div>;
-              })}{" "}
-            </div>
-          ) : (
-            <div>No filters selected</div>
-          )}
-        </div>
-        <div>
-          <FilterAccordion filterTitle="By level">
-            <div className="flex">
-              {levelFilts?.map((level, index) => {
-                return (
-                  <button
-                    key={index}
-                    onClick={(e) =>
-                      handleClickFilter(e, levelFilts, setLevelFilts, level)
-                    }
-                  >
-                    {level}
-                  </button>
-                );
-              })}
-            </div>
-          </FilterAccordion>
-        </div>
-        <div>
-          <FilterAccordion filterTitle="By status">
-            <div className="flex">
-              {statuses.map((stat, index) => {
-                return (
-                  <button
-                    key={index}
-                    onClick={(e) =>
-                      handleClickFilter(e, statusFilts, setStatusFilts, stat)
-                    }
-                  >
-                    {stat}
-                  </button>
-                );
-              })}
-            </div>
-          </FilterAccordion>
-        </div>
-        <div>
-          <FilterAccordion filterTitle="By zone of focus">
-            <div className="flex">
-              {zoneFilts?.map((zone, index) => {
-                return (
-                  <button
-                    key={index}
-                    onClick={(e) =>
-                      handleClickFilter(e, zoneFilts, setZoneFilts, zone)
-                    }
-                  >
-                    {zone}
-                  </button>
-                );
-              })}
-            </div>
-          </FilterAccordion>
+        <div className="AllFilters w-full py-4">
+          <div>
+            <h3>Active filters</h3>
+            {activeFilts.length !== 0 ? (
+              <div className="flex flex-wrap">
+                {" "}
+                {activeFilts.map((filt, index) => {
+                  return (
+                    <div
+                      key={index}
+                      className={`flex gap-2 ${filtButtonStyle}`}
+                    >
+                      <div>{filt}</div>
+                      <button
+                        onClick={(e) => handleRemoveActiveFilter(e, filt)}
+                        className="lowercase font-bold hover:text-isFave active:text-isFave"
+                      >
+                        x
+                      </button>
+                    </div>
+                  );
+                })}{" "}
+              </div>
+            ) : (
+              <div>No active filters</div>
+            )}
+          </div>
+          <div>
+            <FilterAccordion filterTitle="By level">
+              <div className="flex flex-wrap gap-2">
+                {levelFilts?.map((level, index) => {
+                  return (
+                    <button
+                      key={index}
+                      onClick={(e) =>
+                        handleClickFilter(e, levelFilts, setLevelFilts, level)
+                      }
+                      className={filtButtonStyle}
+                    >
+                      {level}
+                    </button>
+                  );
+                })}
+              </div>
+            </FilterAccordion>
+          </div>
+          <div>
+            <FilterAccordion filterTitle="By status">
+              <div className="flex flex-wrap">
+                {statusFilts.map((stat, index) => {
+                  return (
+                    <button
+                      key={index}
+                      onClick={(e) =>
+                        handleClickFilter(e, statusFilts, setStatusFilts, stat)
+                      }
+                      className={filtButtonStyle}
+                    >
+                      {stat}
+                    </button>
+                  );
+                })}
+              </div>
+            </FilterAccordion>
+          </div>
+          <div>
+            <FilterAccordion filterTitle="By zone of focus">
+              <div className="flex flex-wrap">
+                {zoneFilts?.map((zone, index) => {
+                  return (
+                    <button
+                      key={index}
+                      onClick={(e) =>
+                        handleClickFilter(e, zoneFilts, setZoneFilts, zone)
+                      }
+                      className={filtButtonStyle}
+                    >
+                      {zone}
+                    </button>
+                  );
+                })}
+              </div>
+            </FilterAccordion>
+          </div>
         </div>
         {/*
          ** Button to submit form for generating combo
          */}
 
-        <form action="">
-          <button
-            onClick={(e) => generateRandomCombo(e, nbOfMoves)}
-            className="bg-main text-white"
-          >
-            Let's go !
-          </button>
-        </form>
+        <button
+          onClick={(e) => generateRandomCombo(e, nbOfMoves)}
+          className="bg-main text-white px-5 py-2 rounded-xl my-5"
+        >
+          Let's go !
+        </button>
       </div>
-      <div className="bg-bgmainlight basis-1/5 lg:basis-1/2 flex justify-center items-center rounded-lg">
-        <div className="text-gray">
+      <div className="bg-bgmainlight lg:h-full basis-1/5 lg:basis-1/2 flex justify-center items-center rounded-lg">
+        <div className="text-gray h-full">
           {generatedCombo.map((fig, index) => {
             return <div key={index}>{fig.name}</div>;
           })}

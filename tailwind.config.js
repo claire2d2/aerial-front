@@ -40,9 +40,10 @@ export default {
           "url(`https://images.photowall.com/products/54815/blue-sky-clouds.jpg?h=699&q=85`)",
       },
       height: {
-        outlet: "85%",
-        nav: "10%",
-        footer: "5%",
+        outlet: "95%",
+        allbutnav: "95dvh",
+        nav: "5dvh",
+        footer: "5dvh",
       },
     },
   },

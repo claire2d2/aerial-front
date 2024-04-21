@@ -2,7 +2,7 @@
 
 const Footer = () => {
   return (
-    <footer className="h-8 bg-main text-white flex justify-between px-10 font-semibold items-center">
+    <footer className="h-full bg-main text-white flex justify-between px-10 font-semibold items-center">
       <div>About</div>
       <div>Privacy Policy</div>
       <div>Site Map</div>
