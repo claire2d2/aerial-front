@@ -2,8 +2,8 @@ import DarkLightToggle from "./DarkLightToggle";
 import { useNavigate, Link } from "react-router-dom";
 import useUser from "../../context/useUser";
 
-import { Avatar, Dropdown } from "flowbite-react";
-import { avatarTheme, dropDownTheme } from "./Style/NavBarStyle";
+import { Dropdown } from "flowbite-react";
+import { dropDownTheme } from "./Style/NavBarStyle";
 import NavBarDiscDropDown from "./NavBarDiscDropDown";
 import NavBarLoggedIn from "./NavBarLoggedIn";
 import NavBarLoggedOut from "./NavBarLoggedOut";
