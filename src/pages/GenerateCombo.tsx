@@ -73,6 +73,9 @@ const GenerateCombo = () => {
   useEffect(() => {
     fetchFigures(currDisciplineRef, setComboFigs, levelFilts, zoneFilts);
     fetchZones(setZones);
+    const zoneFiltNames: string[] = [];
+    zones.forEach((zone) => zoneFiltNames.push(zone.name));
+    setZoneFilts(zoneFiltNames);
   }, [currDisciplineRef]);
 
   useEffect(() => {
@@ -105,25 +108,6 @@ const GenerateCombo = () => {
     const copy = filtersArray.filter((filt) => filt !== clickedFilter);
     setFiltersArray(copy);
   }
-
-  //   async function handleLevelFilts(clickedFilter: string) {
-  //     console.log(clickedFilter);
-  //     console.log(levelFilts);
-  //     if (levelFilts.includes(clickedFilter)) {
-  //       const copy = levelFilts.filter((filt) => filt !== clickedFilter);
-  //       console.log(copy);
-  //       setLevelFilts(copy);
-  //     }
-  //   }
-
-  // when filters are chosen and unchosen, set the "states" to fetch the figures that are concerned by the statuses
-  //   useEffect(() => {
-  //     if (levelFilts.length !== 0) {
-  //       fetchFigures(currDisciplineRef, setComboFigs, levelFilts, []);
-  //     } else {
-  //       fetchFigures(currDisciplineRef, setComboFigs, [], []);
-  //     }
-  //   }, [levelFilts]);
 
   return (
     <div className="flex flex-col lg:flex-row w-full h-full">
@@ -212,15 +196,15 @@ const GenerateCombo = () => {
         <div>
           <FilterAccordion filterTitle="By zone of focus">
             <div className="flex">
-              {zones?.map((zone, index) => {
+              {zoneFilts?.map((zone, index) => {
                 return (
                   <button
                     key={index}
                     onClick={(e) =>
-                      handleClickFilter(e, zoneFilts, setZoneFilts, zone.name)
+                      handleClickFilter(e, zoneFilts, setZoneFilts, zone)
                     }
                   >
-                    {zone.name}
+                    {zone}
                   </button>
                 );
               })}
