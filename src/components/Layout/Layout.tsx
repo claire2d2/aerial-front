@@ -12,8 +12,8 @@ const Layout = () => {
           <div className="h-outlet">
             <Outlet />
           </div>
+          <Footer />
         </div>
-        <Footer />
       </div>
     </div>
   );

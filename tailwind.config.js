@@ -3,6 +3,9 @@ export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   darkMode: "class", // enables dark mode based on the class applied to the html tag
   theme: {
+    fontFamily: {
+      display: ['"Playfair Display"', "sans-serif"],
+    },
     colors: {
       // for all styling
       main: "#003162",
@@ -37,9 +40,9 @@ export default {
           "url(`https://images.photowall.com/products/54815/blue-sky-clouds.jpg?h=699&q=85`)",
       },
       height: {
-        outlet: "85dvh",
-        nav: "10dvh",
-        footer: "5dvh",
+        outlet: "85%",
+        nav: "10%",
+        footer: "5%",
       },
     },
   },

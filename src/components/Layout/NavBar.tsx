@@ -41,30 +41,53 @@ const NavBar = () => {
       <div className="flex md:order-2 basis-1/6">
         {isLoggedIn ? <NavBarLoggedIn /> : <NavBarLoggedOut />}
         <div className="lg:hidden">
-          <Dropdown
-            arrowIcon={false}
-            theme={dropDownTheme}
-            label={
-              <span className="text-2xl flex">
-                <HiBars3 />
-              </span>
-            }
-          >
-            <Dropdown.Header>
-              <span className="capitalize">{currDiscipline}</span>
-            </Dropdown.Header>
-            <Dropdown.Item>
-              <NavMenuLink pageRef="figures">Figures</NavMenuLink>
-            </Dropdown.Item>
-            <Dropdown.Item>
-              <NavMenuLink pageRef="combo-generator">
-                Generate combo
-              </NavMenuLink>
-            </Dropdown.Item>
-            <Dropdown.Item>
-              <NavMenuLink pageRef="combos">Combos</NavMenuLink>
-            </Dropdown.Item>
-          </Dropdown>
+          {currDiscipline ? (
+            <Dropdown
+              arrowIcon={false}
+              theme={dropDownTheme}
+              label={
+                <span className="text-2xl flex">
+                  <HiBars3 />
+                </span>
+              }
+            >
+              <Dropdown.Header>
+                <span className="capitalize">{currDiscipline}</span>
+              </Dropdown.Header>
+              <Dropdown.Item>
+                <NavMenuLink pageRef="figures">Figures</NavMenuLink>
+              </Dropdown.Item>
+              <Dropdown.Item>
+                <NavMenuLink pageRef="combo-generator">
+                  Generate combo
+                </NavMenuLink>
+              </Dropdown.Item>
+              <Dropdown.Item>
+                <NavMenuLink pageRef="combos">Combos</NavMenuLink>
+              </Dropdown.Item>{" "}
+            </Dropdown>
+          ) : (
+            <Dropdown
+              arrowIcon={false}
+              theme={dropDownTheme}
+              label={
+                <span className="text-2xl flex">
+                  <HiBars3 />
+                </span>
+              }
+            >
+              <Dropdown.Header>Choose a discipline</Dropdown.Header>
+              <Dropdown.Item>
+                <Link to="/pole">Pole</Link>
+              </Dropdown.Item>
+              <Dropdown.Item>
+                <Link to="/aerial-hoop">Aerial Hoop</Link>
+              </Dropdown.Item>
+              <Dropdown.Item>
+                <Link to="/contorsion">Contorsion</Link>
+              </Dropdown.Item>
+            </Dropdown>
+          )}
         </div>
       </div>
       <div className="hidden lg:block xl:w-2/3">
