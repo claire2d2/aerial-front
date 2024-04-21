@@ -1,10 +1,11 @@
 import { Dispatch, SetStateAction } from "react";
 import aerialApi from "../../service/aerialApi";
-import { figType, statusType, faveType } from "../Types";
+import { figType, statusType, faveType, zoneType } from "../Types";
 
 type SetFigures = Dispatch<SetStateAction<figType[]>>;
 type SetStatesData = Dispatch<SetStateAction<statusType[]>>;
 type SetFaveData = Dispatch<SetStateAction<faveType[]>>;
+type SetZoneData = Dispatch<SetStateAction<zoneType[]>>;
 
 /* function to fetch all figures from a specific discipline
  ** 2 arguments :
@@ -14,10 +15,22 @@ type SetFaveData = Dispatch<SetStateAction<faveType[]>>;
 
 export async function fetchFigures(
   disciplineRef: string | null,
-  setFigures: SetFigures
+  setFigures: SetFigures,
+  levelFilts: string[],
+  zoneFilts: string[]
 ) {
+  let queryParams;
   try {
-    const response = await aerialApi.get(`/figures/by/${disciplineRef}`);
+    if (disciplineRef) {
+      queryParams = new URLSearchParams({
+        levels: levelFilts.join(","),
+        zones: zoneFilts.join(","),
+        discipline: disciplineRef,
+      });
+      // console.log("levelfitls", levelFilts);
+      // console.log("discipline", disciplineRef);
+    }
+    const response = await aerialApi.get(`/figures/?${queryParams}`);
     setFigures(response.data);
   } catch (error) {
     console.log(error);
@@ -123,3 +136,16 @@ export const sortFiguresAlpha = (
   });
   setFigures(sortedFigures);
 };
+
+/**
+ * Fetch zones of focus
+ */
+
+export async function fetchZones(setZones: SetZoneData) {
+  try {
+    const response = await aerialApi.get("/zones");
+    setZones(response.data);
+  } catch (error) {
+    console.log(error);
+  }
+}

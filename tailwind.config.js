@@ -10,6 +10,7 @@ export default {
       mainvar: "#03386e",
       mainlight: "#5176BA",
       bgmain: "#F7FCFC",
+      bgmainlight: "#D8EDF9",
       bgmaindark: "#33334d",
       text: "#121927",
       textdark: "#f0f0f5",

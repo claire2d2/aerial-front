@@ -26,17 +26,17 @@ const Figures = () => {
 
   // fetch figures when page renders
   useEffect(() => {
-    fetchFigures(currDisciplineRef, setFigures);
+    fetchFigures(currDisciplineRef, setFigures, [], []);
   }, [currDiscipline]);
 
   // when filters are chosen and unchosen, set the "states" to fetch the figures that are concerned by the statuses
   useEffect(() => {
     if (activeFilters.length !== 0) {
-      fetchFigures(currDisciplineRef, setFigures);
+      fetchFigures(currDisciplineRef, setFigures, [], []);
       fetchFigStatus(setStatesData, activeFilters);
       fetchFaves(setFaveData);
     } else {
-      fetchFigures(currDisciplineRef, setFigures);
+      fetchFigures(currDisciplineRef, setFigures, [], []);
     }
   }, [activeFilters]);
 
@@ -54,7 +54,7 @@ const Figures = () => {
   }, [sortBy]);
 
   if (figures.length === 0) {
-    return <p>Loading! </p>;
+    return <p>Loading!</p>;
   }
   return (
     <div className="flex flex-col items-center">
