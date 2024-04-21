@@ -135,6 +135,12 @@ const PoleDance = () => {
           </button>
         </div>
       </div>
+      <div>
+        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ratione
+        distinctio quas voluptate saepe commodi ea tempora. Sunt fugiat soluta
+        sapiente inventore eligendi, quibusdam, est sint officiis perferendis
+        ipsam voluptates expedita.
+      </div>
     </div>
   );
 };

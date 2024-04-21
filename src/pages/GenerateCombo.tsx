@@ -111,7 +111,7 @@ const GenerateCombo = () => {
 
   async function handleRemoveActiveFilter(
     e: React.MouseEvent<HTMLElement>,
-    clickedFilterToRemove
+    clickedFilterToRemove: string
   ) {
     const copy = activeFilts.filter((filt) => filt !== clickedFilterToRemove);
     setAllActiveFilts(copy);
@@ -126,7 +126,7 @@ const GenerateCombo = () => {
     }
   }
   return (
-    <div className="GenerateCombo flex flex-col lg:flex-row w-full h-full">
+    <div className="GenerateCombo flex flex-col lg:flex-row h-full w-full justify-center items-center">
       <div className="ComboExplanations lg:h-full flex flex-col justify-center items-center lg:px-10">
         <h1 className="w-full text-center text-main font-bold text-3xl font-display py-4">
           Combo Generator
@@ -186,7 +186,7 @@ const GenerateCombo = () => {
           <div>
             <h3>Active filters</h3>
             {activeFilts.length !== 0 ? (
-              <div className="flex flex-wrap">
+              <div className="flex flex-wrap gap-2">
                 {" "}
                 {activeFilts.map((filt, index) => {
                   return (
@@ -211,7 +211,7 @@ const GenerateCombo = () => {
           </div>
           <div>
             <FilterAccordion filterTitle="By level">
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap lg:gap-4">
                 {levelFilts?.map((level, index) => {
                   return (
                     <button
@@ -230,7 +230,7 @@ const GenerateCombo = () => {
           </div>
           <div>
             <FilterAccordion filterTitle="By status">
-              <div className="flex flex-wrap">
+              <div className="flex flex-wrap lg:gap-4">
                 {statusFilts.map((stat, index) => {
                   return (
                     <button
@@ -249,7 +249,7 @@ const GenerateCombo = () => {
           </div>
           <div>
             <FilterAccordion filterTitle="By zone of focus">
-              <div className="flex flex-wrap">
+              <div className="flex flex-wrap lg:gap-4">
                 {zoneFilts?.map((zone, index) => {
                   return (
                     <button
