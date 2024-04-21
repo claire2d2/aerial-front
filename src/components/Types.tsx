@@ -31,3 +31,8 @@ export type faveType = {
   figure: figType;
   user: string;
 };
+
+export type zoneType = {
+  _id: string;
+  name: string;
+};
