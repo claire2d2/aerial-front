@@ -14,6 +14,51 @@ const GenerateCombo = () => {
   const [statusFilts, setStatusFilts] = useState<string[]>([]);
   const [comboFigs, setComboFigs] = useState<figType[]>([]);
 
+  // determine how many moves the combo generator should generate
+  const [nbOfMoves, setNbOfMoves] = useState<number>(3);
+
+  function addNbMoves() {
+    if (nbOfMoves < 8) {
+      const newNb = nbOfMoves + 1;
+      setNbOfMoves(newNb);
+    }
+    return 0;
+  }
+
+  function subNbMoves() {
+    if (nbOfMoves > 1) {
+      const newNb = nbOfMoves - 1;
+      setNbOfMoves(newNb);
+    }
+    return 0;
+  }
+
+  // generate a random combo
+  const [generatedCombo, setGeneratedCombo] = useState<figType[]>([]);
+
+  function generateRandomCombo(
+    e: React.MouseEvent<HTMLElement>,
+    nbOfMoves: number
+  ) {
+    e.preventDefault();
+    const comboArray: figType[] = [];
+
+    for (let i = 0; i < nbOfMoves; i++) {
+      findRandomFigure(comboArray);
+    }
+    setGeneratedCombo(comboArray);
+  }
+
+  async function findRandomFigure(comboArray: figType[]) {
+    const randomIndex = Math.floor(Math.random() * comboFigs.length);
+    const randomFigure = comboFigs[randomIndex];
+    if (comboArray.includes(randomFigure)) {
+      findRandomFigure(comboArray);
+    } else {
+      comboArray.push(randomFigure);
+    }
+  }
+
   // fetch initial data for figures data and available zones
   useEffect(() => {
     fetchFigures(currDisciplineRef, setComboFigs, levelFilts, zoneFilts);
@@ -26,7 +71,6 @@ const GenerateCombo = () => {
     } else {
       fetchFigures(currDisciplineRef, setComboFigs, [], []);
     }
-    console.log(comboFigs);
   }, [levelFilts, zoneFilts]);
 
   const difficulties = ["beginner", "intermediate", "advanced"];
@@ -74,13 +118,29 @@ const GenerateCombo = () => {
           figures for a combo, it won't work so please be sure about your
           filters!
         </div>
-        <div>Filters</div>
+        {/*
+         ** Section to determine how many figures you want
+         */}
+        <div>
+          <h2>Combo parameters</h2>
+          <div>Set how many figures you want in your combo (max 8):</div>
+          <div className="flex">
+            <button onClick={subNbMoves}>-</button>
+            <div>{nbOfMoves}</div>
+            <button onClick={addNbMoves}>+</button>
+          </div>
+        </div>
+        {/*
+         ** Filters for generating combo
+         */}
+        <h2 className="text-xl">Filters</h2>
         <div>
           <h3>By level</h3>
           <div className="flex">
-            {difficulties?.map((level) => {
+            {difficulties?.map((level, index) => {
               return (
                 <button
+                  key={index}
                   onClick={(e) =>
                     handleClickFilter(e, levelFilts, setLevelFilts, level)
                   }
@@ -89,20 +149,15 @@ const GenerateCombo = () => {
                 </button>
               );
             })}
-            <div>
-              Test :{" "}
-              {statusFilts.map((test) => {
-                return <span>{test}</span>;
-              })}
-            </div>
           </div>
         </div>
         <div>
           <h3>By status</h3>
           <div className="flex">
-            {statuses.map((stat) => {
+            {statuses.map((stat, index) => {
               return (
                 <button
+                  key={index}
                   onClick={(e) =>
                     handleClickFilter(e, statusFilts, setStatusFilts, stat)
                   }
@@ -111,20 +166,15 @@ const GenerateCombo = () => {
                 </button>
               );
             })}
-            <div>
-              Test :{" "}
-              {levelFilts.map((test) => {
-                return <span>{test}</span>;
-              })}
-            </div>
           </div>
         </div>
         <div>
           <h3>By zone of focus</h3>
           <div className="flex">
-            {zones?.map((zone) => {
+            {zones?.map((zone, index) => {
               return (
                 <button
+                  key={index}
                   onClick={(e) =>
                     handleClickFilter(e, zoneFilts, setZoneFilts, zone.name)
                   }
@@ -133,32 +183,26 @@ const GenerateCombo = () => {
                 </button>
               );
             })}
-            <div>
-              Test :{" "}
-              {zoneFilts.map((test) => {
-                return <span>{test}</span>;
-              })}
-            </div>
           </div>
         </div>
-        <button>Let's go !</button>
+        {/*
+         ** Button to submit form for generating combo
+         */}
+
+        <form action="">
+          <button
+            onClick={(e) => generateRandomCombo(e, nbOfMoves)}
+            className="bg-main text-white"
+          >
+            Let's go !
+          </button>
+        </form>
       </div>
       <div className="bg-bgmainlight basis-1/5 lg:basis-1/2 flex justify-center items-center rounded-lg">
         <div className="text-gray">
-          {comboFigs ? (
-            comboFigs.map((fig) => {
-              return (
-                <div>
-                  {fig.name} + {fig.difficulty} +{" "}
-                  {fig.focus.map((foc) => {
-                    return <p>{foc.name}</p>;
-                  })}
-                </div>
-              );
-            })
-          ) : (
-            <div>Loading</div>
-          )}
+          {generatedCombo.map((fig, index) => {
+            return <div key={index}>{fig.name}</div>;
+          })}
         </div>
       </div>
     </div>

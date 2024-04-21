@@ -29,7 +29,6 @@ export async function fetchFigures(
       });
       // console.log("levelfitls", levelFilts);
       // console.log("discipline", disciplineRef);
-      console.log(queryParams);
     }
     const response = await aerialApi.get(`/figures/?${queryParams}`);
     setFigures(response.data);
