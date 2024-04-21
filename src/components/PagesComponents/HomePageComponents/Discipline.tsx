@@ -25,7 +25,7 @@ const Discipline: React.FC<DisciplineProps> = ({
   return (
     <button
       onClick={goToDiscipline}
-      className="relative h-64 lg:h-80 flex items-center justify-center"
+      className="relative h-64 lg:h-80 flex items-center justify-center hover:lg:h-96 transition-all"
     >
       <img
         src={image}

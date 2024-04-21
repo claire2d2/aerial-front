@@ -37,7 +37,7 @@ const HomePage = () => {
         style={{
           backgroundImage: "url('cloudsBG.jpg')",
         }}
-        className="flex flex-col p-2 h-96 bg-cover lg:flex-row lg:justify-center  text-center gap-2 items-center justify-center"
+        className="flex flex-col p-2 h-80 bg-cover lg:flex-row lg:justify-center  text-center gap-2 items-center justify-center"
       >
         <div
           className={`z-9 gap-3 h-1/2 lg:h-full flex flex-col justify-center lg:py-20  font-display`}
@@ -52,7 +52,10 @@ const HomePage = () => {
         </div>
         {isLoggedIn ? "" : showIfLoggedOut}
       </div>
-
+      <div className="bg-main text-white">
+        <h2 className="font-display">Website features:</h2>
+        <div>List website features here</div>
+      </div>
       <Discipline
         name="Pole Dance"
         image="/poleDanceBg.jpg"
@@ -67,7 +70,7 @@ const HomePage = () => {
       />
       <Discipline
         name="Contorsion"
-        image="/poleDanceBg.jpg"
+        image="/contorsionBG.jpg"
         active={false}
         link="contorsion"
       />
