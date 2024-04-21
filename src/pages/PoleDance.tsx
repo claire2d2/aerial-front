@@ -1,6 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { fetchFigures } from "../components/PagesComponents/FiguresFunctions";
+import { figType } from "../components/Types";
+
+// style imports
+import FeatureButton from "../components/PagesComponents/PoleDancePage/FeatureButton";
 
 const PoleDance = () => {
+  const [poleFigs, setPoleFigs] = useState<figType[]>([]);
+  useEffect(() => {
+    fetchFigures("pole", setPoleFigs, [], []);
+  }, []);
+
+  // use state for styling
   const [showBeginner, setShowBeginner] = useState<boolean>(false);
   const [showIntermediate, setShowIntermediate] = useState<boolean>(false);
   const [showAdvanced, setShowAdvanced] = useState<boolean>(false);
@@ -19,22 +30,59 @@ const PoleDance = () => {
   }
   return (
     <div className="flex flex-col w-full h-full items-center text-center overflow-scroll no-scrollbar">
-      <div className="basis-1/6 w-full flex items-center justify-center bg-mainlight">
-        <h1>Pole Dance</h1>
+      <div className="Header relative w-full flex flex-col gap-5 h-64 lg:h-80  items-center justify-center">
+        <img
+          src="/poleDanceBg.jpg"
+          alt=""
+          className="object-cover h-full w-full brightness-60"
+        />
+        <h1 className="PageTitle absolute text-6xl text-white font-display bg-contain">
+          Pole Dance
+        </h1>
       </div>
-
-      <div className="basis-1/6 w-full">
-        <h2>About Pole Dance</h2>
-        <div>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit laborum
-          magnam, natus sequi, pariatur eius neque magni facere reiciendis odio
-          et recusandae non enim quia, porro in id fugiat itaque.
+      <div className="PoleDescr flex flex-col gap-5 lg:h-90 bg-main text-white py-10">
+        <p>
+          Often associated with strippers, and with reason, as the discipline
+          has been enriched and made popular by the stripper community in the
+          last decades, modern pole dance now offers people a large variety in
+          ways to express yourself.
+        </p>
+        <p>
+          This website will mainly focus on{" "}
+          <span className="font-semibold">pole fitness</span>, but feel free to
+          use the features made available for inspiration on other aspects of
+          your pole journey if you deem them useful!
+        </p>
+      </div>
+      <div className="w-full">
+        <h2>Features</h2>
+        <p>
+          The website currently regroups {poleFigs?.length} figures for pole
+          dance, but we are working hard on enriching our database! Feel free to
+          give us suggestion here (TO DO : add contact form)
+        </p>
+        <p>With these figures, you may:</p>
+        <div className="lg:h-40 bg-main w-full flex ">
+          <FeatureButton title="Keep a tab on your training" link="figures">
+            Track the figures you wish to train, are currently training or have
+            already mastered
+          </FeatureButton>
+          <FeatureButton title="Generate a random combo">
+            For when you have no inspiration. And save that combo if you end up
+            liking it!
+          </FeatureButton>
+          <FeatureButton title="Save all your combos in one place">
+            Create a new combo and find all the combos you previously saved.
+          </FeatureButton>
         </div>
       </div>
-      <div className="basis-2/3 w-full">
-        You will currently find on this website three levels of difficulty. To
-        know more about what each level entails, please click on the
-        corresponding card to reveal details.
+
+      <div className="lg:h-60 w-full">
+        <p>Figures are currently sorted into three levels of difficulty</p>{" "}
+        <p>
+          To know more about what each level entails, please click on the
+          corresponding card to reveal details.
+        </p>
         <div className="flex flex-col h-5/6 lg:flex-row">
           <div className={` basis-1/3 w-full bg-golden`}>
             <button
