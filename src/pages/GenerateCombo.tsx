@@ -16,7 +16,11 @@ const GenerateCombo = () => {
   // states for filters
   const [activeFilts, setAllActiveFilts] = useState<string[]>(["Mastered"]);
   const [zoneFilts, setZoneFilts] = useState<string[]>([]);
-  const [levelFilts, setLevelFilts] = useState<string[]>([]);
+  const [levelFilts, setLevelFilts] = useState<string[]>([
+    "beginner",
+    "intermediate",
+    "advanced",
+  ]);
   const [statusFilts, setStatusFilts] = useState<string[]>(["Mastered"]);
   const [comboFigs, setComboFigs] = useState<figType[]>([]);
 
@@ -79,7 +83,6 @@ const GenerateCombo = () => {
     }
   }, [levelFilts, zoneFilts]);
 
-  const difficulties = ["beginner", "intermediate", "advanced"];
   const statuses = [
     "Not seen yet",
     "Wishlist",
@@ -96,14 +99,22 @@ const GenerateCombo = () => {
     clickedFilter: string
   ) {
     e.preventDefault();
-    const isSelected = filtersArray.find((filt) => filt === clickedFilter);
-    if (isSelected) {
-      const copy = filtersArray.filter((filt) => filt !== clickedFilter);
-      setFiltersArray(copy);
-    } else {
-      setFiltersArray([...filtersArray, clickedFilter]);
-    }
+    // when clicking on a filter, add it to the active filters array
+    setAllActiveFilts([...activeFilts, clickedFilter]);
+    // and remove it from the concerned filter array
+    const copy = filtersArray.filter((filt) => filt !== clickedFilter);
+    setFiltersArray(copy);
   }
+
+  //   async function handleLevelFilts(clickedFilter: string) {
+  //     console.log(clickedFilter);
+  //     console.log(levelFilts);
+  //     if (levelFilts.includes(clickedFilter)) {
+  //       const copy = levelFilts.filter((filt) => filt !== clickedFilter);
+  //       console.log(copy);
+  //       setLevelFilts(copy);
+  //     }
+  //   }
 
   // when filters are chosen and unchosen, set the "states" to fetch the figures that are concerned by the statuses
   //   useEffect(() => {
@@ -165,7 +176,7 @@ const GenerateCombo = () => {
         <div>
           <FilterAccordion filterTitle="By level">
             <div className="flex">
-              {difficulties?.map((level, index) => {
+              {levelFilts?.map((level, index) => {
                 return (
                   <button
                     key={index}
