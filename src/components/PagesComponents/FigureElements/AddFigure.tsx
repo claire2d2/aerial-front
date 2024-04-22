@@ -1,6 +1,15 @@
-import { useState, ChangeEvent, FormEvent, useEffect } from "react";
+import {
+  useState,
+  ChangeEvent,
+  FormEvent,
+  SetStateAction,
+  useEffect,
+} from "react";
 import useUser from "../../../context/useUser";
+import { AxiosError } from "axios";
+import { figType } from "../../Types";
 import aerialApi from "../../../service/aerialApi";
+import { fetchFigures } from "../FiguresFunctions";
 
 type formType = {
   name: string;
@@ -13,23 +22,37 @@ type formType = {
   focus: string[];
 };
 
-const AddFigure = () => {
-  const { currDiscipline, zones } = useUser();
+type AddFigureProps = {
+  currDiscipline: {
+    name: string;
+    ref: string;
+    _id: string;
+  };
+  setFigures: React.Dispatch<SetStateAction<figType[]>>;
+  setShowFigForm: React.Dispatch<SetStateAction<boolean>>;
+  setShowToast: React.Dispatch<SetStateAction<boolean>>;
+  setToastMessage: React.Dispatch<SetStateAction<string>>;
+};
 
-  const [formState, setFormState] = useState<formType>({
+const AddFigure: React.FC<AddFigureProps> = ({
+  currDiscipline,
+  setFigures,
+  setShowFigForm,
+  setShowToast,
+  setToastMessage,
+}) => {
+  const defaultFormState = {
     name: "",
     ref: "",
-    discipline: "",
-    difficulty: "",
+    discipline: currDiscipline._id,
+    difficulty: "beginner",
     image: "",
     imgArtist: "",
     imgArtistUrl: "",
     focus: [],
-  });
-
-  useEffect(() => {
-    console.log(currDiscipline._id);
-  }, [formState]);
+  };
+  const { zones } = useUser();
+  const [formState, setFormState] = useState<formType>(defaultFormState);
 
   // get available zones of focus
 
@@ -65,28 +88,53 @@ const AddFigure = () => {
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
-    const ref = formState.name.split(" ").join("-");
-    const disciplineId = currDiscipline?._id;
-    if (disciplineId) {
-      setFormState({ ...formState, discipline: disciplineId, ref: ref });
-    }
+
     try {
+      console.log(formState);
       const response = await aerialApi.post("/figures", formState);
-      console.log(response);
+      console.log(response.data);
       if (response.status === 201) {
         console.log("figure created", response.data);
       }
+      // refresh figures page
+      fetchFigures(currDiscipline._id, setFigures, [], []);
+      // reset form state to initial state
+      setFormState(defaultFormState);
+      // close form
+      setShowFigForm(false);
+      // show message success on toast
+      setToastMessage("Figure has been successfully added!");
     } catch (error) {
-      console.log(error);
+      if (error instanceof AxiosError) {
+        // Handle error if it is an instance of Error
+        console.error(error);
+        setToastMessage(error.response?.data.message); // Use type assertion to access message property
+      } else {
+        // Handle other types of errors
+        console.error(error);
+        setToastMessage("An unknown error occurred. Please try again.");
+      }
     }
+    // show toast with message
+    setShowToast(true);
+    // hide toast after 3 seconds
+    setTimeout(() => {
+      setShowToast(false);
+    }, 3000);
   }
 
   const { name, difficulty, image, imgArtist, imgArtistUrl } = formState;
 
+  // use effect so that ref is correctly inputted when submitting form
+  useEffect(() => {
+    const ref = formState.name.split(" ").join("-");
+    setFormState({ ...formState, ref: ref });
+  }, [name]);
+
   return (
     <div>
       <h3>Add a figure to the database:</h3>
-      <form onSubmit={handleSubmit} className="flex flex-col">
+      <form onSubmit={(e) => handleSubmit(e)} className="flex flex-col">
         <div>
           <label htmlFor="figName">Figure Name:</label>
           <input
@@ -163,7 +211,12 @@ const AddFigure = () => {
           </div>
         ))}
 
-        <button>Submit</button>
+        <button
+          disabled={name === "" || difficulty === "" || image === ""}
+          className="bg-main px-3 disabled:bg-disabled"
+        >
+          Submit
+        </button>
       </form>
     </div>
   );

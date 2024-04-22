@@ -17,13 +17,30 @@ import MobileFilter from "../components/PagesComponents/AllFiguresPageComponents
 import ShowFigures from "../components/PagesComponents/AllFiguresPageComponents/ShowFigures";
 import LevelAccordion from "../components/PagesComponents/AllFiguresPageComponents/LevelAccordion";
 import AddFigure from "../components/PagesComponents/FigureElements/AddFigure";
-import { Modal } from "flowbite-react";
+import { Toast } from "flowbite-react";
+import { HiFire, HiExclamation } from "react-icons/hi";
 
+const toastTheme = {
+  root: {
+    base: "absolute top-4 right-4 flex w-full max-w-xs items-center rounded-lg bg-white p-4 text-gray-500 shadow dark:bg-gray-800 dark:text-gray-400",
+    closed: "opacity-0 ease-out",
+  },
+  toggle: {
+    base: "-m-1.5 ml-auto inline-flex h-8 w-8 rounded-lg bg-white p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-900 focus:ring-2 focus:ring-gray-300 dark:bg-gray-800 dark:text-gray-500 dark:hover:bg-gray-700 dark:hover:text-white",
+    icon: "h-5 w-5 shrink-0",
+  },
+};
+
+//! Component starts here
 const Figures = () => {
   const { currDiscipline, activeFilters, sortBy, modViewOn } = useUser();
   const [figures, setFigures] = useState<figType[]>([]);
   const [statesData, setStatesData] = useState<statusType[]>([]);
   const [faveData, setFaveData] = useState<faveType[]>([]);
+  // use state, if mod mode is on, user can add a figure
+  const [showFigForm, setShowFigForm] = useState<boolean>(false);
+  const [showToast, setShowToast] = useState<boolean>(false);
+  const [toastMessage, setToastMessage] = useState<string>("");
 
   // fetch figures when page renders
   useEffect(() => {
@@ -58,37 +75,68 @@ const Figures = () => {
     sortFiguresAlpha(figures, sortBy, setFigures);
   }, [sortBy]);
 
-  // open form to create new figure (mods only)
-  const [openModal, setOpenModal] = useState(false);
+  // show or collapse form
+  const handleShowForm = () => {
+    if (showFigForm) {
+      setShowFigForm(false);
+    } else {
+      setShowFigForm(true);
+    }
+  };
 
   if (figures.length === 0) {
     return <p>Loading!</p>;
   }
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center relative">
       <div className="flex justify-between w-full items-center">
         <h1 className="text-2xl">
           <span className="capitalize">{currDiscipline?.name}</span> figures
         </h1>
-        {modViewOn ? (
-          <div className="flex gap-1">
-            <button
-              onClick={() => setOpenModal(true)}
-              className="bg-main px-2 rounded-lg text-white"
-            >
-              {" "}
-              +{" "}
-            </button>
-            Add new figure
-          </div>
-        ) : (
-          ""
-        )}
+
         <div>
           <SortBy />
         </div>
       </div>
-      <div className="hidden">Search bar (drop down when mobile)</div>
+      {modViewOn && currDiscipline ? (
+        <div>
+          <div className="flex gap-1 justify-start w-full px-2">
+            <button
+              onClick={handleShowForm}
+              className="bg-main px-2 rounded-lg text-white"
+            >
+              {showFigForm ? "-" : "+"}
+            </button>
+            {showFigForm ? "Hide form" : "Add a new figure"}
+          </div>
+          <div className={showFigForm ? "block" : "hidden"}>
+            <AddFigure
+              currDiscipline={currDiscipline}
+              setFigures={setFigures}
+              setShowFigForm={setShowFigForm}
+              setShowToast={setShowToast}
+              setToastMessage={setToastMessage}
+            />
+          </div>
+          {showToast && (
+            <Toast theme={toastTheme}>
+              <div className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-green-100 text-green-500 dark:bg-green-800 dark:text-green-200">
+                {toastMessage === "Figure has been successfully added!" ? (
+                  <HiFire className="h-5 w-5" />
+                ) : (
+                  <HiExclamation className="h-5 w-5" />
+                )}
+              </div>
+              <div className="ml-3 text-sm font-normal">{toastMessage}</div>
+              <Toast.Toggle />
+            </Toast>
+          )}
+        </div>
+      ) : (
+        ""
+      )}
+
+      <div className="">Search bar (drop down when mobile)</div>
       <div className="w-full">
         <MobileFilter />
       </div>
@@ -100,17 +148,6 @@ const Figures = () => {
       ) : (
         <ShowFigures shownFigures={shownFigures} />
       )}
-      <Modal
-        show={openModal}
-        size="md"
-        onClose={() => setOpenModal(false)}
-        popup
-      >
-        <Modal.Header />
-        <Modal.Body>
-          <AddFigure />
-        </Modal.Body>
-      </Modal>
     </div>
   );
 };
