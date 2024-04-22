@@ -11,7 +11,7 @@ import EntriesExits from "../components/PagesComponents/FigureElements/EntriesEx
 import FavoriteButton from "../components/PagesComponents/FavoriteButton";
 
 const OneFigure = () => {
-  const { currDiscipline, currDisciplineRef } = useUser();
+  const { currDiscipline } = useUser();
   const { figureRef } = useParams<string>();
   const [figData, setFigData] = useState<figType | null>(null);
   // imported in StatusToggle component
@@ -43,10 +43,10 @@ const OneFigure = () => {
   if (figData && figData.discipline.ref !== currLocation) {
     return (
       <div>
-        Looks like this figure doesn't exist for the {currDiscipline}
+        Looks like this figure doesn't exist for the {currDiscipline?.name}
         discipline
-        <button onClick={() => navigate(`/${currDisciplineRef}/figures`)}>
-          Go back to {currDiscipline} figures
+        <button onClick={() => navigate(`/${currDiscipline?.ref}/figures`)}>
+          Go back to {currDiscipline?.name} figures
         </button>
       </div>
     );
