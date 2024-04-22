@@ -18,8 +18,13 @@ import ShowFigures from "../components/PagesComponents/AllFiguresPageComponents/
 import LevelAccordion from "../components/PagesComponents/AllFiguresPageComponents/LevelAccordion";
 
 const Figures = () => {
-  const { currDiscipline, currDisciplineRef, activeFilters, sortBy } =
-    useUser();
+  const {
+    currDiscipline,
+    currDisciplineRef,
+    activeFilters,
+    sortBy,
+    modViewOn,
+  } = useUser();
   const [figures, setFigures] = useState<figType[]>([]);
   const [statesData, setStatesData] = useState<statusType[]>([]);
   const [faveData, setFaveData] = useState<faveType[]>([]);
@@ -58,10 +63,18 @@ const Figures = () => {
   }
   return (
     <div className="flex flex-col items-center">
-      <div className="flex justify-between w-full">
+      <div className="flex justify-between w-full items-center">
         <h1 className="text-2xl">
           <span className="capitalize">{currDiscipline}</span> figures
         </h1>
+        {modViewOn ? (
+          <div className="flex gap-1">
+            <button className="bg-main px-2 rounded-lg text-white"> + </button>
+            Add new figure
+          </div>
+        ) : (
+          ""
+        )}
         <div>
           <SortBy />
         </div>

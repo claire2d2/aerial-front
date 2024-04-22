@@ -38,7 +38,8 @@ const NavBar = () => {
       </div>
 
       <DarkLightToggle />
-      <div className="flex md:order-2 basis-1/6">
+
+      <div className="flex md:order-2 basis-1/5">
         {isLoggedIn ? <NavBarLoggedIn /> : <NavBarLoggedOut />}
         <div className="lg:hidden">
           {currDiscipline ? (
