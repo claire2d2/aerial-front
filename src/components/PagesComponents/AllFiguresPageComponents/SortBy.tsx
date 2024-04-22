@@ -18,9 +18,9 @@ const SortBy = () => {
   };
   return (
     <select name="sortBy" id="sortBy" onChange={handleChangeSortBy}>
-      {sortOptions.map((el) => {
+      {sortOptions.map((el, index) => {
         return (
-          <option value={el[0]} selected={el[0] === sortBy ? true : false}>
+          <option key={index} value={el[0]} defaultValue={sortBy}>
             {el[1]}
           </option>
         );
