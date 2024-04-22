@@ -3,7 +3,7 @@ import Footer from "./Footer";
 import { Outlet } from "react-router-dom";
 const Layout = () => {
   return (
-    <div className="Layout relative h-screen overflow-scroll no-scrollbar text-text bg-bgmain dark:bg-bgmaindark dark:text-textdark">
+    <div className="Layout relative h-screen overflow-scroll no-scrollbar text-text bg-bgmain dark:bg-bgmaindark dark:text-textdark font-display">
       <div className="sticky top-0 z-10 h-nav w-full bg-gradient-to-r from-main via-mainvariant to-main shadow-md">
         <NavBar />
       </div>

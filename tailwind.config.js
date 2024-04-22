@@ -4,7 +4,8 @@ export default {
   darkMode: "class", // enables dark mode based on the class applied to the html tag
   theme: {
     fontFamily: {
-      display: ['"Playfair Display"', "sans-serif"],
+      display: ["Montserrat", "sans-serif"],
+      romantic: ['"Style Script"', "sans-serif"],
     },
     colors: {
       // for all styling

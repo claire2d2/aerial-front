@@ -24,7 +24,7 @@ const FiguresCounter: React.FC<FiguresCounterProps> = ({
     return 0;
   }
   return (
-    <div className="flex w-20 h-10 justify-center items-center px-5 mx-auto drop-shadow text-main dark:text-white">
+    <div className="flex z-1 w-20 h-10 justify-center items-center px-5 mx-auto drop-shadow text-main dark:text-white">
       <button
         onClick={subNbMoves}
         className=" bg-white  dark:bg-bgmaindark rounded-l-lg px-2 border border-gray font-bold text-xl transition-all hover:bg-bgmainlight active:bg-main active:text-white disabled:bg-disabled disabled:text-white"
