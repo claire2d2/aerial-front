@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import useUser from "../context/useUser";
 import aerialApi from "../service/aerialApi";
 import { figType } from "../components/Types";
@@ -11,17 +11,17 @@ type comboType = {
   comment: string;
 };
 const AllCombos = () => {
-  const { currDisciplineRef } = useUser();
+  const { currDiscipline } = useUser();
   const [allCombos, setAllCombos] = useState<comboType[]>([]);
 
-  useState(() => {
+  useEffect(() => {
     fetchCombos();
   }, []);
 
   async function fetchCombos() {
     try {
       const response = await aerialApi.get(
-        `/combos?discipline=${currDisciplineRef}`
+        `/combos?discipline=${currDiscipline?.ref}`
       );
       setAllCombos(response.data);
     } catch (error) {

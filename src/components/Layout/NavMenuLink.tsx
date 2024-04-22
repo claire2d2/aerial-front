@@ -7,11 +7,11 @@ type NavMenuLinkProps = {
 };
 
 const NavMenuLink: React.FC<NavMenuLinkProps> = ({ pageRef, children }) => {
-  const { currDisciplineRef } = useUser();
+  const { currDiscipline } = useUser();
   const currentLinkPage = location.pathname.split("/")[2];
 
   return (
-    <Link to={`/${currDisciplineRef}/${pageRef}`}>
+    <Link to={`/${currDiscipline?.ref}/${pageRef}`}>
       <span
         className={`capitalize w-full bg-golden ${
           currentLinkPage === pageRef ? "font-bold" : "font-normal"
