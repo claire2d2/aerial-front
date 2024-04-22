@@ -67,11 +67,14 @@ const PoleDance = () => {
             Track the figures you wish to train, are currently training or have
             already mastered
           </FeatureButton>
-          <FeatureButton title="Generate a random combo">
+          <FeatureButton title="Generate a random combo" link="combo-generator">
             For when you have no inspiration. And save that combo if you end up
             liking it!
           </FeatureButton>
-          <FeatureButton title="Save all your combos in one place">
+          <FeatureButton
+            title="Save all your combos in one place"
+            link="combos"
+          >
             Create a new combo and find all the combos you previously saved.
           </FeatureButton>
         </div>
