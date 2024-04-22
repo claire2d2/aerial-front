@@ -98,7 +98,7 @@ const GenerateCombo = () => {
     console.log(figsWithStates);
     setComboFigsWithStates(figsWithStates);
     console.log(comboFigs);
-  }, [statesData, activeStatusFilts]);
+  }, [activeStatusFilts]);
 
   // update combo figures when level and zone filts are selected
   useEffect(() => {
