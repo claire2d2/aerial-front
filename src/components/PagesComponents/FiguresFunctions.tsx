@@ -8,23 +8,23 @@ type SetFaveData = Dispatch<SetStateAction<faveType[]>>;
 
 /* function to fetch all figures from a specific discipline
  ** 2 arguments :
- ** disciplineRef: currDisciplineRef
+ ** discipline: currDiscipline id
  ** setFigures: setFigures (from useContext)
  */
 
 export async function fetchFigures(
-  disciplineRef: string | null,
+  disciplineId: string | null,
   setFigures: SetFigures,
   levelFilts: string[],
   zoneFilts: string[]
 ) {
   let queryParams;
   try {
-    if (disciplineRef) {
+    if (disciplineId) {
       queryParams = new URLSearchParams({
         levels: levelFilts.join(","),
         zones: zoneFilts.join(","),
-        discipline: disciplineRef,
+        discipline: disciplineId,
       });
       // console.log("levelfitls", levelFilts);
       // console.log("discipline", disciplineRef);

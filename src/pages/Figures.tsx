@@ -16,32 +16,32 @@ import SortBy from "../components/PagesComponents/AllFiguresPageComponents/SortB
 import MobileFilter from "../components/PagesComponents/AllFiguresPageComponents/MobileFilter";
 import ShowFigures from "../components/PagesComponents/AllFiguresPageComponents/ShowFigures";
 import LevelAccordion from "../components/PagesComponents/AllFiguresPageComponents/LevelAccordion";
+import AddFigure from "../components/PagesComponents/FigureElements/AddFigure";
+import { Modal } from "flowbite-react";
 
 const Figures = () => {
-  const {
-    currDiscipline,
-    currDisciplineRef,
-    activeFilters,
-    sortBy,
-    modViewOn,
-  } = useUser();
+  const { currDiscipline, activeFilters, sortBy, modViewOn } = useUser();
   const [figures, setFigures] = useState<figType[]>([]);
   const [statesData, setStatesData] = useState<statusType[]>([]);
   const [faveData, setFaveData] = useState<faveType[]>([]);
 
   // fetch figures when page renders
   useEffect(() => {
-    fetchFigures(currDisciplineRef, setFigures, [], []);
+    if (currDiscipline) {
+      fetchFigures(currDiscipline._id, setFigures, [], []);
+    }
   }, [currDiscipline]);
 
   // when filters are chosen and unchosen, set the "states" to fetch the figures that are concerned by the statuses
   useEffect(() => {
-    if (activeFilters.length !== 0) {
-      fetchFigures(currDisciplineRef, setFigures, [], []);
-      fetchFigStatus(setStatesData, activeFilters);
-      fetchFaves(setFaveData);
-    } else {
-      fetchFigures(currDisciplineRef, setFigures, [], []);
+    if (currDiscipline) {
+      if (activeFilters.length !== 0) {
+        fetchFigures(currDiscipline._id, setFigures, [], []);
+        fetchFigStatus(setStatesData, activeFilters);
+        fetchFaves(setFaveData);
+      } else {
+        fetchFigures(currDiscipline._id, setFigures, [], []);
+      }
     }
   }, [activeFilters]);
 
@@ -58,6 +58,9 @@ const Figures = () => {
     sortFiguresAlpha(figures, sortBy, setFigures);
   }, [sortBy]);
 
+  // open form to create new figure (mods only)
+  const [openModal, setOpenModal] = useState(false);
+
   if (figures.length === 0) {
     return <p>Loading!</p>;
   }
@@ -65,11 +68,17 @@ const Figures = () => {
     <div className="flex flex-col items-center">
       <div className="flex justify-between w-full items-center">
         <h1 className="text-2xl">
-          <span className="capitalize">{currDiscipline}</span> figures
+          <span className="capitalize">{currDiscipline?.name}</span> figures
         </h1>
         {modViewOn ? (
           <div className="flex gap-1">
-            <button className="bg-main px-2 rounded-lg text-white"> + </button>
+            <button
+              onClick={() => setOpenModal(true)}
+              className="bg-main px-2 rounded-lg text-white"
+            >
+              {" "}
+              +{" "}
+            </button>
             Add new figure
           </div>
         ) : (
@@ -91,6 +100,17 @@ const Figures = () => {
       ) : (
         <ShowFigures shownFigures={shownFigures} />
       )}
+      <Modal
+        show={openModal}
+        size="md"
+        onClose={() => setOpenModal(false)}
+        popup
+      >
+        <Modal.Header />
+        <Modal.Body>
+          <AddFigure />
+        </Modal.Body>
+      </Modal>
     </div>
   );
 };

@@ -13,7 +13,7 @@ type userType = {
 };
 
 type disciplType = {
-  id: string;
+  _id: string;
   ref: string;
   name: string;
 };
@@ -38,10 +38,8 @@ type UserContextProps = {
   setAllFigures: React.Dispatch<React.SetStateAction<figType[]>>;
   allDisciplines: disciplType[] | null;
   setAllDisciplines: React.Dispatch<React.SetStateAction<disciplType[] | null>>;
-  currDiscipline: string | null;
-  setCurrDiscipline: React.Dispatch<React.SetStateAction<string | null>>;
-  currDisciplineRef: string | null;
-  setCurrDisciplineRef: React.Dispatch<React.SetStateAction<string | null>>;
+  currDiscipline: disciplType | null;
+  setCurrDiscipline: React.Dispatch<React.SetStateAction<disciplType | null>>;
   zones: zoneType[];
   setZones: React.Dispatch<React.SetStateAction<zoneType[]>>;
   favorites: faveType[];
@@ -130,8 +128,7 @@ function UserContextWrapper({ children }: { children: ReactNode }) {
   };
 
   // check the discipline being used (by default, none and just default homepage)
-  const [currDiscipline, setCurrDiscipline] = useState<string | null>(null);
-  const [currDisciplineRef, setCurrDisciplineRef] = useState<string | null>(
+  const [currDiscipline, setCurrDiscipline] = useState<disciplType | null>(
     null
   );
   const [allDisciplines, setAllDisciplines] = useState<disciplType[] | null>(
@@ -153,8 +150,7 @@ function UserContextWrapper({ children }: { children: ReactNode }) {
     if (getDiscipline !== "") {
       const found = allDisciplines?.find((disc) => disc.ref === getDiscipline);
       if (found) {
-        setCurrDiscipline(found.name);
-        setCurrDisciplineRef(found.ref);
+        setCurrDiscipline(found);
       }
     }
   }
@@ -222,8 +218,6 @@ function UserContextWrapper({ children }: { children: ReactNode }) {
         setAllDisciplines,
         currDiscipline,
         setCurrDiscipline,
-        currDisciplineRef,
-        setCurrDisciplineRef,
         zones,
         setZones,
         favorites,

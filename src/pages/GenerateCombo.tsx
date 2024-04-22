@@ -27,7 +27,7 @@ const toolTipTheme = {
 };
 
 const GenerateCombo = () => {
-  const { currDisciplineRef, zones } = useUser();
+  const { currDiscipline, zones } = useUser();
 
   const [initialZoneFilts, setInitialZoneFilts] = useState<string[]>([]);
   const [statesData, setStatesData] = useState<statusType[]>([]);
@@ -76,12 +76,14 @@ const GenerateCombo = () => {
 
   // fetch initial data for figures data and available zones
   useEffect(() => {
-    fetchFigures(
-      currDisciplineRef,
-      setComboFigs,
-      activeLevelFilts,
-      activeZoneFilts
-    );
+    if (currDiscipline) {
+      fetchFigures(
+        currDiscipline.ref,
+        setComboFigs,
+        activeLevelFilts,
+        activeZoneFilts
+      );
+    }
     const zoneFiltNames: string[] = [];
     zones.forEach((zone) => zoneFiltNames.push(zone.name));
     setInitialZoneFilts(zoneFiltNames);
@@ -99,15 +101,17 @@ const GenerateCombo = () => {
 
   // update combo figures when level and zone filts are selected
   useEffect(() => {
-    if (activeFilts.length !== 0) {
-      fetchFigures(
-        currDisciplineRef,
-        setComboFigs,
-        activeLevelFilts,
-        activeZoneFilts
-      );
-    } else {
-      fetchFigures(currDisciplineRef, setComboFigs, [], []);
+    if (currDiscipline) {
+      if (activeFilts.length !== 0) {
+        fetchFigures(
+          currDiscipline?._id,
+          setComboFigs,
+          activeLevelFilts,
+          activeZoneFilts
+        );
+      } else {
+        fetchFigures(currDiscipline.ref, setComboFigs, [], []);
+      }
     }
   }, [activeLevelFilts, activeZoneFilts, activeStatusFilts]);
 

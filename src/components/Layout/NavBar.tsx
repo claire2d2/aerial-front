@@ -23,7 +23,7 @@ import { HiBars3 } from "react-icons/hi2";
 //TODO: styling, navbar that changes height when scrolling down and that appears when scrolling up
 
 const NavBar = () => {
-  const { isLoggedIn, currDiscipline, currDisciplineRef } = useUser();
+  const { isLoggedIn, currDiscipline } = useUser();
   const navigate = useNavigate();
 
   return (
@@ -53,7 +53,7 @@ const NavBar = () => {
               }
             >
               <Dropdown.Header>
-                <span className="capitalize">{currDiscipline}</span>
+                <span className="capitalize">{currDiscipline.name}</span>
               </Dropdown.Header>
               <Dropdown.Item>
                 <NavMenuLink pageRef="figures">Figures</NavMenuLink>
@@ -101,7 +101,7 @@ const NavBar = () => {
               <li>
                 <button
                   className="hover:text-linkhover"
-                  onClick={() => navigate(`/${currDisciplineRef}/figures`)}
+                  onClick={() => navigate(`/${currDiscipline.ref}/figures`)}
                 >
                   Figures
                 </button>
@@ -110,7 +110,7 @@ const NavBar = () => {
                 <button
                   className="hover:text-linkhover"
                   onClick={() =>
-                    navigate(`/${currDisciplineRef}/combo-generator`)
+                    navigate(`/${currDiscipline.ref}/combo-generator`)
                   }
                 >
                   Generate Combo
@@ -119,7 +119,7 @@ const NavBar = () => {
               <li>
                 <button
                   className="hover:text-linkhover"
-                  onClick={() => navigate(`/${currDisciplineRef}/combos`)}
+                  onClick={() => navigate(`/${currDiscipline.ref}/combos`)}
                 >
                   Combos
                 </button>

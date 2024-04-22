@@ -25,7 +25,7 @@ const dropDownTheme = {
 };
 
 const NavBarDiscDropDown = () => {
-  const { currDiscipline, currDisciplineRef, allDisciplines } = useUser();
+  const { currDiscipline, allDisciplines } = useUser();
   let restOfPath = "";
   const isSpecificPage = location.pathname.split("/")[2];
   if (isSpecificPage) {
@@ -37,7 +37,7 @@ const NavBarDiscDropDown = () => {
       label={
         currDiscipline ? (
           <span className="capitalize font-bold text-lg hover:text-linkhover">
-            {currDiscipline}
+            {currDiscipline.name}
           </span>
         ) : (
           <span className="capitalize font-bold text-lg hover:text-linkhover">
@@ -46,20 +46,12 @@ const NavBarDiscDropDown = () => {
         )
       }
     >
-      {/* {currDiscipline ? (
-        <Dropdown.Item>
-          <span className="capitalize font-semibold">{currDiscipline}</span>
-        </Dropdown.Item>
-      ) : (
-        ""
-      )} */}
-
       {allDisciplines
         ? allDisciplines.map((disc, index) => (
             <Dropdown.Item key={index}>
               <Link
                 to={`/${
-                  disc.ref === currDisciplineRef
+                  disc.ref === currDiscipline?.ref
                     ? `${disc.ref}`
                     : `${disc.ref}${restOfPath}`
                 }`}
