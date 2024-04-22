@@ -8,8 +8,23 @@ import {
 
 // elements for styling
 import FilterAccordion from "../components/PagesComponents/GenerateComboPage/FilterAccordion";
+import { Tooltip } from "flowbite-react";
+import FiguresCounter from "../components/PagesComponents/GenerateComboPage/FiguresCounter";
+import ComboSection from "../components/PagesComponents/GenerateComboPage/ComboSection";
 const filtButtonStyle =
-  "rounded-lg bg-white drop-shadow-sm py-1 px-2 capitalize hover:bg-bgmainlight active:bg-main active:text-white";
+  "rounded-lg bg-white drop-shadow-sm py-1 px-2 capitalize dark:bg-main dark:text-white dark:hover:bg-maindark hover:bg-bgmainlight active:bg-main active:text-white";
+const toolTipTheme = {
+  target: "w-fit",
+  animation: "transition-opacity",
+  base: "absolute z-10 inline-block rounded-lg px-3 py-2 text-sm font-medium shadow-sm",
+  hidden: "invisible opacity-0",
+  style: {
+    auto: "border border-text bg-main text-main ",
+  },
+  content:
+    "relative z-20 bg-white text-text dark:bg-main dark:text-white p-1 rounded-lg",
+};
+
 const GenerateCombo = () => {
   const { currDisciplineRef } = useUser();
   const [zones, setZones] = useState<zoneType[]>([]);
@@ -28,28 +43,15 @@ const GenerateCombo = () => {
   // states for filters
   const [activeFilts, setAllActiveFilts] = useState<string[]>(["Mastered"]);
   const [zoneFilts, setZoneFilts] = useState<string[]>([]);
+  const [activeZoneFilts, setActiveZoneFilts] = useState<string[]>([]);
   const [levelFilts, setLevelFilts] = useState<string[]>(difficulties);
+  const [activeLevelFilts, setActiveLevelFilts] = useState<string[]>([]);
   const [statusFilts, setStatusFilts] = useState<string[]>(statuses);
+  const [activeStatusFilts, setActiveStatusFilts] = useState<string[]>([]);
   const [comboFigs, setComboFigs] = useState<figType[]>([]);
 
-  // determine how many moves the combo generator should generate
+  // determine how many moves the combo generator should generate (state lifted to FiguresCounter)
   const [nbOfMoves, setNbOfMoves] = useState<number>(3);
-
-  function addNbMoves() {
-    if (nbOfMoves < 8) {
-      const newNb = nbOfMoves + 1;
-      setNbOfMoves(newNb);
-    }
-    return 0;
-  }
-
-  function subNbMoves() {
-    if (nbOfMoves > 1) {
-      const newNb = nbOfMoves - 1;
-      setNbOfMoves(newNb);
-    }
-    return 0;
-  }
 
   // generate a random combo
   const [generatedCombo, setGeneratedCombo] = useState<figType[]>([]);
@@ -87,24 +89,35 @@ const GenerateCombo = () => {
     setZoneFilts(zoneFiltNames);
   }, [currDisciplineRef]);
 
+  // update combo figures when level and zone filts are selected
   useEffect(() => {
     if (levelFilts.length !== 0 || zoneFilts.length !== 0) {
-      fetchFigures(currDisciplineRef, setComboFigs, levelFilts, zoneFilts);
+      fetchFigures(
+        currDisciplineRef,
+        setComboFigs,
+        activeLevelFilts,
+        activeZoneFilts
+      );
     } else {
       fetchFigures(currDisciplineRef, setComboFigs, [], []);
     }
   }, [levelFilts, zoneFilts]);
 
+  // when clicking on a filter
   async function handleClickFilter(
     e: React.MouseEvent<HTMLElement>,
     filtersArray: string[],
     setFiltersArray: React.Dispatch<SetStateAction<string[]>>,
+    activeFiltersArray: string[],
+    setActiveFiltersArray: React.Dispatch<SetStateAction<string[]>>,
     clickedFilter: string
   ) {
     e.preventDefault();
     // when clicking on a filter, add it to the active filters array
     setAllActiveFilts([...activeFilts, clickedFilter]);
-    // and remove it from the concerned filter array
+    // add if to the concerned active filter array
+    setActiveFiltersArray([...activeFiltersArray, clickedFilter]);
+    // and remove it from the concerned filter array (filters that are still shown to the user=)
     const copy = filtersArray.filter((filt) => filt !== clickedFilter);
     setFiltersArray(copy);
   }
@@ -113,26 +126,43 @@ const GenerateCombo = () => {
     e: React.MouseEvent<HTMLElement>,
     clickedFilterToRemove: string
   ) {
+    e.preventDefault();
+    // remove filter from all active filters array
     const copy = activeFilts.filter((filt) => filt !== clickedFilterToRemove);
     setAllActiveFilts(copy);
+    // remove filter from the concerned active filters array
+    // put filter back into the shown filters array
     if (difficulties.includes(clickedFilterToRemove)) {
+      const copy = activeLevelFilts.filter(
+        (filt) => filt !== clickedFilterToRemove
+      );
+      setActiveLevelFilts(copy);
       setLevelFilts([...levelFilts, clickedFilterToRemove]);
     }
     if (initialZoneFilts.includes(clickedFilterToRemove)) {
+      const copy = activeZoneFilts.filter(
+        (filt) => filt !== clickedFilterToRemove
+      );
+      setActiveZoneFilts(copy);
       setZoneFilts([...zoneFilts, clickedFilterToRemove]);
     }
     if (statuses.includes(clickedFilterToRemove)) {
+      const copy = activeStatusFilts.filter(
+        (filt) => filt !== clickedFilterToRemove
+      );
+      setActiveStatusFilts(copy);
       setStatusFilts([...statusFilts, clickedFilterToRemove]);
     }
   }
+
   return (
     <div className="GenerateCombo flex flex-col lg:flex-row h-full w-full justify-center items-center">
       <div className="ComboExplanations lg:h-full flex flex-col justify-center items-center lg:px-10">
-        <h1 className="w-full text-center text-main font-bold text-3xl font-display py-4">
+        <h1 className="w-full text-center text-main dark:text-textdark font-bold text-3xl font-display py-4">
           Combo Generator
         </h1>
         <div className="flex flex-col text-left">
-          <h2 className="font-display text-2xl font-semibold text-main py-2 text-center">
+          <h2 className="font-display text-2xl font-semibold text-main dark:text-textdark py-2 text-center">
             How it works
           </h2>
           <div className="flex flex-col gap-2">
@@ -152,29 +182,11 @@ const GenerateCombo = () => {
          ** Section to determine how many figures you want
          */}
         <div>
-          <h2 className="font-display text-2xl font-semibold text-main py-2">
+          <h2 className="font-display text-2xl font-semibold text-main dark:text-textdark py-2">
             Number of figures
           </h2>
 
-          <div className="flex w-20 h-10 justify-center items-center px-5 mx-auto drop-shadow">
-            <button
-              onClick={subNbMoves}
-              className=" bg-white rounded-l-lg px-2 border border-gray font-bold text-xl text-main transition-all hover:bg-bgmainlight active:bg-main active:text-white disabled:bg-disabled disabled:text-white"
-              disabled={nbOfMoves === 1}
-            >
-              -
-            </button>
-            <div className=" bg-white basis-1/2 border border-gray px-3 text-xl font-bold text-main">
-              {nbOfMoves}
-            </div>
-            <button
-              onClick={addNbMoves}
-              className=" bg-white rounded-r-lg px-2 border border-gray font-bold text-xl text-main transition-all hover:bg-bgmainlight active:bg-main active:text-white disabled:bg-disabled disabled:text-white"
-              disabled={nbOfMoves === 8}
-            >
-              +
-            </button>
-          </div>
+          <FiguresCounter nbOfMoves={nbOfMoves} setNbOfMoves={setNbOfMoves} />
         </div>
         {/*
          ** Filters for generating combo
@@ -217,7 +229,14 @@ const GenerateCombo = () => {
                     <button
                       key={index}
                       onClick={(e) =>
-                        handleClickFilter(e, levelFilts, setLevelFilts, level)
+                        handleClickFilter(
+                          e,
+                          levelFilts,
+                          setLevelFilts,
+                          activeLevelFilts,
+                          setActiveLevelFilts,
+                          level
+                        )
                       }
                       className={filtButtonStyle}
                     >
@@ -236,7 +255,14 @@ const GenerateCombo = () => {
                     <button
                       key={index}
                       onClick={(e) =>
-                        handleClickFilter(e, statusFilts, setStatusFilts, stat)
+                        handleClickFilter(
+                          e,
+                          statusFilts,
+                          setStatusFilts,
+                          activeStatusFilts,
+                          setActiveStatusFilts,
+                          stat
+                        )
                       }
                       className={filtButtonStyle}
                     >
@@ -255,7 +281,14 @@ const GenerateCombo = () => {
                     <button
                       key={index}
                       onClick={(e) =>
-                        handleClickFilter(e, zoneFilts, setZoneFilts, zone)
+                        handleClickFilter(
+                          e,
+                          zoneFilts,
+                          setZoneFilts,
+                          activeZoneFilts,
+                          setActiveZoneFilts,
+                          zone
+                        )
                       }
                       className={filtButtonStyle}
                     >
@@ -271,19 +304,27 @@ const GenerateCombo = () => {
          ** Button to submit form for generating combo
          */}
 
-        <button
-          onClick={(e) => generateRandomCombo(e, nbOfMoves)}
-          className="bg-main text-white px-5 py-2 rounded-xl my-5"
+        <Tooltip
+          content={
+            comboFigs.length < nbOfMoves
+              ? "Not enough moves match the criteria you have given."
+              : ""
+          }
+          placement="right"
+          arrow={false}
+          theme={toolTipTheme}
         >
-          Let's go !
-        </button>
+          <button
+            onClick={(e) => generateRandomCombo(e, nbOfMoves)}
+            disabled={comboFigs.length < nbOfMoves}
+            className="bg-main text-white px-5 py-2 rounded-xl my-5 disabled:bg-disabled hover:animate-bounce transition-all disabled:animate-none"
+          >
+            Let's go !
+          </button>
+        </Tooltip>
       </div>
       <div className="bg-bgmainlight lg:h-full basis-1/5 lg:basis-1/2 flex justify-center items-center rounded-lg">
-        <div className="text-gray h-full">
-          {generatedCombo.map((fig, index) => {
-            return <div key={index}>{fig.name}</div>;
-          })}
-        </div>
+        <ComboSection generatedCombo={generatedCombo} />
       </div>
     </div>
   );
