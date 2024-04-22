@@ -8,7 +8,7 @@ type ComboSectionProps = {
 };
 const ComboSection: React.FC<ComboSectionProps> = ({ generatedCombo }) => {
   const [displayedCombo, setDisplayedCombo] = useState<figType[]>([]);
-  const { currDisciplineRef } = useUser();
+  const { currDiscipline } = useUser();
   useEffect(() => {
     setDisplayedCombo([]);
     const timeoutIds: number[] = [];
@@ -33,7 +33,7 @@ const ComboSection: React.FC<ComboSectionProps> = ({ generatedCombo }) => {
         {displayedCombo.map((fig, index) => {
           return (
             <Link
-              to={`/${currDisciplineRef}/figures/${fig.ref}`}
+              to={`/${currDiscipline?.ref}/figures/${fig.ref}`}
               key={index}
               target="_blank"
               rel="noopener noreferrer"
