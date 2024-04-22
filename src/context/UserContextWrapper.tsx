@@ -1,7 +1,7 @@
 import React, { createContext, useState, useEffect, ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import aerialApi from "../service/aerialApi";
-import { figType, faveType } from "../components/Types";
+import { figType, faveType, zoneType } from "../components/Types";
 
 type userType = {
   _id: string;
@@ -42,6 +42,8 @@ type UserContextProps = {
   setCurrDiscipline: React.Dispatch<React.SetStateAction<string | null>>;
   currDisciplineRef: string | null;
   setCurrDisciplineRef: React.Dispatch<React.SetStateAction<string | null>>;
+  zones: zoneType[];
+  setZones: React.Dispatch<React.SetStateAction<zoneType[]>>;
   favorites: faveType[];
   setFavorites: React.Dispatch<React.SetStateAction<faveType[]>>;
   fetchFavorites: () => void;
@@ -67,6 +69,7 @@ function UserContextWrapper({ children }: { children: ReactNode }) {
     authenticateUser();
     fetchAllDisciplines();
     fetchFigures();
+    fetchZones();
     fetchFavorites();
   }, []);
 
@@ -145,7 +148,7 @@ function UserContextWrapper({ children }: { children: ReactNode }) {
   }
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  function fetchCurrDiscipline() {
+  async function fetchCurrDiscipline() {
     const getDiscipline = location.pathname.split("/")[1];
     if (getDiscipline !== "") {
       const found = allDisciplines?.find((disc) => disc.ref === getDiscipline);
@@ -163,6 +166,18 @@ function UserContextWrapper({ children }: { children: ReactNode }) {
     try {
       const response = await aerialApi.get(`/figures/`);
       setAllFigures(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  // fetch all the available zones
+  const [zones, setZones] = useState<zoneType[]>([]);
+
+  async function fetchZones() {
+    try {
+      const response = await aerialApi.get("/zones");
+      setZones(response.data);
     } catch (error) {
       console.log(error);
     }
@@ -209,6 +224,8 @@ function UserContextWrapper({ children }: { children: ReactNode }) {
         setCurrDiscipline,
         currDisciplineRef,
         setCurrDisciplineRef,
+        zones,
+        setZones,
         favorites,
         setFavorites,
         fetchFavorites,

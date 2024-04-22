@@ -1,11 +1,10 @@
 import { Dispatch, SetStateAction } from "react";
 import aerialApi from "../../service/aerialApi";
-import { figType, statusType, faveType, zoneType } from "../Types";
+import { figType, statusType, faveType } from "../Types";
 
 type SetFigures = Dispatch<SetStateAction<figType[]>>;
 type SetStatesData = Dispatch<SetStateAction<statusType[]>>;
 type SetFaveData = Dispatch<SetStateAction<faveType[]>>;
-type SetZoneData = Dispatch<SetStateAction<zoneType[]>>;
 
 /* function to fetch all figures from a specific discipline
  ** 2 arguments :
@@ -137,16 +136,3 @@ export const sortFiguresAlpha = (
   });
   setFigures(sortedFigures);
 };
-
-/**
- * Fetch zones of focus
- */
-
-export async function fetchZones(setZones: SetZoneData) {
-  try {
-    const response = await aerialApi.get("/zones");
-    setZones(response.data);
-  } catch (error) {
-    console.log(error);
-  }
-}

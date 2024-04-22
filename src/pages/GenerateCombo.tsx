@@ -1,9 +1,8 @@
 import { useState, useEffect } from "react";
 import useUser from "../context/useUser";
-import { figType, zoneType, statusType } from "../components/Types";
+import { figType, statusType } from "../components/Types";
 import {
   fetchFigures,
-  fetchZones,
   fetchFigStatus,
 } from "../components/PagesComponents/FiguresFunctions";
 
@@ -28,8 +27,7 @@ const toolTipTheme = {
 };
 
 const GenerateCombo = () => {
-  const { currDisciplineRef } = useUser();
-  const [zones, setZones] = useState<zoneType[]>([]);
+  const { currDisciplineRef, zones } = useUser();
 
   const [initialZoneFilts, setInitialZoneFilts] = useState<string[]>([]);
   const [statesData, setStatesData] = useState<statusType[]>([]);
@@ -84,7 +82,6 @@ const GenerateCombo = () => {
       activeLevelFilts,
       activeZoneFilts
     );
-    fetchZones(setZones);
     const zoneFiltNames: string[] = [];
     zones.forEach((zone) => zoneFiltNames.push(zone.name));
     setInitialZoneFilts(zoneFiltNames);
