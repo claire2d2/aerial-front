@@ -51,6 +51,7 @@ export async function fetchFigStatus(
     const queryParams = new URLSearchParams({
       filtersQuery: activeFilters.join(","),
     });
+    console.log(queryParams);
     const response = await aerialApi.get(`/states?${queryParams}`);
     setStatesData(response.data);
   } catch (error) {

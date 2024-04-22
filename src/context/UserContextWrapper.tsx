@@ -40,8 +40,8 @@ type UserContextProps = {
   setCurrDisciplineRef: React.Dispatch<React.SetStateAction<string | null>>;
   favorites: faveType[];
   setFavorites: React.Dispatch<React.SetStateAction<faveType[]>>;
-  activeFilters: string[];
   fetchFavorites: () => void;
+  activeFilters: string[];
   setActiveFilters: React.Dispatch<React.SetStateAction<string[]>>;
   sortBy: string;
   setSortBy: React.Dispatch<React.SetStateAction<string>>;

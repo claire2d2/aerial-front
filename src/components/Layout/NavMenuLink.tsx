@@ -13,7 +13,7 @@ const NavMenuLink: React.FC<NavMenuLinkProps> = ({ pageRef, children }) => {
   return (
     <Link to={`/${currDisciplineRef}/${pageRef}`}>
       <span
-        className={`capitalize ${
+        className={`capitalize w-full bg-golden ${
           currentLinkPage === pageRef ? "font-bold" : "font-normal"
         }`}
       >

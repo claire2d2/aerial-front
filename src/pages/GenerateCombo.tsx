@@ -1,9 +1,10 @@
 import { useState, useEffect, SetStateAction } from "react";
 import useUser from "../context/useUser";
-import { figType, zoneType } from "../components/Types";
+import { figType, zoneType, statusType } from "../components/Types";
 import {
   fetchFigures,
   fetchZones,
+  fetchFigStatus,
 } from "../components/PagesComponents/FiguresFunctions";
 
 // elements for styling
@@ -39,6 +40,7 @@ const GenerateCombo = () => {
     "Right Side",
   ];
   const [initialZoneFilts, setInitialZoneFilts] = useState<string[]>([]);
+  const [statesData, setStatesData] = useState<statusType[]>([]);
 
   // states for filters
   const [activeFilts, setAllActiveFilts] = useState<string[]>(["Mastered"]);
@@ -47,8 +49,11 @@ const GenerateCombo = () => {
   const [levelFilts, setLevelFilts] = useState<string[]>(difficulties);
   const [activeLevelFilts, setActiveLevelFilts] = useState<string[]>([]);
   const [statusFilts, setStatusFilts] = useState<string[]>(statuses);
-  const [activeStatusFilts, setActiveStatusFilts] = useState<string[]>([]);
+  const [activeStatusFilts, setActiveStatusFilts] = useState<string[]>([
+    "Mastered",
+  ]);
   const [comboFigs, setComboFigs] = useState<figType[]>([]);
+  const [comboFigsWithStates, setComboFigsWithStates] = useState<figType[]>([]);
 
   // determine how many moves the combo generator should generate (state lifted to FiguresCounter)
   const [nbOfMoves, setNbOfMoves] = useState<number>(3);
@@ -70,8 +75,8 @@ const GenerateCombo = () => {
   }
 
   async function findRandomFigure(comboArray: figType[]) {
-    const randomIndex = Math.floor(Math.random() * comboFigs.length);
-    const randomFigure = comboFigs[randomIndex];
+    const randomIndex = Math.floor(Math.random() * comboFigsWithStates.length);
+    const randomFigure = comboFigsWithStates[randomIndex];
     if (comboArray.includes(randomFigure)) {
       findRandomFigure(comboArray);
     } else {
@@ -81,17 +86,31 @@ const GenerateCombo = () => {
 
   // fetch initial data for figures data and available zones
   useEffect(() => {
-    fetchFigures(currDisciplineRef, setComboFigs, levelFilts, zoneFilts);
+    fetchFigures(
+      currDisciplineRef,
+      setComboFigs,
+      activeLevelFilts,
+      activeZoneFilts
+    );
     fetchZones(setZones);
     const zoneFiltNames: string[] = [];
     zones.forEach((zone) => zoneFiltNames.push(zone.name));
     setInitialZoneFilts(zoneFiltNames);
     setZoneFilts(zoneFiltNames);
-  }, [currDisciplineRef]);
+    fetchFigStatus(setStatesData, activeFilts);
+  }, []);
+
+  useEffect(() => {
+    fetchFigStatus(setStatesData, activeFilts);
+    const figsWithStates = statesData.map((state) => state.figure);
+    console.log(figsWithStates);
+    setComboFigsWithStates(figsWithStates);
+    console.log(comboFigs);
+  }, [statesData, activeStatusFilts]);
 
   // update combo figures when level and zone filts are selected
   useEffect(() => {
-    if (levelFilts.length !== 0 || zoneFilts.length !== 0) {
+    if (activeFilts.length !== 0) {
       fetchFigures(
         currDisciplineRef,
         setComboFigs,
@@ -101,7 +120,7 @@ const GenerateCombo = () => {
     } else {
       fetchFigures(currDisciplineRef, setComboFigs, [], []);
     }
-  }, [levelFilts, zoneFilts]);
+  }, [levelFilts, zoneFilts, statusFilts]);
 
   // when clicking on a filter
   async function handleClickFilter(
@@ -155,17 +174,30 @@ const GenerateCombo = () => {
     }
   }
 
+  //TEST
+  const comboTest = comboFigsWithStates;
   return (
-    <div className="GenerateCombo flex flex-col lg:flex-row h-full w-full justify-center items-center">
-      <div className="ComboExplanations lg:h-full flex flex-col justify-center items-center lg:px-10">
+    <div className="GenerateCombo w-full flex flex-col lg:flex-row lg:h-full">
+      <div className="ComboExplanations flex flex-col lg:h-full lg:basis-1/2 overflow-scroll no-scrollbar">
         <h1 className="w-full text-center text-main dark:text-textdark font-bold text-3xl font-display py-4">
           Combo Generator
         </h1>
+        <div>
+          Test{" "}
+          {comboTest.map((fig) => {
+            return <div>{fig.name}</div>;
+          })}
+        </div>
         <div className="flex flex-col text-left">
           <h2 className="font-display text-2xl font-semibold text-main dark:text-textdark py-2 text-center">
             How it works
           </h2>
           <div className="flex flex-col gap-2">
+            <div className="flex">
+              {comboFigs.map((fig) => {
+                return <div>{fig.name}</div>;
+              })}
+            </div>
             <p>
               Start by setting the number of figures you want in your combo
               (limited to 8)
@@ -316,7 +348,7 @@ const GenerateCombo = () => {
         >
           <button
             onClick={(e) => generateRandomCombo(e, nbOfMoves)}
-            disabled={comboFigs.length < nbOfMoves}
+            disabled={comboFigsWithStates.length < nbOfMoves}
             className="bg-main text-white px-5 py-2 rounded-xl my-5 disabled:bg-disabled hover:animate-bounce transition-all disabled:animate-none"
           >
             Let's go !
