@@ -1,7 +1,7 @@
 import React, { createContext, useState, useEffect, ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import aerialApi from "../service/aerialApi";
-import { figType, faveType } from "../components/Types";
+import { figType, faveType, zoneType } from "../components/Types";
 
 type userType = {
   _id: string;
@@ -9,11 +9,11 @@ type userType = {
   lastName: string;
   email: string;
   image: string;
-  role: string[];
+  roles: string[];
 };
 
 type disciplType = {
-  id: string;
+  _id: string;
   ref: string;
   name: string;
 };
@@ -26,6 +26,10 @@ type UserContextProps = {
   removeToken: () => void;
   isLoggedIn: boolean;
   setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
+  isAdmin: boolean;
+  isMod: boolean;
+  modViewOn: boolean;
+  setModViewOn: React.Dispatch<React.SetStateAction<boolean>>;
   logOut: () => void;
   isLoading: boolean;
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
@@ -34,14 +38,14 @@ type UserContextProps = {
   setAllFigures: React.Dispatch<React.SetStateAction<figType[]>>;
   allDisciplines: disciplType[] | null;
   setAllDisciplines: React.Dispatch<React.SetStateAction<disciplType[] | null>>;
-  currDiscipline: string | null;
-  setCurrDiscipline: React.Dispatch<React.SetStateAction<string | null>>;
-  currDisciplineRef: string | null;
-  setCurrDisciplineRef: React.Dispatch<React.SetStateAction<string | null>>;
+  currDiscipline: disciplType | null;
+  setCurrDiscipline: React.Dispatch<React.SetStateAction<disciplType | null>>;
+  zones: zoneType[];
+  setZones: React.Dispatch<React.SetStateAction<zoneType[]>>;
   favorites: faveType[];
   setFavorites: React.Dispatch<React.SetStateAction<faveType[]>>;
-  activeFilters: string[];
   fetchFavorites: () => void;
+  activeFilters: string[];
   setActiveFilters: React.Dispatch<React.SetStateAction<string[]>>;
   sortBy: string;
   setSortBy: React.Dispatch<React.SetStateAction<string>>;
@@ -52,6 +56,9 @@ export const UserContext = createContext<UserContextProps | null>(null);
 function UserContextWrapper({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<userType | null>(null);
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const [isAdmin, setIsAdmin] = useState<boolean>(false);
+  const [isMod, setIsMod] = useState<boolean>(false);
+  const [modViewOn, setModViewOn] = useState<boolean>(false);
   // use state to avoid front end errors if data is still being fetched
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -60,8 +67,19 @@ function UserContextWrapper({ children }: { children: ReactNode }) {
     authenticateUser();
     fetchAllDisciplines();
     fetchFigures();
+    fetchZones();
     fetchFavorites();
   }, []);
+
+  // determine if user has admin role or not
+  useEffect(() => {
+    if (user?.roles.includes("admin")) {
+      setIsAdmin(true);
+    }
+    if (user?.roles.includes("mod")) {
+      setIsMod(true);
+    }
+  }, [user]);
 
   useEffect(() => {
     fetchCurrDiscipline();
@@ -110,8 +128,7 @@ function UserContextWrapper({ children }: { children: ReactNode }) {
   };
 
   // check the discipline being used (by default, none and just default homepage)
-  const [currDiscipline, setCurrDiscipline] = useState<string | null>(null);
-  const [currDisciplineRef, setCurrDisciplineRef] = useState<string | null>(
+  const [currDiscipline, setCurrDiscipline] = useState<disciplType | null>(
     null
   );
   const [allDisciplines, setAllDisciplines] = useState<disciplType[] | null>(
@@ -128,13 +145,12 @@ function UserContextWrapper({ children }: { children: ReactNode }) {
   }
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  function fetchCurrDiscipline() {
+  async function fetchCurrDiscipline() {
     const getDiscipline = location.pathname.split("/")[1];
     if (getDiscipline !== "") {
       const found = allDisciplines?.find((disc) => disc.ref === getDiscipline);
       if (found) {
-        setCurrDiscipline(found.name);
-        setCurrDisciplineRef(found.ref);
+        setCurrDiscipline(found);
       }
     }
   }
@@ -146,6 +162,18 @@ function UserContextWrapper({ children }: { children: ReactNode }) {
     try {
       const response = await aerialApi.get(`/figures/`);
       setAllFigures(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  // fetch all the available zones
+  const [zones, setZones] = useState<zoneType[]>([]);
+
+  async function fetchZones() {
+    try {
+      const response = await aerialApi.get("/zones");
+      setZones(response.data);
     } catch (error) {
       console.log(error);
     }
@@ -177,6 +205,10 @@ function UserContextWrapper({ children }: { children: ReactNode }) {
         authenticateUser,
         isLoggedIn,
         setIsLoggedIn,
+        isAdmin,
+        isMod,
+        modViewOn,
+        setModViewOn,
         logOut,
         isLoading,
         setIsLoading,
@@ -186,8 +218,8 @@ function UserContextWrapper({ children }: { children: ReactNode }) {
         setAllDisciplines,
         currDiscipline,
         setCurrDiscipline,
-        currDisciplineRef,
-        setCurrDisciplineRef,
+        zones,
+        setZones,
         favorites,
         setFavorites,
         fetchFavorites,

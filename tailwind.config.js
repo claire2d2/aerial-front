@@ -3,6 +3,10 @@ export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   darkMode: "class", // enables dark mode based on the class applied to the html tag
   theme: {
+    fontFamily: {
+      display: ["Montserrat", "sans-serif"],
+      romantic: ['"Style Script"', "sans-serif"],
+    },
     colors: {
       // for all styling
       main: "#003162",
@@ -37,9 +41,20 @@ export default {
           "url(`https://images.photowall.com/products/54815/blue-sky-clouds.jpg?h=699&q=85`)",
       },
       height: {
-        outlet: "85dvh",
-        nav: "10dvh",
+        all: "100dvh",
+        outlet: "90dvh",
+        allbutnav: "95dvh",
+        nav: "5dvh",
         footer: "5dvh",
+      },
+      animation: {
+        fade: "fadeIn .5s ease-in-out",
+      },
+      keyframes: {
+        fadeIn: {
+          from: { opacity: 0 },
+          to: { opacity: 1 },
+        },
       },
     },
   },

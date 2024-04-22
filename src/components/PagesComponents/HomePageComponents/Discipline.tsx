@@ -15,17 +15,20 @@ const Discipline: React.FC<DisciplineProps> = ({
   active,
   link,
 }) => {
-  const { setCurrDiscipline } = useUser();
+  const { setCurrDiscipline, allDisciplines } = useUser();
   const navigate = useNavigate();
 
   function goToDiscipline() {
-    setCurrDiscipline(link);
-    navigate(link);
+    const match = allDisciplines?.find((discipline) => discipline.ref === link);
+    if (match) {
+      setCurrDiscipline(match);
+      navigate(link);
+    }
   }
   return (
     <button
       onClick={goToDiscipline}
-      className="relative h-64 lg:h-80 flex items-center justify-center"
+      className="relative h-64 lg:h-80 flex items-center justify-center hover:lg:h-96 transition-all"
     >
       <img
         src={image}

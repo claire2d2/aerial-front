@@ -23,7 +23,7 @@ import { HiBars3 } from "react-icons/hi2";
 //TODO: styling, navbar that changes height when scrolling down and that appears when scrolling up
 
 const NavBar = () => {
-  const { isLoggedIn, currDiscipline, currDisciplineRef } = useUser();
+  const { isLoggedIn, currDiscipline } = useUser();
   const navigate = useNavigate();
 
   return (
@@ -38,33 +38,57 @@ const NavBar = () => {
       </div>
 
       <DarkLightToggle />
-      <div className="flex md:order-2 basis-1/6">
+
+      <div className="flex md:order-2 basis-1/5">
         {isLoggedIn ? <NavBarLoggedIn /> : <NavBarLoggedOut />}
         <div className="lg:hidden">
-          <Dropdown
-            arrowIcon={false}
-            theme={dropDownTheme}
-            label={
-              <span className="text-2xl flex">
-                <HiBars3 />
-              </span>
-            }
-          >
-            <Dropdown.Header>
-              <span className="capitalize">{currDiscipline}</span>
-            </Dropdown.Header>
-            <Dropdown.Item>
-              <NavMenuLink pageRef="figures">Figures</NavMenuLink>
-            </Dropdown.Item>
-            <Dropdown.Item>
-              <NavMenuLink pageRef="combo-generator">
-                Generate combo
-              </NavMenuLink>
-            </Dropdown.Item>
-            <Dropdown.Item>
-              <NavMenuLink pageRef="combos">Combos</NavMenuLink>
-            </Dropdown.Item>
-          </Dropdown>
+          {currDiscipline ? (
+            <Dropdown
+              arrowIcon={false}
+              theme={dropDownTheme}
+              label={
+                <span className="text-2xl flex">
+                  <HiBars3 />
+                </span>
+              }
+            >
+              <Dropdown.Header>
+                <span className="capitalize">{currDiscipline.name}</span>
+              </Dropdown.Header>
+              <Dropdown.Item>
+                <NavMenuLink pageRef="figures">Figures</NavMenuLink>
+              </Dropdown.Item>
+              <Dropdown.Item>
+                <NavMenuLink pageRef="combo-generator">
+                  Generate combo
+                </NavMenuLink>
+              </Dropdown.Item>
+              <Dropdown.Item>
+                <NavMenuLink pageRef="combos">Combos</NavMenuLink>
+              </Dropdown.Item>{" "}
+            </Dropdown>
+          ) : (
+            <Dropdown
+              arrowIcon={false}
+              theme={dropDownTheme}
+              label={
+                <span className="text-2xl flex">
+                  <HiBars3 />
+                </span>
+              }
+            >
+              <Dropdown.Header>Choose a discipline</Dropdown.Header>
+              <Dropdown.Item>
+                <Link to="/pole">Pole</Link>
+              </Dropdown.Item>
+              <Dropdown.Item>
+                <Link to="/aerial-hoop">Aerial Hoop</Link>
+              </Dropdown.Item>
+              <Dropdown.Item>
+                <Link to="/contorsion">Contorsion</Link>
+              </Dropdown.Item>
+            </Dropdown>
+          )}
         </div>
       </div>
       <div className="hidden lg:block xl:w-2/3">
@@ -77,7 +101,7 @@ const NavBar = () => {
               <li>
                 <button
                   className="hover:text-linkhover"
-                  onClick={() => navigate(`/${currDisciplineRef}/figures`)}
+                  onClick={() => navigate(`/${currDiscipline.ref}/figures`)}
                 >
                   Figures
                 </button>
@@ -86,7 +110,7 @@ const NavBar = () => {
                 <button
                   className="hover:text-linkhover"
                   onClick={() =>
-                    navigate(`/${currDisciplineRef}/combo-generator`)
+                    navigate(`/${currDiscipline.ref}/combo-generator`)
                   }
                 >
                   Generate Combo
@@ -95,7 +119,7 @@ const NavBar = () => {
               <li>
                 <button
                   className="hover:text-linkhover"
-                  onClick={() => navigate(`/${currDisciplineRef}/combos`)}
+                  onClick={() => navigate(`/${currDiscipline.ref}/combos`)}
                 >
                   Combos
                 </button>
