@@ -9,7 +9,7 @@ type userType = {
   lastName: string;
   email: string;
   image: string;
-  role: string[];
+  roles: string[];
 };
 
 type disciplType = {
@@ -26,6 +26,10 @@ type UserContextProps = {
   removeToken: () => void;
   isLoggedIn: boolean;
   setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
+  isAdmin: boolean;
+  isMod: boolean;
+  modViewOn: boolean;
+  setModViewOn: React.Dispatch<React.SetStateAction<boolean>>;
   logOut: () => void;
   isLoading: boolean;
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
@@ -52,6 +56,9 @@ export const UserContext = createContext<UserContextProps | null>(null);
 function UserContextWrapper({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<userType | null>(null);
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const [isAdmin, setIsAdmin] = useState<boolean>(false);
+  const [isMod, setIsMod] = useState<boolean>(false);
+  const [modViewOn, setModViewOn] = useState<boolean>(false);
   // use state to avoid front end errors if data is still being fetched
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -62,6 +69,16 @@ function UserContextWrapper({ children }: { children: ReactNode }) {
     fetchFigures();
     fetchFavorites();
   }, []);
+
+  // determine if user has admin role or not
+  useEffect(() => {
+    if (user?.roles.includes("admin")) {
+      setIsAdmin(true);
+    }
+    if (user?.roles.includes("mod")) {
+      setIsMod(true);
+    }
+  }, [user]);
 
   useEffect(() => {
     fetchCurrDiscipline();
@@ -177,6 +194,10 @@ function UserContextWrapper({ children }: { children: ReactNode }) {
         authenticateUser,
         isLoggedIn,
         setIsLoggedIn,
+        isAdmin,
+        isMod,
+        modViewOn,
+        setModViewOn,
         logOut,
         isLoading,
         setIsLoading,

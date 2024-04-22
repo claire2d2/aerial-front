@@ -5,7 +5,7 @@ import { HiOutlineAdjustments, HiLogout } from "react-icons/hi";
 import useUser from "../../context/useUser";
 
 const NavBarLoggedIn = () => {
-  const { user, logOut } = useUser();
+  const { user, logOut, isAdmin, isMod } = useUser();
   const navigate = useNavigate();
   return (
     <div className="w-full flex justify-end pr-3">
@@ -35,6 +35,12 @@ const NavBarLoggedIn = () => {
             <HiOutlineAdjustments /> Settings
           </button>
         </Dropdown.Item>
+        {!isAdmin ? <Dropdown.Item> Admin Dashboard</Dropdown.Item> : ""}
+        {isAdmin || isMod ? (
+          <Dropdown.Item> Mod View Toggle</Dropdown.Item>
+        ) : (
+          ""
+        )}
         <Dropdown.Item>
           <button className="flex gap-2" onClick={logOut}>
             <HiLogout />
