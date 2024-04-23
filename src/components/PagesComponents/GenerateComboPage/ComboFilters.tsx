@@ -108,12 +108,27 @@ const ComboFilters: React.FC<ComboFiltersProps> = ({
       setStatusFilts([...statusFilts, clickedFilterToRemove]);
     }
   }
+
+  function resetFilters(e: React.MouseEvent<HTMLElement>) {
+    e.preventDefault();
+    setAllActiveFilts(["Mastered"]);
+    setStatusFilts(statuses);
+    setActiveStatusFilts(["Mastered"]);
+    setZoneFilts(initialZoneFilts);
+    setActiveZoneFilts([]);
+    setLevelFilts(difficulties);
+    setActiveLevelFilts([]);
+  }
+
   return (
     <div className="AllFilters w-full py-4">
       <div>
         <h3 className="text-xl font-semibold text-main flex justify-between">
           Active filters{" "}
-          <button className="text-sm text-darkgray disabled:text-gray hover:font-normal font-light underline decoration-0 underline-offset-1">
+          <button
+            onClick={(e) => resetFilters(e)}
+            className="text-sm text-darkgray disabled:text-gray hover:font-normal font-light underline decoration-0 underline-offset-1"
+          >
             Reset all filters
           </button>
         </h3>

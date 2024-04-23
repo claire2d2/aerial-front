@@ -93,40 +93,27 @@ const GenerateCombo = () => {
     setZoneFilts(zoneFiltNames);
     // fetch all the active states related to the user (by default "mastered")
     fetchFigStatus(setStatesData, activeStatusFilts);
-    console.log("all figures at launch", comboFigs);
   }, [currDiscipline]);
 
-  // add comboFigs to useEffect to avoid delay
-  useEffect(() => {
-    if (statesData && statesData.length > 0 && currDiscipline) {
-      fetchFigures(
-        currDiscipline?._id,
-        setComboFigs,
-        activeLevelFilts,
-        activeZoneFilts
-      );
-      // Create an array of all the figures that have the chosen states
-      filterComboFigs();
-    } else {
-      setComboFigsWithStates(comboFigs);
-    }
-    // ok to just set combo figs with the given states as we only have "mastered" by default at the beginning
-  }, [statesData, activeFilts, comboFigs]);
+  // useEffect(() => {
+  //   if (statesData && statesData.length > 0 && currDiscipline) {
+  //     fetchFigures(
+  //       currDiscipline?._id,
+  //       setComboFigs,
+  //       activeLevelFilts,
+  //       activeZoneFilts
+  //     );
+  //     // Create an array of all the figures that have the chosen states
+  //     filterComboFigs();
+  //   } else {
+  //     setComboFigsWithStates(comboFigs);
+  //   }
+  //   // ok to just set combo figs with the given states as we only have "mastered" by default at the beginning
+  // }, [statesData, activeFilts]);
 
   /*
    ** function to find the matches between the fetched figures by zone/level filters and the figures that have the corresponding filters
    */
-
-  async function filterComboFigs() {
-    const figsWithStates = statesData.map((state) => state.figure);
-    console.log("figures that have states", figsWithStates);
-    // Filter out the common figures between comboFigs and figsWithStates
-    const filteredFigs = comboFigs.filter((fig) =>
-      figsWithStates.some((stateFig) => stateFig && stateFig._id === fig._id)
-    );
-    setComboFigsWithStates(filteredFigs);
-    console.log("active filts", activeFilts, "filtered", filteredFigs);
-  }
 
   // update combo figures when active filts are changed
   useEffect(() => {
@@ -139,11 +126,22 @@ const GenerateCombo = () => {
         activeLevelFilts,
         activeZoneFilts
       );
-      filterComboFigs();
     }
     console.log("curr combo figures", comboFigsWithStates);
   }, [activeFilts, activeLevelFilts, activeZoneFilts, activeStatusFilts]);
 
+  useEffect(() => {
+    const filterComboFigs = () => {
+      const figsWithStates = statesData.map((state) => state.figure);
+      // Filter out the common figures between comboFigs and figsWithStates
+      const filteredFigs = comboFigs.filter((fig) =>
+        figsWithStates.some((stateFig) => stateFig && stateFig._id === fig._id)
+      );
+      setComboFigsWithStates(filteredFigs);
+    };
+
+    filterComboFigs();
+  }, [comboFigs, statesData]);
   return (
     <div className="GenerateCombo w-full flex flex-col lg:flex-row lg:h-full">
       <div className="ComboExplanations relative flex flex-col bg-bgmainlight dark:bg-bgmaindark items-center lg:h-full lg:basis-1/2 overflow-scroll no-scrollbar">
@@ -221,21 +219,13 @@ const GenerateCombo = () => {
           backgroundImage: "url('/cloudsBG.jpg')",
         }}
       >
-        <div>
-          {comboFigsWithStates.map((fig) => (
-            <div className="text-white ">
-              <div className="font-bold">{fig.name}</div>
-              <div>{fig.difficulty}</div>
-            </div>
-          ))}
-        </div>
-        {/* {generatedCombo.length !== 0 ? (
+        {generatedCombo.length !== 0 ? (
           <ComboSection generatedCombo={generatedCombo} />
         ) : (
           <div className="flex flex-col justify-center items-center lg:gap-10 text-white h-full w-full text-3xl">
             No combo yet ...
           </div>
-        )} */}
+        )}
       </div>
     </div>
   );
