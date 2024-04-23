@@ -164,7 +164,7 @@ const AddFigure: React.FC<AddFigureProps> = ({
               id={`focus-${index}`}
               name="focus"
               value={zone._id}
-              onChange={(e) => handleZoneChange(e, setFormState)}
+              onChange={(e) => handleZoneChange(e, formState, setFormState)}
             />
             <label htmlFor={`zone-${index}`}>{zone.name}</label>
           </div>

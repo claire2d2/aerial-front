@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import aerialApi from "../../../service/aerialApi";
 import { figType, figFormType } from "../../Types";
 import { handleChange, handleZoneChange } from "./FigFormFunctions";
 import useUser from "../../../context/useUser";
@@ -22,6 +23,21 @@ const FigForm: React.FC<FigFormProps> = ({ figData }) => {
     focus: [],
   });
 
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    try {
+      const response = await aerialApi.put(
+        `/figures/${figData._id}`,
+        formState
+      );
+      if (response.status === 200) {
+        console.log("figure updated", response.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   useEffect(() => {
     const zoneIds = figData.focus.map((zone) => zone._id);
     setFormState((prevFormState) => ({
@@ -32,8 +48,17 @@ const FigForm: React.FC<FigFormProps> = ({ figData }) => {
 
   const { name, difficulty, image, imgArtist, imgArtistUrl } = formState;
 
+  // use effect so that ref is correctly inputted when submitting form
+  useEffect(() => {
+    const ref = formState.name.split(" ").join("-");
+    setFormState({ ...formState, ref: ref });
+  }, [name]);
+
   return (
-    <form className="FigInfo  flex flex-col lg:flex-row lg:basis-1/2 gap-2 justify-center items-center mb-2 px-2 ">
+    <form
+      onSubmit={(e) => handleSubmit(e)}
+      className="FigInfo  flex flex-col lg:flex-row lg:basis-1/2 gap-2 justify-center items-center mb-2 px-2 "
+    >
       {/* Title, figure image */}
       <div className="FigCard flex flex-col justify-center items-center gap-4">
         <input
@@ -51,6 +76,7 @@ const FigForm: React.FC<FigFormProps> = ({ figData }) => {
             className="object-cover h-full w-full rounded-lg"
           />
         </div>
+        <button>Save</button>
       </div>
       {/* Level, difficulty and favorite */}
       <div className="flex-col flex lg:basis-1/2">
