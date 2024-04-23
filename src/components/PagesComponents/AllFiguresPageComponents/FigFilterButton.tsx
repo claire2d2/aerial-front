@@ -1,10 +1,15 @@
 import React, { useState, useEffect } from "react";
 import useUser from "../../../context/useUser";
 
-const MobileFilterButton: React.FC<{
+type FigFilterButtonProps = {
   children: React.ReactNode;
   status: string;
-}> = ({ children, status }) => {
+};
+
+const FigFilterButton: React.FC<FigFilterButtonProps> = ({
+  children,
+  status,
+}) => {
   const { activeFilters, setActiveFilters } = useUser();
   const [isActive, setIsActive] = useState<boolean>(false);
 
@@ -34,8 +39,10 @@ const MobileFilterButton: React.FC<{
   return (
     <button
       onClick={(e) => handleFilter(e)}
-      className={`w-full my-1 rounded-sm drop-shadow-sm ${
-        isActive ? "bg-main text-white" : "bg-mainlight text-white"
+      className={`w-full lg:w-1/2 lg:mx-5 my-1 rounded-sm drop-shadow-sm lg:drop-shadow-none hover:text-main ${
+        isActive
+          ? "bg-main text-white lg:text-main lg:bg-bgmainlight lg:font-semibold"
+          : "bg-mainlight lg:bg-transparent  text-white lg:text-main "
       }`}
     >
       {children}
@@ -43,4 +50,4 @@ const MobileFilterButton: React.FC<{
   );
 };
 
-export default MobileFilterButton;
+export default FigFilterButton;

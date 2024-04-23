@@ -13,7 +13,8 @@ import {
 
 // imports for styling
 import SortBy from "../components/PagesComponents/AllFiguresPageComponents/SortBy";
-import MobileFilter from "../components/PagesComponents/AllFiguresPageComponents/MobileFilter";
+import SearchBar from "../components/PagesComponents/AllFiguresPageComponents/SearchBar";
+import FigFilter from "../components/PagesComponents/AllFiguresPageComponents/FigFilter";
 import ShowFigures from "../components/PagesComponents/AllFiguresPageComponents/ShowFigures";
 import LevelAccordion from "../components/PagesComponents/AllFiguresPageComponents/LevelAccordion";
 import AddFigure from "../components/PagesComponents/FigureElements/AddFigure";
@@ -52,6 +53,7 @@ const Figures = () => {
   // when filters are chosen and unchosen, set the "states" to fetch the figures that are concerned by the statuses
   useEffect(() => {
     if (currDiscipline) {
+      // set condition bc fetching doesn't work if filters are empty
       if (activeFilters.length !== 0) {
         fetchFigures(currDiscipline._id, setFigures, [], []);
         fetchFigStatus(setStatesData, activeFilters);
@@ -90,11 +92,12 @@ const Figures = () => {
   return (
     <div className="flex flex-col items-center relative">
       <div className="flex justify-between w-full items-center">
-        <h1 className="text-2xl">
-          <span className="capitalize">{currDiscipline?.name}</span> figures
+        <h1 className="text-5xl py-5 text-main font-romantic w-full lg:text-center">
+          <span>🕊️</span>{" "}
+          <span className="capitalize ">{currDiscipline?.name}</span> figures
         </h1>
 
-        <div>
+        <div className="lg:hidden">
           <SortBy />
         </div>
       </div>
@@ -135,10 +138,22 @@ const Figures = () => {
       ) : (
         ""
       )}
+      {/*
+       **Filters: show different for mobile and PC users
+       */}
+      <div className="w-full lg:hidden">
+        <FigFilter />
+      </div>
 
-      <div className="">Search bar (drop down when mobile)</div>
-      <div className="w-full">
-        <MobileFilter />
+      <div className="hidden lg:flex lg:justify-between lg:w-full lg:gap-40 pr-20">
+        <div>
+          <div className="font-semibold">Go directly to figure page:</div>
+          <SearchBar placeholder="Figure Name" figures={figures} />
+        </div>
+        <FigFilter />
+        <div>
+          <SortBy />
+        </div>
       </div>
 
       {sortBy === "level" ? (
