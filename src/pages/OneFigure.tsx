@@ -10,7 +10,7 @@ import FigForm from "../components/PagesComponents/FigureElements/FigForm";
 
 import ProgressLog from "../components/PagesComponents/FigureElements/ProgressLog";
 import EntriesExits from "../components/PagesComponents/FigureElements/EntriesExits";
-import { HiOutlinePencil } from "react-icons/hi";
+import { HiOutlinePencil, HiArrowCircleLeft } from "react-icons/hi";
 
 const OneFigure = () => {
   const { currDiscipline, modViewOn } = useUser();
@@ -74,6 +74,13 @@ const OneFigure = () => {
             <HiOutlinePencil className="text-white text-xl " />
           </button>
         )}
+        <button
+          onClick={() => navigate(`/${currDiscipline?.ref}/figures`)}
+          className="absolute top-2 left-2 text-3xl text-main"
+        >
+          {" "}
+          <HiArrowCircleLeft />{" "}
+        </button>
         {!formMode ? (
           <FigInfo figData={figData} />
         ) : (
