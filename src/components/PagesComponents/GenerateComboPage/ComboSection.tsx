@@ -87,7 +87,7 @@ const ComboSection: React.FC<ComboSectionProps> = ({ generatedCombo }) => {
 
   return (
     <div className="flex flex-col gap-2 justify-center text-gray h-full w-full relative">
-      <div className="flex flex-col justify-center items-center lg:gap-10">
+      <div className="flex flex-col justify-center items-center gap-5 lg:gap-10">
         {displayedCombo.map((fig, index) => {
           return (
             <Link
@@ -104,7 +104,7 @@ const ComboSection: React.FC<ComboSectionProps> = ({ generatedCombo }) => {
       {displayedCombo.length === generatedCombo.length ? (
         <button
           onClick={openComboModal}
-          className="absolute top-0 right-0 py-5 px-5"
+          className="lg:absolute lg:top-0 lg:right-2 lg:py-2 lg:px-4 bg-main w-1/2 lg:w-40 mx-auto rounded-lg drop-shadow-sm py-2 px-4 font-semibold mt-3 hover:bg-mainvar"
         >
           Save Combo
         </button>

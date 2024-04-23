@@ -121,9 +121,9 @@ const ComboFilters: React.FC<ComboFiltersProps> = ({
   }
 
   return (
-    <div className="AllFilters w-full py-4">
+    <div className="AllFilters w-full py-4 px-3">
       <div>
-        <h3 className="text-xl font-semibold text-main flex justify-between">
+        <h3 className="text-xl font-semibold text-main flex justify-between pr-3">
           Active filters{" "}
           <button
             onClick={(e) => resetFilters(e)}
@@ -155,7 +155,7 @@ const ComboFilters: React.FC<ComboFiltersProps> = ({
       </div>
       <div>
         <FilterAccordion filterTitle="By level">
-          <div className="flex flex-wrap lg:gap-4">
+          <div className="flex flex-wrap gap-2 lg:gap-4">
             {levelFilts?.map((level, index) => {
               return (
                 <button
@@ -181,7 +181,7 @@ const ComboFilters: React.FC<ComboFiltersProps> = ({
       </div>
       <div>
         <FilterAccordion filterTitle="By status">
-          <div className="flex flex-wrap lg:gap-4">
+          <div className="flex flex-wrap gap-2 lg:gap-4">
             {statusFilts.map((stat, index) => {
               return (
                 <button
@@ -207,7 +207,7 @@ const ComboFilters: React.FC<ComboFiltersProps> = ({
       </div>
       <div>
         <FilterAccordion filterTitle="By zone of focus">
-          <div className="flex flex-wrap lg:gap-4">
+          <div className="flex flex-wrap gap-2 lg:gap-4">
             {zoneFilts?.map((zone, index) => {
               return (
                 <button
