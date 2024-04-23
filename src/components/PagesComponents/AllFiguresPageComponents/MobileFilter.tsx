@@ -49,7 +49,7 @@ const MobileFilter = () => {
                 <MobileFilterButton status="Mastered">
                   Mastered
                 </MobileFilterButton>
-                <MobileFilterButton status="Left side">
+                <MobileFilterButton status="Left Side">
                   Left side
                 </MobileFilterButton>
                 <MobileFilterButton status="Training">
@@ -61,7 +61,7 @@ const MobileFilter = () => {
                 </MobileFilterButton>
               </div>
               <div className="basis-1/2">
-                <MobileFilterButton status="Right side">
+                <MobileFilterButton status="Right Side">
                   Right side
                 </MobileFilterButton>
                 <MobileFilterButton status="Wishlist">

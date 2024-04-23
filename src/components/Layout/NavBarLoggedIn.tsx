@@ -7,12 +7,9 @@ import useUser from "../../context/useUser";
 const NavBarLoggedIn = () => {
   const { user, logOut, isAdmin, isMod, modViewOn, setModViewOn } = useUser();
   function handleModView() {
-    if (modViewOn) {
-      setModViewOn(false);
-    } else {
-      setModViewOn(true);
-    }
+    setModViewOn(!modViewOn);
   }
+
   const navigate = useNavigate();
   return (
     <div className="w-full flex justify-end pr-3 text-white items-center">
@@ -21,7 +18,7 @@ const NavBarLoggedIn = () => {
           <label className="inline-flex items-center cursor-pointer">
             <input
               type="checkbox"
-              value=""
+              checked={modViewOn}
               className="sr-only peer"
               onChange={handleModView}
             />

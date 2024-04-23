@@ -76,51 +76,79 @@ const GenerateCombo = () => {
 
   // fetch initial data for figures data and available zones
   useEffect(() => {
+    // fetch all figures that match the discipline + active level and zone filts
     if (currDiscipline) {
       fetchFigures(
-        currDiscipline.ref,
+        currDiscipline._id,
         setComboFigs,
         activeLevelFilts,
         activeZoneFilts
       );
     }
+
+    // set initial zone filter names (none selected by default)
     const zoneFiltNames: string[] = [];
     zones.forEach((zone) => zoneFiltNames.push(zone.name));
     setInitialZoneFilts(zoneFiltNames);
     setZoneFilts(zoneFiltNames);
-    fetchFigStatus(setStatesData, activeFilts);
-  }, []);
+    // fetch all the active states related to the user (by default "mastered")
+    fetchFigStatus(setStatesData, activeStatusFilts);
+  }, [currDiscipline]);
 
-  useEffect(() => {
-    fetchFigStatus(setStatesData, activeFilts);
-    const figsWithStates = statesData.map((state) => state.figure);
-    console.log(figsWithStates);
-    setComboFigsWithStates(figsWithStates);
-    console.log(comboFigs);
-  }, [activeStatusFilts]);
+  // useEffect(() => {
+  //   if (statesData && statesData.length > 0 && currDiscipline) {
+  //     fetchFigures(
+  //       currDiscipline?._id,
+  //       setComboFigs,
+  //       activeLevelFilts,
+  //       activeZoneFilts
+  //     );
+  //     // Create an array of all the figures that have the chosen states
+  //     filterComboFigs();
+  //   } else {
+  //     setComboFigsWithStates(comboFigs);
+  //   }
+  //   // ok to just set combo figs with the given states as we only have "mastered" by default at the beginning
+  // }, [statesData, activeFilts]);
 
-  // update combo figures when level and zone filts are selected
+  /*
+   ** function to find the matches between the fetched figures by zone/level filters and the figures that have the corresponding filters
+   */
+
+  // update combo figures when active filts are changed
   useEffect(() => {
+    // refetch active statuses
+    fetchFigStatus(setStatesData, activeStatusFilts);
     if (currDiscipline) {
-      if (activeFilts.length !== 0) {
-        fetchFigures(
-          currDiscipline?._id,
-          setComboFigs,
-          activeLevelFilts,
-          activeZoneFilts
-        );
-      } else {
-        fetchFigures(currDiscipline.ref, setComboFigs, [], []);
-      }
+      fetchFigures(
+        currDiscipline?._id,
+        setComboFigs,
+        activeLevelFilts,
+        activeZoneFilts
+      );
     }
-  }, [activeLevelFilts, activeZoneFilts, activeStatusFilts]);
+    console.log("curr combo figures", comboFigsWithStates);
+  }, [activeFilts, activeLevelFilts, activeZoneFilts, activeStatusFilts]);
 
+  useEffect(() => {
+    const filterComboFigs = () => {
+      const figsWithStates = statesData.map((state) => state.figure);
+      // Filter out the common figures between comboFigs and figsWithStates
+      const filteredFigs = comboFigs.filter((fig) =>
+        figsWithStates.some((stateFig) => stateFig && stateFig._id === fig._id)
+      );
+      setComboFigsWithStates(filteredFigs);
+    };
+
+    filterComboFigs();
+  }, [comboFigs, statesData]);
   return (
     <div className="GenerateCombo w-full flex flex-col lg:flex-row lg:h-full">
       <div className="ComboExplanations relative flex flex-col bg-bgmainlight dark:bg-bgmaindark items-center lg:h-full lg:basis-1/2 overflow-scroll no-scrollbar">
         <h1 className="w-full text-center font-romantic  text-white bg-gradient-to-r from-main via-mainvar to-main dark:text-textdark font-bold text-5xl py-6">
           Combo Generator
         </h1>
+
         <div className="flex flex-col text-left">
           <h2 className={h2Style}>How it works</h2>
           <div className="flex flex-col gap-2">

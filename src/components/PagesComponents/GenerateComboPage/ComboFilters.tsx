@@ -1,4 +1,4 @@
-import React, { SetStateAction, useState } from "react";
+import React, { SetStateAction, useState, useEffect } from "react";
 
 // styling
 import FilterAccordion from "./FilterAccordion";
@@ -47,8 +47,15 @@ const ComboFilters: React.FC<ComboFiltersProps> = ({
   const [levelFilts, setLevelFilts] = useState<string[]>(difficulties);
   const [statusFilts, setStatusFilts] = useState<string[]>(statuses);
 
+  useEffect(() => {
+    setAllActiveFilts(activeFilts);
+    setActiveLevelFilts(activeLevelFilts);
+    setActiveZoneFilts(activeZoneFilts);
+    setActiveStatusFilts(activeStatusFilts);
+  }, [activeFilts, activeLevelFilts, activeZoneFilts, activeStatusFilts]);
+
   // when clicking on a filter
-  async function handleClickFilter(
+  function handleClickFilter(
     e: React.MouseEvent<HTMLElement>,
     filtersArray: string[],
     setFiltersArray: React.Dispatch<SetStateAction<string[]>>,
@@ -66,7 +73,7 @@ const ComboFilters: React.FC<ComboFiltersProps> = ({
     setFiltersArray(copy);
   }
 
-  async function handleRemoveActiveFilter(
+  function handleRemoveActiveFilter(
     e: React.MouseEvent<HTMLElement>,
     clickedFilterToRemove: string
   ) {
@@ -90,7 +97,10 @@ const ComboFilters: React.FC<ComboFiltersProps> = ({
       setActiveZoneFilts(copy);
       setZoneFilts([...zoneFilts, clickedFilterToRemove]);
     }
-    if (statuses.includes(clickedFilterToRemove)) {
+    if (
+      statuses.includes(clickedFilterToRemove) ||
+      clickedFilterToRemove === "Mastered"
+    ) {
       const copy = activeStatusFilts.filter(
         (filt) => filt !== clickedFilterToRemove
       );
@@ -98,12 +108,27 @@ const ComboFilters: React.FC<ComboFiltersProps> = ({
       setStatusFilts([...statusFilts, clickedFilterToRemove]);
     }
   }
+
+  function resetFilters(e: React.MouseEvent<HTMLElement>) {
+    e.preventDefault();
+    setAllActiveFilts(["Mastered"]);
+    setStatusFilts(statuses);
+    setActiveStatusFilts(["Mastered"]);
+    setZoneFilts(initialZoneFilts);
+    setActiveZoneFilts([]);
+    setLevelFilts(difficulties);
+    setActiveLevelFilts([]);
+  }
+
   return (
     <div className="AllFilters w-full py-4">
       <div>
         <h3 className="text-xl font-semibold text-main flex justify-between">
           Active filters{" "}
-          <button className="text-sm text-darkgray disabled:text-gray hover:font-normal font-light underline decoration-0 underline-offset-1">
+          <button
+            onClick={(e) => resetFilters(e)}
+            className="text-sm text-darkgray disabled:text-gray hover:font-normal font-light underline decoration-0 underline-offset-1"
+          >
             Reset all filters
           </button>
         </h3>

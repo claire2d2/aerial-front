@@ -8,6 +8,7 @@ export type figType = {
   ref: string;
   image: string;
   discipline: {
+    _id: string;
     name: string;
     ref: string;
   };
@@ -35,4 +36,15 @@ export type faveType = {
 export type zoneType = {
   _id: string;
   name: string;
+};
+
+export type figFormType = {
+  name: string;
+  ref: string;
+  discipline: string;
+  difficulty: string;
+  image: string;
+  imgArtist: string;
+  imgArtistUrl: string;
+  focus: string[];
 };
