@@ -3,9 +3,12 @@ import useUser from "../../../context/useUser";
 import { figType } from "../../Types";
 import { Link } from "react-router-dom";
 import aerialApi from "../../../service/aerialApi";
+import { AxiosError } from "axios";
 
 // styling
-import { HiX } from "react-icons/hi";
+import { Toast } from "flowbite-react";
+import { HiX, HiFire, HiExclamation } from "react-icons/hi";
+import { toastTheme } from "../../Styles";
 const figureStyle =
   "capitalize bg-white px-4 py-2 text-xl text-text font-semibold w-64 text-center rounded-lg animate-fade bg-opacity-90 hover:text-mainlight";
 
@@ -58,12 +61,29 @@ const ComboSection: React.FC<ComboSectionProps> = ({ generatedCombo }) => {
         figures: generatedCombo,
       });
       console.log(response.data);
+      setToastMessage("Combo successfully saved!");
     } catch (error) {
-      console.log(error);
+      if (error instanceof AxiosError) {
+        // Handle error if it is an instance of Error
+        console.error(error);
+        setToastMessage(error.response?.data.message); // Use type assertion to access message property
+      } else {
+        // Handle other types of errors
+        console.error(error);
+        setToastMessage("An unknown error occurred. Please try again.");
+      }
     }
+    // show toast with message
+    setShowToast(true);
+    // hide toast after 3 seconds
+    setTimeout(() => {
+      setShowToast(false);
+    }, 3000);
     closeComboModal();
   }
   // toast that shows when combo has been succesfully added (or not)
+  const [showToast, setShowToast] = useState<boolean>(false);
+  const [toastMessage, setToastMessage] = useState<string>("");
 
   return (
     <div className="flex flex-col gap-2 justify-center text-gray h-full w-full relative">
@@ -91,6 +111,10 @@ const ComboSection: React.FC<ComboSectionProps> = ({ generatedCombo }) => {
       ) : (
         ""
       )}
+
+      {/*
+       ** Dialog that opens when user clicks on save combo
+       */}
 
       <dialog ref={comboModal} className="rounded-lg drop-shadow-lg">
         <div className="h-64 w-80  lg:h-64 flex flex-col items-center gap-4 py-5 pt-10">
@@ -123,6 +147,24 @@ const ComboSection: React.FC<ComboSectionProps> = ({ generatedCombo }) => {
           </button>
         </div>
       </dialog>
+
+      {/*
+       ** toast that shows when user has submitted save combo
+       */}
+
+      {showToast && (
+        <Toast theme={toastTheme}>
+          <div className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-green-100 text-green-500 dark:bg-green-800 dark:text-green-200">
+            {toastMessage === "Combo successfully saved!" ? (
+              <HiFire className="h-5 w-5" />
+            ) : (
+              <HiExclamation className="h-5 w-5" />
+            )}
+          </div>
+          <div className="ml-3 text-sm font-normal">{toastMessage}</div>
+          <Toast.Toggle />
+        </Toast>
+      )}
     </div>
   );
 };
