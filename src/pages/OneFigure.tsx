@@ -9,9 +9,10 @@ import StatusToggle from "../components/PagesComponents/FigureElements/StatusTog
 import ProgressLog from "../components/PagesComponents/FigureElements/ProgressLog";
 import EntriesExits from "../components/PagesComponents/FigureElements/EntriesExits";
 import FavoriteButton from "../components/PagesComponents/FavoriteButton";
+import { HiOutlinePencil } from "react-icons/hi";
 
 const OneFigure = () => {
-  const { currDiscipline } = useUser();
+  const { currDiscipline, modViewOn } = useUser();
   const { figureRef } = useParams<string>();
   const [figData, setFigData] = useState<figType | null>(null);
   // imported in StatusToggle component
@@ -60,7 +61,12 @@ const OneFigure = () => {
   return (
     <div className="w-full flex flex-col lg:flex-row lg:h-full">
       <div className="LeftTopSide flex flex-col lg:h-full lg:basis-2/3 overflow-scroll no-scrollbar">
-        <div className="FigInfo flex flex-col lg:flex-row lg:basis-1/2 gap-2 justify-center items-center mb-2">
+        <div className="FigInfo relative flex flex-col lg:flex-row lg:basis-1/2 gap-2 justify-center items-center mb-2">
+          {modViewOn && (
+            <button className="absolute top-2 right-2 rounded-full bg-mainlight hover:bg-mainvar active:bg-main p-2">
+              <HiOutlinePencil className="text-white text-xl " />
+            </button>
+          )}
           {/* Title, figure image + figure credits */}
           <div className="FigCard flex flex-col justify-center items-center gap-4">
             <h1 className="font-bold text-4xl capitalize">{figData?.name}</h1>
