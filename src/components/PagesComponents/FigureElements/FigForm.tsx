@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { figType, figFormType } from "../../Types";
 import { handleChange, handleZoneChange } from "./FigFormFunctions";
 import useUser from "../../../context/useUser";
@@ -21,6 +21,14 @@ const FigForm: React.FC<FigFormProps> = ({ figData }) => {
     imgArtistUrl: figData.imgArtistUrl,
     focus: [],
   });
+
+  useEffect(() => {
+    const zoneIds = figData.focus.map((zone) => zone._id);
+    setFormState((prevFormState) => ({
+      ...prevFormState,
+      focus: zoneIds,
+    }));
+  }, [zones]);
 
   const { name, difficulty, image, imgArtist, imgArtistUrl } = formState;
 
@@ -58,7 +66,7 @@ const FigForm: React.FC<FigFormProps> = ({ figData }) => {
             />
           </p>
         </div>
-        <div className="font-semibold text-lg  text-main dark:text-textdark text-base ">
+        <div className="font-semibold  text-main dark:text-textdark text-base ">
           <label htmlFor="focus">Focuses on:</label>
 
           <div className="flex font-normal text-text gap-2 flex-wrap justify-start">
@@ -69,7 +77,8 @@ const FigForm: React.FC<FigFormProps> = ({ figData }) => {
                   id={`focus-${index}`}
                   name="focus"
                   value={zone._id}
-                  onChange={(e) => handleZoneChange(e, setFormState)}
+                  checked={formState.focus.includes(zone._id)}
+                  onChange={(e) => handleZoneChange(e, formState, setFormState)}
                 />
                 <label htmlFor={`zone-${index}`}>{zone.name}</label>
               </div>

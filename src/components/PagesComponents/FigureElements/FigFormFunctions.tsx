@@ -17,18 +17,15 @@ export async function handleChange(
 // handle multiple values selection
 export async function handleZoneChange(
   e: ChangeEvent<HTMLInputElement>,
+  formState: figFormType,
   setFormState: SetFormState
 ) {
-  const { checked, value } = e.target;
-  if (checked) {
-    setFormState((prevFormState) => ({
-      ...prevFormState,
-      focus: [...prevFormState.focus, value],
-    }));
-  } else {
-    setFormState((prevState) => ({
-      ...prevState,
-      focus: prevState.focus.filter((zone) => zone !== value),
-    }));
-  }
+  const { value } = e.target;
+  const isChecked = formState.focus.includes(value); // Check if the zone is already included in the focus array
+  setFormState((prevFormState) => ({
+    ...prevFormState,
+    focus: isChecked
+      ? prevFormState.focus.filter((zone) => zone !== value) // If checked, remove the zone from the focus array
+      : [...prevFormState.focus, value], // If unchecked, add the zone to the focus array
+  }));
 }
