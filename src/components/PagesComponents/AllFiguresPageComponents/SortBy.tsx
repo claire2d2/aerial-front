@@ -5,7 +5,7 @@ const SortBy = () => {
   const { sortBy, setSortBy } = useUser();
 
   const sortOptions = [
-    ["level", "By level"],
+    ["level", "Level"],
     ["aToZ", "Alphabetically A - Z"],
     ["zToA", "Alphabetically Z - A"],
     ["popularity", "By popularity"],
@@ -17,15 +17,18 @@ const SortBy = () => {
     setSortBy(selectedFilter);
   };
   return (
-    <select name="sortBy" id="sortBy" onChange={handleChangeSortBy}>
-      {sortOptions.map((el, index) => {
-        return (
-          <option key={index} value={el[0]} defaultValue={sortBy}>
-            {el[1]}
-          </option>
-        );
-      })}
-    </select>
+    <div>
+      <div className="font-semibold">Sort by:</div>
+      <select name="sortBy" id="sortBy" onChange={handleChangeSortBy}>
+        {sortOptions.map((el, index) => {
+          return (
+            <option key={index} value={el[0]} defaultValue={sortBy}>
+              {el[1]}
+            </option>
+          );
+        })}
+      </select>
+    </div>
   );
 };
 

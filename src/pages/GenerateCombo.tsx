@@ -151,7 +151,7 @@ const GenerateCombo = () => {
 
         <div className="flex flex-col text-left">
           <h2 className={h2Style}>How it works</h2>
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-2 px-3">
             <p>
               Start by setting the number of figures you want in your combo
               (limited to 8)
@@ -214,7 +214,7 @@ const GenerateCombo = () => {
         </Tooltip>
       </div>
       <div
-        className="bg-cover lg:h-full basis-1/5 lg:basis-1/2 flex justify-center items-center lg:rounded-none rounded-lg overflow-scroll no-scrollbar"
+        className="bg-cover  lg:h-full h-96 lg:basis-1/2 flex justify-center items-center overflow-scroll no-scrollbar"
         style={{
           backgroundImage: "url('/cloudsBG.jpg')",
         }}

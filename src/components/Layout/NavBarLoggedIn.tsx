@@ -14,7 +14,7 @@ const NavBarLoggedIn = () => {
   return (
     <div className="w-full flex justify-end pr-3 text-white items-center">
       {isAdmin || isMod ? (
-        <div className="basis-2/3">
+        <div className="basis-2/3 hidden lg:flex">
           <label className="inline-flex items-center cursor-pointer">
             <input
               type="checkbox"
