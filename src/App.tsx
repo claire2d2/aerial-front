@@ -2,22 +2,34 @@ import { Routes, Route } from "react-router-dom";
 
 import Layout from "./components/Layout/Layout";
 
+// homepages
 import HomePage from "./pages/HomePage";
 import PoleDance from "./pages/PoleDance";
 import AerialHoop from "./pages/AerialHoop";
 import Contorsion from "./pages/Contorsion";
+
+// pages for disciplines
 import Figures from "./pages/Figures";
 import OneFigure from "./pages/OneFigure";
-import UserSettings from "./pages/UserSettings";
+import GenerateCombo from "./pages/GenerateCombo";
+import AllCombos from "./pages/AllCombos";
 
+// pages for user
+import UserSettings from "./pages/UserSettings";
+import AdminDashboard from "./pages/AdminDashboard";
+
+// website information
+import About from "./pages/About";
+import SiteMap from "./pages/SiteMap";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+
+// pages not found
 import NotFound from "./pages/NotFound";
 
 /* Rerouting if necessary */
 import IsLoggedOut from "./components/Routing/IsLoggedOut";
 import SignUpPage from "./pages/SignUpPage";
 import LogInPage from "./pages/LogInPage";
-import GenerateCombo from "./pages/GenerateCombo";
-import AllCombos from "./pages/AllCombos";
 
 function App() {
   return (
@@ -28,9 +40,15 @@ function App() {
             <Route element={<IsLoggedOut />}>
               <Route path="signup" element={<SignUpPage />} />
               <Route path="login" element={<LogInPage />} />
+              <Route path="settings" element={<UserSettings />} />
+              // TODO add admin path
+              <Route path="admin" element={<AdminDashboard />} />
             </Route>
             <Route index element={<HomePage />} />
-            <Route path="settings" element={<UserSettings />} />
+            <Route path="about" element={<About />} />
+            <Route path="privacy" element={<PrivacyPolicy />} />
+            <Route path="site" element={<SiteMap />} />
+
             <Route path="pole">
               <Route index element={<PoleDance />} />
               <Route path="combo-generator" element={<GenerateCombo />} />

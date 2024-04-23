@@ -1,11 +1,18 @@
-// info in footer : github, contact, sitemap?
-
+import { useNavigate } from "react-router-dom";
 const Footer = () => {
+  const navigate = useNavigate();
+  const linkStyle = "hover:cursor-pointer hover:text-golden transition-all";
   return (
     <footer className="h-full bg-main text-white flex justify-between px-10 font-semibold items-center">
-      <div>About</div>
-      <div>Privacy Policy</div>
-      <div>Site Map</div>
+      <div className={linkStyle} onClick={() => navigate("/about")}>
+        About
+      </div>
+      <div className={linkStyle} onClick={() => navigate("/privacy")}>
+        Privacy Policy
+      </div>
+      <div className={linkStyle} onClick={() => navigate("/site")}>
+        Site Map
+      </div>
     </footer>
   );
 };
