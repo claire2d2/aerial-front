@@ -32,7 +32,6 @@ const FavoriteButton: React.FC<FavoriteButtonProps> = ({
       setIsFave(true);
       makeFave();
     }
-    fetchFavorites();
   }
   // delete favorite article from backend
   async function removeFave() {
@@ -41,6 +40,7 @@ const FavoriteButton: React.FC<FavoriteButtonProps> = ({
     } catch (error) {
       console.log(error);
     }
+    fetchFavorites();
   }
   // add favorite article to backend
   async function makeFave() {
@@ -49,6 +49,7 @@ const FavoriteButton: React.FC<FavoriteButtonProps> = ({
     } catch (error) {
       console.log(error);
     }
+    fetchFavorites();
   }
   return (
     <div className="w-full">
