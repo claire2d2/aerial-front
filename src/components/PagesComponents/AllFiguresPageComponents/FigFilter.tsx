@@ -8,37 +8,7 @@ import {
   AccordionTitle,
 } from "flowbite-react";
 
-const panelTheme = {
-  base: "bg-transparent w-full focus:ring-transparent",
-};
-const customTheme = {
-  root: {
-    base: "bg-transparent border-transparent w-full focus:ring-transparent",
-    button:
-      "bg-transparent hover:bg-transparent border-0 p-2 w-full focus:ring-transparent",
-  },
-  flush: {
-    off: "hover:bg-transparent focus:ring-0 focus:ring-transparent dark:hover:bg-transparent dark:focus:ring-transparent",
-    on: "bg-transparent dark:bg-transparent",
-  },
-  base: "flex flex-col w-full items-center justify-between text-left font-medium border-transparent focus:ring-transparent focus:ring-0",
-};
-
-const titleTheme = {
-  arrow: {
-    base: "h-6 w-6 shrink-0",
-    open: {
-      off: "",
-      on: "rotate-180",
-    },
-  },
-  flush: {
-    off: "hover:bg-transparent  focus:ring-0 focus:ring-transparent dark:hover:bg-transparent dark:focus:ring-transparent",
-    on: "bg-transparent dark:bg-transparent",
-  },
-  root: "focus:ring-transparent",
-  base: "flex w-full items-center justify-between text-center focus:ring-transparent",
-};
+import { customTheme, titleTheme, panelTheme } from "../../Styles";
 
 const FigFilter = () => {
   const { activeFilters, setActiveFilters } = useUser();
