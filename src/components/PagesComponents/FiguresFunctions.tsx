@@ -18,7 +18,7 @@ export async function fetchFigures(
   levelFilts: string[],
   zoneFilts: string[]
 ) {
-  let queryParams;
+  let queryParams = {};
   try {
     if (disciplineId) {
       queryParams = new URLSearchParams({
@@ -26,8 +26,6 @@ export async function fetchFigures(
         zones: zoneFilts.join(","),
         discipline: disciplineId,
       });
-      // console.log("levelfitls", levelFilts);
-      // console.log("discipline", disciplineRef);
     }
     const response = await aerialApi.get(`/figures/?${queryParams}`);
     setFigures(response.data);
@@ -47,10 +45,14 @@ export async function fetchFigStatus(
   activeFilters: string[]
 ) {
   try {
-    const queryParams = new URLSearchParams({
-      filtersQuery: activeFilters.join(","),
-    });
-    console.log(queryParams);
+    let queryParams: string | URLSearchParams;
+    if (activeFilters.length !== 0) {
+      queryParams = new URLSearchParams({
+        filtersQuery: activeFilters.join(","),
+      });
+    } else {
+      queryParams = "";
+    }
     const response = await aerialApi.get(`/states?${queryParams}`);
     setStatesData(response.data);
   } catch (error) {

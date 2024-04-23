@@ -76,31 +76,61 @@ const GenerateCombo = () => {
 
   // fetch initial data for figures data and available zones
   useEffect(() => {
+    // fetch all figures that match the discipline + active level and zone filts
     if (currDiscipline) {
       fetchFigures(
-        currDiscipline.ref,
+        currDiscipline._id,
         setComboFigs,
         activeLevelFilts,
         activeZoneFilts
       );
     }
+
+    // set initial zone filter names (none selected by default)
     const zoneFiltNames: string[] = [];
     zones.forEach((zone) => zoneFiltNames.push(zone.name));
     setInitialZoneFilts(zoneFiltNames);
     setZoneFilts(zoneFiltNames);
-    fetchFigStatus(setStatesData, activeFilts);
-  }, []);
+    // fetch all the active states related to the user (by default "mastered")
+    fetchFigStatus(setStatesData, activeStatusFilts);
+    console.log("all figures at launch", comboFigs);
+  }, [currDiscipline]);
 
   useEffect(() => {
-    fetchFigStatus(setStatesData, activeFilts);
+    if (statesData && statesData.length > 0 && currDiscipline) {
+      fetchFigures(
+        currDiscipline?._id,
+        setComboFigs,
+        activeLevelFilts,
+        activeZoneFilts
+      );
+      // Create an array of all the figures that have the chosen states
+      filterComboFigs();
+    } else {
+      setComboFigsWithStates(comboFigs);
+    }
+    // ok to just set combo figs with the given states as we only have "mastered" by default at the beginning
+  }, [statesData, activeFilts]);
+
+  /*
+   ** function to find the matches between the fetched figures by zone/level filters and the figures that have the corresponding filters
+   */
+
+  async function filterComboFigs() {
     const figsWithStates = statesData.map((state) => state.figure);
-    console.log(figsWithStates);
-    setComboFigsWithStates(figsWithStates);
-    console.log(comboFigs);
-  }, [activeStatusFilts]);
+    console.log("figures that have states", figsWithStates);
+    // Filter out the common figures between comboFigs and figsWithStates
+    const filteredFigs = comboFigs.filter((fig) =>
+      figsWithStates.some((stateFig) => stateFig && stateFig._id === fig._id)
+    );
+    setComboFigsWithStates(filteredFigs);
+    console.log("active filts", activeFilts, "filtered", filteredFigs);
+  }
 
-  // update combo figures when level and zone filts are selected
+  // update combo figures when active filts are changed
   useEffect(() => {
+    // refetch active statuses
+    fetchFigStatus(setStatesData, activeFilts);
     if (currDiscipline) {
       if (activeFilts.length !== 0) {
         fetchFigures(
@@ -109,11 +139,13 @@ const GenerateCombo = () => {
           activeLevelFilts,
           activeZoneFilts
         );
+        filterComboFigs();
       } else {
-        fetchFigures(currDiscipline.ref, setComboFigs, [], []);
+        fetchFigures(currDiscipline._id, setComboFigs, [], []);
       }
     }
-  }, [activeLevelFilts, activeZoneFilts, activeStatusFilts]);
+    console.log("curr combo figures", comboFigsWithStates);
+  }, [activeFilts]);
 
   return (
     <div className="GenerateCombo w-full flex flex-col lg:flex-row lg:h-full">
@@ -121,6 +153,7 @@ const GenerateCombo = () => {
         <h1 className="w-full text-center font-romantic  text-white bg-gradient-to-r from-main via-mainvar to-main dark:text-textdark font-bold text-5xl py-6">
           Combo Generator
         </h1>
+
         <div className="flex flex-col text-left">
           <h2 className={h2Style}>How it works</h2>
           <div className="flex flex-col gap-2">
@@ -191,13 +224,21 @@ const GenerateCombo = () => {
           backgroundImage: "url('/cloudsBG.jpg')",
         }}
       >
-        {generatedCombo.length !== 0 ? (
+        <div>
+          {comboFigsWithStates.map((fig) => (
+            <div className="text-white ">
+              <div className="font-bold">{fig.name}</div>
+              <div>{fig.difficulty}</div>
+            </div>
+          ))}
+        </div>
+        {/* {generatedCombo.length !== 0 ? (
           <ComboSection generatedCombo={generatedCombo} />
         ) : (
           <div className="flex flex-col justify-center items-center lg:gap-10 text-white h-full w-full text-3xl">
             No combo yet ...
           </div>
-        )}
+        )} */}
       </div>
     </div>
   );

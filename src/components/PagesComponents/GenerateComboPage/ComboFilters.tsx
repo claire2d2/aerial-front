@@ -1,4 +1,4 @@
-import React, { SetStateAction, useState } from "react";
+import React, { SetStateAction, useState, useEffect } from "react";
 
 // styling
 import FilterAccordion from "./FilterAccordion";
@@ -47,8 +47,13 @@ const ComboFilters: React.FC<ComboFiltersProps> = ({
   const [levelFilts, setLevelFilts] = useState<string[]>(difficulties);
   const [statusFilts, setStatusFilts] = useState<string[]>(statuses);
 
+  useEffect(() => {
+    setActiveLevelFilts(activeLevelFilts);
+    setActiveZoneFilts(activeZoneFilts);
+    setActiveStatusFilts(activeStatusFilts);
+  }, [activeFilts, activeLevelFilts, activeZoneFilts, activeStatusFilts]);
   // when clicking on a filter
-  async function handleClickFilter(
+  function handleClickFilter(
     e: React.MouseEvent<HTMLElement>,
     filtersArray: string[],
     setFiltersArray: React.Dispatch<SetStateAction<string[]>>,
@@ -66,7 +71,7 @@ const ComboFilters: React.FC<ComboFiltersProps> = ({
     setFiltersArray(copy);
   }
 
-  async function handleRemoveActiveFilter(
+  function handleRemoveActiveFilter(
     e: React.MouseEvent<HTMLElement>,
     clickedFilterToRemove: string
   ) {
@@ -90,7 +95,10 @@ const ComboFilters: React.FC<ComboFiltersProps> = ({
       setActiveZoneFilts(copy);
       setZoneFilts([...zoneFilts, clickedFilterToRemove]);
     }
-    if (statuses.includes(clickedFilterToRemove)) {
+    if (
+      statuses.includes(clickedFilterToRemove) ||
+      clickedFilterToRemove === "Mastered"
+    ) {
       const copy = activeStatusFilts.filter(
         (filt) => filt !== clickedFilterToRemove
       );
