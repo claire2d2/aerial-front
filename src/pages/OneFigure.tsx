@@ -5,21 +5,26 @@ import aerialApi from "../service/aerialApi";
 
 import { figType } from "../components/Types";
 
-import StatusToggle from "../components/PagesComponents/FigureElements/StatusToggle";
+import FigInfo from "../components/PagesComponents/FigureElements/FigInfo";
+import FigForm from "../components/PagesComponents/FigureElements/FigForm";
+
 import ProgressLog from "../components/PagesComponents/FigureElements/ProgressLog";
 import EntriesExits from "../components/PagesComponents/FigureElements/EntriesExits";
-import FavoriteButton from "../components/PagesComponents/FavoriteButton";
 import { HiOutlinePencil } from "react-icons/hi";
 
 const OneFigure = () => {
   const { currDiscipline, modViewOn } = useUser();
   const { figureRef } = useParams<string>();
   const [figData, setFigData] = useState<figType | null>(null);
-  // imported in StatusToggle component
-  const [status, setStatus] = useState<string>("Not seen yet");
-  const [oneSideStatus, setOneSideStatus] = useState<string | null>(null);
-  // to import in future Favorite component
+
   const navigate = useNavigate();
+
+  // state for mod to edit form
+  const [formMode, setFormMode] = useState<boolean>(false);
+
+  function handleFormMode() {
+    setFormMode((prevFormMode) => !prevFormMode);
+  }
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   async function fetchFigData() {
@@ -60,69 +65,20 @@ const OneFigure = () => {
   // style figure page here
   return (
     <div className="w-full flex flex-col lg:flex-row lg:h-full">
-      <div className="LeftTopSide flex flex-col lg:h-full lg:basis-2/3 overflow-scroll no-scrollbar">
-        <div className="FigInfo relative flex flex-col lg:flex-row lg:basis-1/2 gap-2 justify-center items-center mb-2">
-          {modViewOn && (
-            <button className="absolute top-2 right-2 rounded-full bg-mainlight hover:bg-mainvar active:bg-main p-2">
-              <HiOutlinePencil className="text-white text-xl " />
-            </button>
-          )}
-          {/* Title, figure image + figure credits */}
-          <div className="FigCard flex flex-col justify-center items-center gap-4">
-            <h1 className="font-bold text-4xl capitalize">{figData?.name}</h1>
-            <div className="aspect-square h-60 drop-shadow-md dark:brightness-90 ">
-              <img
-                src={figData.image}
-                alt={`image of ${figData?.name}`}
-                className="object-cover h-full w-full rounded-lg"
-              />
-            </div>
-            <div className="text-xs text-darkgray">
-              This image was found on{" "}
-              <a
-                href={figData.imgArtistUrl}
-                target="blank"
-                className="underline"
-              >
-                {figData.imgArtist}
-              </a>
-            </div>
-          </div>
-          {/* Level, difficulty and favorite */}
-          <div className="flex-col flex items-center lg:basis-1/2 ">
-            <div className="font-semibold text-lg text-center text-main dark:text-textdark">
-              <p>Level:</p>{" "}
-              <p className="capitalize font-normal text-text dark:text-textdark">
-                {figData?.difficulty}
-              </p>
-            </div>
-            <div className="font-semibold text-lg text-center text-main dark:text-textdark">
-              <p>Focuses on:</p>
-              <ul className="text-text font-normal flex flex-row gap-2 capitalize">
-                {figData.focus.map((focus) => {
-                  return <li>{focus.name}</li>;
-                })}
-              </ul>
-            </div>
-            <div className="w-full px-20 py-2 flex flex-col text-center">
-              <p className="font-semibold text-lg text-main dark:text-textdark">
-                Status:
-              </p>
-              <div className="py-2">
-                <StatusToggle
-                  status={status}
-                  setStatus={setStatus}
-                  oneSideStatus={oneSideStatus}
-                  setOneSideStatus={setOneSideStatus}
-                  currFigId={figData._id}
-                />
-              </div>
-            </div>
-            <div className="w-1/3 flex">
-              <FavoriteButton fullButton={true} figId={figData._id} />
-            </div>
-          </div>
-        </div>
+      <div className="LeftTopSide relative flex flex-col lg:h-full lg:basis-2/3 overflow-scroll no-scrollbar">
+        {modViewOn && (
+          <button
+            onClick={handleFormMode}
+            className="absolute top-2 right-2 rounded-full bg-mainlight hover:bg-mainvar active:bg-main p-2"
+          >
+            <HiOutlinePencil className="text-white text-xl " />
+          </button>
+        )}
+        {!formMode ? (
+          <FigInfo figData={figData} />
+        ) : (
+          <FigForm figData={figData} />
+        )}
         {/* Progress log */}
         <div className="">
           <ProgressLog currFigId={figData._id} />

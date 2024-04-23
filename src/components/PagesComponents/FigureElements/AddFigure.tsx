@@ -1,26 +1,10 @@
-import {
-  useState,
-  ChangeEvent,
-  FormEvent,
-  SetStateAction,
-  useEffect,
-} from "react";
+import { useState, FormEvent, SetStateAction, useEffect } from "react";
 import useUser from "../../../context/useUser";
 import { AxiosError } from "axios";
-import { figType } from "../../Types";
+import { figType, figFormType } from "../../Types";
 import aerialApi from "../../../service/aerialApi";
 import { fetchFigures } from "../FiguresFunctions";
-
-type formType = {
-  name: string;
-  ref: string;
-  discipline: string;
-  difficulty: string;
-  image: string;
-  imgArtist: string;
-  imgArtistUrl: string;
-  focus: string[];
-};
+import { handleChange, handleZoneChange } from "./FigFormFunctions";
 
 type AddFigureProps = {
   currDiscipline: {
@@ -52,34 +36,9 @@ const AddFigure: React.FC<AddFigureProps> = ({
     focus: [],
   };
   const { zones } = useUser();
-  const [formState, setFormState] = useState<formType>(defaultFormState);
+  const [formState, setFormState] = useState<figFormType>(defaultFormState);
 
   // get available zones of focus
-
-  // change the form state when user inputs
-  async function handleChange(
-    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) {
-    const key = e.currentTarget.id;
-    const value = e.currentTarget.value;
-    setFormState({ ...formState, [key]: value });
-  }
-
-  // handle multiple values selection
-  async function handleZoneChange(e: ChangeEvent<HTMLInputElement>) {
-    const { checked, value } = e.target;
-    if (checked) {
-      setFormState((prevState) => ({
-        ...prevState,
-        focus: [...prevState.focus, value],
-      }));
-    } else {
-      setFormState((prevState) => ({
-        ...prevState,
-        focus: prevState.focus.filter((zone) => zone !== value),
-      }));
-    }
-  }
 
   /* function to handle form submission (=> user creation)
    ** if creation is successful, navigate to login page directly
@@ -143,7 +102,7 @@ const AddFigure: React.FC<AddFigureProps> = ({
             placeholder="Figure name"
             name="name"
             value={name}
-            onChange={handleChange}
+            onChange={(e) => handleChange(e, formState, setFormState)}
           />
         </div>
         <div>
@@ -155,7 +114,7 @@ const AddFigure: React.FC<AddFigureProps> = ({
             name="difficulty"
             id="difficulty"
             value={difficulty}
-            onChange={handleChange}
+            onChange={(e) => handleChange(e, formState, setFormState)}
           >
             <option value="beginner">Beginner</option>
             <option value="intermediate">Intermediate</option>
@@ -170,7 +129,7 @@ const AddFigure: React.FC<AddFigureProps> = ({
             placeholder="Input an image url here"
             name="image"
             value={image}
-            onChange={handleChange}
+            onChange={(e) => handleChange(e, formState, setFormState)}
           />
         </div>
         <div>And don't forget to give credit to the owners of the image!</div>
@@ -182,7 +141,7 @@ const AddFigure: React.FC<AddFigureProps> = ({
             placeholder="Image artist or website"
             name="imgArtist"
             value={imgArtist}
-            onChange={handleChange}
+            onChange={(e) => handleChange(e, formState, setFormState)}
           />
         </div>
         <div>
@@ -193,7 +152,7 @@ const AddFigure: React.FC<AddFigureProps> = ({
             placeholder="Image  URL of artist or website"
             name="imgArtistUrl"
             value={imgArtistUrl}
-            onChange={handleChange}
+            onChange={(e) => handleChange(e, formState, setFormState)}
           />
         </div>
 
@@ -205,7 +164,7 @@ const AddFigure: React.FC<AddFigureProps> = ({
               id={`focus-${index}`}
               name="focus"
               value={zone._id}
-              onChange={handleZoneChange}
+              onChange={(e) => handleZoneChange(e, setFormState)}
             />
             <label htmlFor={`zone-${index}`}>{zone.name}</label>
           </div>
