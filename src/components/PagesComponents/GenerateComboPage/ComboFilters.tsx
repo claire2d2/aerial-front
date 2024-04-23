@@ -48,10 +48,12 @@ const ComboFilters: React.FC<ComboFiltersProps> = ({
   const [statusFilts, setStatusFilts] = useState<string[]>(statuses);
 
   useEffect(() => {
+    setAllActiveFilts(activeFilts);
     setActiveLevelFilts(activeLevelFilts);
     setActiveZoneFilts(activeZoneFilts);
     setActiveStatusFilts(activeStatusFilts);
   }, [activeFilts, activeLevelFilts, activeZoneFilts, activeStatusFilts]);
+
   // when clicking on a filter
   function handleClickFilter(
     e: React.MouseEvent<HTMLElement>,

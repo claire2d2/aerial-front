@@ -96,6 +96,7 @@ const GenerateCombo = () => {
     console.log("all figures at launch", comboFigs);
   }, [currDiscipline]);
 
+  // add comboFigs to useEffect to avoid delay
   useEffect(() => {
     if (statesData && statesData.length > 0 && currDiscipline) {
       fetchFigures(
@@ -110,7 +111,7 @@ const GenerateCombo = () => {
       setComboFigsWithStates(comboFigs);
     }
     // ok to just set combo figs with the given states as we only have "mastered" by default at the beginning
-  }, [statesData, activeFilts]);
+  }, [statesData, activeFilts, comboFigs]);
 
   /*
    ** function to find the matches between the fetched figures by zone/level filters and the figures that have the corresponding filters
@@ -130,22 +131,18 @@ const GenerateCombo = () => {
   // update combo figures when active filts are changed
   useEffect(() => {
     // refetch active statuses
-    fetchFigStatus(setStatesData, activeFilts);
+    fetchFigStatus(setStatesData, activeStatusFilts);
     if (currDiscipline) {
-      if (activeFilts.length !== 0) {
-        fetchFigures(
-          currDiscipline?._id,
-          setComboFigs,
-          activeLevelFilts,
-          activeZoneFilts
-        );
-        filterComboFigs();
-      } else {
-        fetchFigures(currDiscipline._id, setComboFigs, [], []);
-      }
+      fetchFigures(
+        currDiscipline?._id,
+        setComboFigs,
+        activeLevelFilts,
+        activeZoneFilts
+      );
+      filterComboFigs();
     }
     console.log("curr combo figures", comboFigsWithStates);
-  }, [activeFilts]);
+  }, [activeFilts, activeLevelFilts, activeZoneFilts, activeStatusFilts]);
 
   return (
     <div className="GenerateCombo w-full flex flex-col lg:flex-row lg:h-full">
