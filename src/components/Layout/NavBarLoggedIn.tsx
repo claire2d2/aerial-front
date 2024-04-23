@@ -53,17 +53,24 @@ const NavBarLoggedIn = () => {
           <span className="block truncate text-sm">{user?.email}</span>
         </Dropdown.Header>
         <Dropdown.Item>
-          <button className="flex gap-2" onClick={() => navigate("/settings")}>
+          <div className="flex gap-2" onClick={() => navigate("/settings")}>
             <HiOutlineAdjustments /> Settings
-          </button>
+          </div>
         </Dropdown.Item>
-        {isAdmin ? <Dropdown.Item> Admin Dashboard</Dropdown.Item> : ""}
+        {isAdmin ? (
+          <Dropdown.Item>
+            {" "}
+            <div onClick={() => navigate("/admin")}>Admin Dashboard</div>
+          </Dropdown.Item>
+        ) : (
+          ""
+        )}
 
         <Dropdown.Item>
-          <button className="flex gap-2" onClick={logOut}>
+          <div className="flex gap-2" onClick={logOut}>
             <HiLogout />
             Log out
-          </button>
+          </div>
         </Dropdown.Item>
       </Dropdown>
     </div>
