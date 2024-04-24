@@ -14,7 +14,7 @@ const FigInfo: React.FC<FigInfoProps> = ({ figData }) => {
   const [status, setStatus] = useState<string>("Not seen yet");
   const [oneSideStatus, setOneSideStatus] = useState<string | null>(null);
   return (
-    <div className="FigInfo  flex flex-col lg:flex-row lg:basis-1/2 gap-2 justify-center items-center mb-2">
+    <div className="FigInfo  flex flex-col lg:flex-row lg:basis-1/2 gap-2 justify-center items-center mb-2 lg:py-5">
       {/* Title, figure image + figure credits */}
       <div className="FigCard flex flex-col justify-center items-center gap-4">
         <h1 className="font-bold text-4xl capitalize">{figData.name}</h1>

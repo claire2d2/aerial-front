@@ -2,13 +2,8 @@ import { useState, useEffect } from "react";
 import useUser from "../../../context/useUser";
 import aerialApi from "../../../service/aerialApi";
 import { like, unLike } from "../FiguresFunctions";
-
+import { likeType } from "../../Types";
 import { HiOutlineThumbUp } from "react-icons/hi";
-
-type likeType = {
-  entryExit: string;
-  follower: string;
-};
 
 type EntryExitLikeProps = {
   propId: string;

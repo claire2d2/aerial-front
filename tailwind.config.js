@@ -43,9 +43,9 @@ export default {
       },
       height: {
         all: "100dvh",
-        outlet: "90dvh",
+        outlet: "87dvh",
         allbutnav: "95dvh",
-        nav: "5dvh",
+        nav: "8dvh",
         footer: "5dvh",
       },
       animation: {
