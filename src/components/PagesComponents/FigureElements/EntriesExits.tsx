@@ -1,8 +1,10 @@
 import { useState, useEffect, SetStateAction } from "react";
 import aerialApi from "../../../service/aerialApi";
 import EntryExitForm from "./EntryExitForm";
+import EntryExitLike from "./EntryExitLike";
 
 type entryExit = {
+  _id: string;
   owner: string;
   figureTo: {
     id: string;
@@ -15,7 +17,6 @@ type entryExit = {
 };
 
 // styling the forms
-import { HiOutlineThumbUp } from "react-icons/hi";
 
 const sectionStyle = "h-1/2 flex flex-col px-";
 const titleStyle =
@@ -98,12 +99,7 @@ const EntriesExits: React.FC<{ currFigId: string }> = ({ currFigId }) => {
                   <h6 className="capitalize font-semibold italic text-mainvar">
                     {entry.figureFrom.name}
                   </h6>
-                  <div className="flex gap-2">
-                    <div>1 </div>
-                    <button className="hover:text-isFave">
-                      <HiOutlineThumbUp />
-                    </button>
-                  </div>
+                  <EntryExitLike propId={entry._id} />
                 </div>
               );
             })
@@ -138,12 +134,7 @@ const EntriesExits: React.FC<{ currFigId: string }> = ({ currFigId }) => {
                   <h6 className="capitalize font-semibold italic text-mainvar">
                     {exit.figureTo.name}
                   </h6>
-                  <div className="flex gap-2">
-                    <div>1 </div>
-                    <button className="hover:text-isFave">
-                      <HiOutlineThumbUp />
-                    </button>
-                  </div>
+                  <EntryExitLike propId={exit._id} />
                 </div>
               );
             })

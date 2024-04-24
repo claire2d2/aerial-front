@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import aerialApi from "../../../service/aerialApi";
 import { AxiosError } from "axios";
+import { like } from "../FiguresFunctions";
 
 import SearchBar from "../../GlobalComponents/SearchBar";
 
@@ -21,9 +22,13 @@ const EntryExitForm: React.FC<EntryExitFormProps> = ({
     e.preventDefault();
     if (entryOrExit === "entry") {
       try {
-        await aerialApi.post(`/entriesexits/entry/${currFigId}`, {
-          entry: chosenFig,
-        });
+        const response = await aerialApi.post(
+          `/entriesexits/entry/${currFigId}`,
+          {
+            entry: chosenFig,
+          }
+        );
+        like(response.data._id);
       } catch (error) {
         if (error instanceof AxiosError) {
           // Handle error if it is an instance of Error
@@ -40,9 +45,13 @@ const EntryExitForm: React.FC<EntryExitFormProps> = ({
       }
     } else {
       try {
-        await aerialApi.post(`/entriesexits/exit/${currFigId}`, {
-          exit: chosenFig,
-        });
+        const response = await aerialApi.post(
+          `/entriesexits/exit/${currFigId}`,
+          {
+            exit: chosenFig,
+          }
+        );
+        like(response.data._id);
       } catch (error) {
         if (error instanceof AxiosError) {
           // Handle error if it is an instance of Error
