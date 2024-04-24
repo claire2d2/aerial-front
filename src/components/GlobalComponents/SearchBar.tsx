@@ -1,23 +1,37 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, SetStateAction } from "react";
 import { HiOutlineSearch, HiX } from "react-icons/hi";
 import { useNavigate } from "react-router-dom";
-import useUser from "../../../context/useUser";
+import useUser from "../../context/useUser";
+import { fetchFigures } from "../PagesComponents/FiguresFunctions";
 
-import { figType } from "../../Types";
+import { figType } from "../Types";
 
 type SearchBarProps = {
   placeholder: string;
-  figures: figType[];
+  searchAction: string;
+  onFigureSelect: (figure: figType) => void | null;
 };
-const SearchBar: React.FC<SearchBarProps> = ({ placeholder, figures }) => {
+const SearchBar: React.FC<SearchBarProps> = ({
+  placeholder,
+  searchAction,
+  onFigureSelect,
+}) => {
+  const { currDiscipline } = useUser();
+  const [figures, setFigures] = useState<figType[]>([]);
   const [searchedFigs, setSearchedFigs] = useState<figType[]>([]);
   const [searchWord, setSearchWord] = useState<string>("");
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const searchValue = e.currentTarget.value;
     setSearchWord(searchValue);
-    console.log(searchWord);
   };
+
+  // fetch figures when component renders
+  useEffect(() => {
+    if (currDiscipline) {
+      fetchFigures(currDiscipline._id, setFigures, [], []);
+    }
+  }, [currDiscipline]);
 
   // use effect hook to refresh figures search instantaneously
   useEffect(() => {
@@ -36,11 +50,29 @@ const SearchBar: React.FC<SearchBarProps> = ({ placeholder, figures }) => {
     setSearchWord("");
   }
 
+  //
+
   const navigate = useNavigate();
-  const { currDiscipline } = useUser();
-  function goToFigPage(figureRef: string) {
-    navigate(`/${currDiscipline?.ref}/figures/${figureRef}`);
+
+  /* Search bar can be used to either
+   ** - navigate to a chosen page
+   ** - choose a figure
+   */
+  function action(e: React.MouseEvent, figure: figType) {
+    e.preventDefault();
+    if (searchAction === "navigate") {
+      navigate(`/${currDiscipline?.ref}/figures/${figure.ref}`);
+    }
+    if (searchAction === "chose" && onFigureSelect) {
+      setSearchWord(figure.name);
+      onFigureSelect(figure);
+    }
   }
+
+  // clear out results if search result is chosen
+  useEffect(() => {
+    setSearchedFigs([]);
+  }, [onFigureSelect]);
 
   return (
     <div>
@@ -69,7 +101,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ placeholder, figures }) => {
           {searchedFigs.map((fig, index) => {
             return (
               <button
-                onClick={() => goToFigPage(fig.ref)}
+                onClick={(e) => action(e, fig)}
                 key={index}
                 className="capitalize hover:bg-bgmainlight"
               >

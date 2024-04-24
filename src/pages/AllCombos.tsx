@@ -12,7 +12,7 @@ const AllCombos = () => {
 
   useEffect(() => {
     fetchCombos();
-  }, []);
+  }, [currDiscipline]);
 
   async function fetchCombos() {
     try {
@@ -94,7 +94,7 @@ const AllCombos = () => {
             : "Loading"}
         </div>
       </div>
-      <div className="relative lg:w-2/3 lg:h-full">
+      <div className="relative basis-1/2 lg:w-2/3 lg:h-full">
         <EditCombo shownCombo={shownCombo} />
       </div>
     </div>

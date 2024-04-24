@@ -59,6 +59,7 @@ const ComboSection: React.FC<ComboSectionProps> = ({ generatedCombo }) => {
         name: comboName,
         discipline: currDiscipline?._id,
         figures: generatedCombo,
+        comment: "",
       });
       console.log(response.data);
       setToastMessage("Combo successfully saved!");
