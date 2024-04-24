@@ -1,15 +1,10 @@
 import { useState, useEffect } from "react";
 import useUser from "../context/useUser";
 import aerialApi from "../service/aerialApi";
-import { figType } from "../components/Types";
+import { figType, comboType } from "../components/Types";
 
-type comboType = {
-  _id: string;
-  name: string;
-  figures: figType[];
-  owner: string;
-  comment: string;
-};
+import EditCombo from "../components/PagesComponents/AllCombosPageComponents/EditCombo";
+
 const AllCombos = () => {
   // get the data from existing combos
   const { currDiscipline } = useUser();
@@ -38,11 +33,23 @@ const AllCombos = () => {
   const [shownCombo, setShownCombo] = useState<comboType | null>(null);
 
   function choseCombo(combo: comboType) {
+    if (combo === shownCombo) {
+      setShownCombo(null);
+      return;
+    }
     setShownCombo(combo);
   }
 
+  function showFirstTwoFigs(figArray: figType[]) {
+    if (figArray.length < 3) {
+      return figArray;
+    }
+    const slicedFigArray = figArray.slice(0, 2);
+    return slicedFigArray;
+  }
+
   return (
-    <div className="w-full flex flex-col lg:flex-row lg:h-full">
+    <div className="w-full flex flex-col lg:flex-row lg:h-full overflow-scroll no-scrollbar">
       <div className="w-full h-72 py-3 lg:h-full lg:w-1/3 bg-main py-2 flex flex-col">
         <h2 className="text-white font-romantic text-4xl text-center">
           All combos
@@ -63,34 +70,32 @@ const AllCombos = () => {
                     className="w-full flex flex-col"
                   >
                     <h5>{combo.name}</h5>
-                    <div className="flex">
-                      {combo.figures.map((fig, index) => {
-                        return (
-                          <div key={index} className="text-text">
-                            {fig.name}
-                          </div>
-                        );
-                      })}
-                    </div>
+
+                    {shownCombo === combo ? (
+                      <div className="flex flex-col">
+                        {combo.figures.map((fig, index) => {
+                          return <div key={index}>{fig.name}</div>;
+                        })}
+                      </div>
+                    ) : (
+                      <div className="flex flex-row">
+                        {showFirstTwoFigs(combo.figures).map((fig, index) => {
+                          return (
+                            <div key={index} className="text-text">
+                              {fig.name}
+                            </div>
+                          );
+                        })}
+                      </div>
+                    )}
                   </button>
                 );
               })
             : "Loading"}
         </div>
       </div>
-      <div className="lg:w-2/3 h-full flex flex-col items-center">
-        <h2 className="font-romantic text-2xl">
-          {shownCombo ? shownCombo.name : "No combo chosen"}
-        </h2>
-        {shownCombo ? (
-          <div>
-            {shownCombo.figures.map((fig) => {
-              return <div>{fig.name}</div>;
-            })}
-          </div>
-        ) : (
-          <div>Please choose a combo to show</div>
-        )}
+      <div className="relative lg:w-2/3 lg:h-full">
+        <EditCombo shownCombo={shownCombo} />
       </div>
     </div>
   );
