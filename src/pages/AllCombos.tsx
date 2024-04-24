@@ -12,7 +12,7 @@ const AllCombos = () => {
 
   useEffect(() => {
     fetchCombos();
-  }, []);
+  }, [currDiscipline]);
 
   async function fetchCombos() {
     try {
@@ -61,37 +61,35 @@ const AllCombos = () => {
           </p>
         </div>
         <div className="overflow-y-scroll bg-white my-2 mx-3">
-          {allCombos
-            ? allCombos.map((combo, index) => {
-                return (
-                  <button
-                    key={index}
-                    onClick={() => choseCombo(combo)}
-                    className="w-full flex flex-col"
-                  >
-                    <h5>{combo.name}</h5>
+          {allCombos?.map((combo, index) => {
+            return (
+              <button
+                key={index}
+                onClick={() => choseCombo(combo)}
+                className="w-full flex flex-col"
+              >
+                <h5>{combo.name}</h5>
 
-                    {shownCombo === combo ? (
-                      <div className="flex flex-col">
-                        {combo.figures.map((fig, index) => {
-                          return <div key={index}>{fig.name}</div>;
-                        })}
-                      </div>
-                    ) : (
-                      <div className="flex flex-row">
-                        {showFirstTwoFigs(combo.figures).map((fig, index) => {
-                          return (
-                            <div key={index} className="text-text">
-                              {fig.name}
-                            </div>
-                          );
-                        })}
-                      </div>
-                    )}
-                  </button>
-                );
-              })
-            : "Loading"}
+                {shownCombo === combo ? (
+                  <div className="flex flex-col">
+                    {combo.figures.map((fig, index) => {
+                      return <div key={index}>{fig.name}</div>;
+                    })}
+                  </div>
+                ) : (
+                  <div className="flex flex-row">
+                    {showFirstTwoFigs(combo.figures).map((fig, index) => {
+                      return (
+                        <div key={index} className="text-text">
+                          {fig.name}
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+              </button>
+            );
+          })}
         </div>
       </div>
       <div className="relative lg:w-2/3 lg:h-full">

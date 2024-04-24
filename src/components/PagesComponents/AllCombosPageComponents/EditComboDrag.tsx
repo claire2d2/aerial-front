@@ -9,22 +9,36 @@ type EditComboDragProps = {
   figures: figType[];
 };
 
-const onDragEnd = () => {
-  // TODO reorder tasks
-};
-
 const EditComboDrag: React.FC<EditComboDragProps> = ({
   comboKey,
   combo,
   figures,
 }) => {
+  const onDragEnd = (result) => {
+    const { destination, source, draggableId } = result;
+    if (!destination) {
+      return 1;
+    }
+    if (
+      destination.droppableId === source.droppableId &&
+      destination.index === source.index
+    ) {
+      return 2;
+    }
+
+    const column = combo;
+    const newFigIds = Array.from(column.figures);
+    newFigIds.splice(source.index, 1);
+    newFigIds.splice(destination.index, 0, draggableId);
+
+    const newColumn = { ...column, figures: newFigIds };
+  };
   return (
     <DragDropContext onDragEnd={onDragEnd}>
-      <Droppable droppableId={comboKey}>
-        {(provided) => (
-          <section>
-            <h4>{combo.name}</h4>
-
+      <section>
+        <h4>{combo.name}</h4>
+        <Droppable droppableId={comboKey}>
+          {(provided) => (
             <div ref={provided.innerRef} {...provided.droppableProps}>
               {figures.map((fig, index) => (
                 <Draggable draggableId={fig._id} index={index}>
@@ -41,11 +55,12 @@ const EditComboDrag: React.FC<EditComboDragProps> = ({
                   )}
                 </Draggable>
               ))}
+
+              {provided.placeholder}
             </div>
-            {provided.placeholder}
-          </section>
-        )}
-      </Droppable>
+          )}
+        </Droppable>
+      </section>
     </DragDropContext>
   );
 };
