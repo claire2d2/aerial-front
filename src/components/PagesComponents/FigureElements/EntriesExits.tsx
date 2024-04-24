@@ -14,13 +14,18 @@ type entryExit = {
   };
 };
 
-// setting consts for styling the forms
-const sectionStyle = "h-1/2 flex flex-col px-3";
+// styling the forms
+import { HiOutlineThumbUp } from "react-icons/hi";
+
+const sectionStyle = "h-1/2 flex flex-col px-";
 const titleStyle =
   "font-semibold font-romantic text-4xl bg-main text-white text-center";
-const listStyle = "overflow-scroll no-scrollbar h-4/6";
+const listStyle =
+  "overflow-y-scroll w-full overflow-x-hidden no-scrollbar h-4/6 flex flex-col gap-3 my-2 mr-4  pr-5";
 const toggleTextStyle = "flex  gap-2 py-1 ml-2 font-semibold";
 const toggleStyle = "px-2  bg-main text-white font-bold rounded-lg";
+const figurePropStyle =
+  "flex w-full justify-between bg-bgmainlight mx-3 text-center py-1 px-3 rounded-lg";
 
 const EntriesExits: React.FC<{ currFigId: string }> = ({ currFigId }) => {
   const [allEntries, setAllEntries] = useState<entryExit[]>([]);
@@ -89,8 +94,16 @@ const EntriesExits: React.FC<{ currFigId: string }> = ({ currFigId }) => {
           {allEntries.length > 0 ? (
             allEntries.map((entry, index) => {
               return (
-                <div className="capitalize" key={index}>
-                  {entry.figureFrom?.name}
+                <div key={index} className={figurePropStyle}>
+                  <h6 className="capitalize font-semibold italic text-mainvar">
+                    {entry.figureFrom.name}
+                  </h6>
+                  <div className="flex gap-2">
+                    <div>1 </div>
+                    <button className="hover:text-isFave">
+                      <HiOutlineThumbUp />
+                    </button>
+                  </div>
                 </div>
               );
             })
@@ -120,7 +133,19 @@ const EntriesExits: React.FC<{ currFigId: string }> = ({ currFigId }) => {
         <div className={listStyle}>
           {allExits.length > 0 ? (
             allExits.map((exit, index) => {
-              return <div key={index}>{exit.figureTo.name}</div>;
+              return (
+                <div key={index} className={figurePropStyle}>
+                  <h6 className="capitalize font-semibold italic text-mainvar">
+                    {exit.figureTo.name}
+                  </h6>
+                  <div className="flex gap-2">
+                    <div>1 </div>
+                    <button className="hover:text-isFave">
+                      <HiOutlineThumbUp />
+                    </button>
+                  </div>
+                </div>
+              );
             })
           ) : (
             <div className="max-h-full">No exits yet ...</div>
