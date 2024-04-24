@@ -138,3 +138,58 @@ export const sortFiguresAlpha = (
   });
   setFigures(sortedFigures);
 };
+
+export const sortFiguresPopularity = (
+  allFaves: faveType[],
+  figures: figType[],
+  setFigures: SetFigures
+) => {
+  const favoriteCounts: { [key: string]: number } = {};
+  allFaves.forEach((favorite) => {
+    const figureId = favorite.figure._id; // Assuming the key for the figure ID in the favorite object is `figureId`
+    favoriteCounts[figureId] = (favoriteCounts[figureId] || 0) + 1;
+  });
+
+  // sort figure ids by order of popularity (descending)
+  const sortedFigureIds = Object.keys(favoriteCounts).sort(
+    (a, b) => favoriteCounts[b] - favoriteCounts[a]
+  );
+
+  // Map out the sorted Figure ids and fetch the figure data
+  const sortedFigures: (figType | undefined)[] = sortedFigureIds.map(
+    (figureId) => figures.find((fig) => fig._id === figureId)
+  );
+
+  // Filter out undefined values from the sorted figures
+  const filteredSortedFigures: figType[] = sortedFigures.filter(
+    (fig) => fig !== undefined
+  ) as figType[];
+
+  // Create an array of favorited figures
+  const favoritedFigures: figType[] = filteredSortedFigures.filter((fig) =>
+    allFaves.some((favorite) => favorite.figure._id === fig._id)
+  );
+
+  // Create an array of non-favorited figures
+  const nonFavoritedFigures: figType[] = filteredSortedFigures.filter(
+    (fig) => !allFaves.some((favorite) => favorite.figure._id === fig._id)
+  );
+
+  // Concatenate the arrays of favorited and non-favorited figures
+  const result: figType[] = [...favoritedFigures, ...nonFavoritedFigures];
+
+  // Set the sorted figures in state
+  setFigures(result);
+};
+
+export async function fetchAllFaves(setAllFaves: SetFaveData) {
+  try {
+    const response = await aerialApi.get("/favorites/all");
+    console.log(response.data);
+    setAllFaves(response.data);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    return 1;
+  }
+}
