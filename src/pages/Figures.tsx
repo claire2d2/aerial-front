@@ -141,7 +141,7 @@ const Figures = () => {
           <SearchBar
             placeholder="Figure Name"
             searchAction="navigate"
-            setFigure={null}
+            onFigureSelect={null}
           />
         </div>
         <FigFilter />

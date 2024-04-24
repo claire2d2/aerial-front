@@ -1,4 +1,4 @@
-import React, { useState, useEffect, SetStateAction } from "react";
+import React, { useState, useEffect } from "react";
 import { HiOutlineSearch, HiX } from "react-icons/hi";
 import { useNavigate } from "react-router-dom";
 import useUser from "../../context/useUser";
@@ -9,7 +9,7 @@ import { figType } from "../Types";
 type SearchBarProps = {
   placeholder: string;
   searchAction: string;
-  onFigureSelect: (figure: figType) => void | null;
+  onFigureSelect: ((figure: figType) => void) | null;
 };
 const SearchBar: React.FC<SearchBarProps> = ({
   placeholder,
