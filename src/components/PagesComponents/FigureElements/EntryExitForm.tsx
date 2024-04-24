@@ -1,101 +1,68 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import aerialApi from "../../../service/aerialApi";
-// import useUser from "../../context/useUser";
+// import useUser from "../../../context/useUser";
+// import { fetchFigures } from "../FiguresFunctions";
+// import { figType } from "../../Types";
 
-import { figType } from "../../Types";
+import SearchBar from "../../GlobalComponents/SearchBar";
 
-// use debouncing to avoid handling too many requests at the same time
-
-const useDebouncedValue = (inputValue: string, delay: number) => {
-  const [debouncedValue, setDebouncedValue] = useState(inputValue);
-
-  useEffect(() => {
-    const handler = setTimeout(() => {
-      setDebouncedValue(inputValue);
-    }, delay);
-
-    return () => {
-      clearTimeout(handler);
-    };
-  }, [inputValue, delay]);
-
-  return debouncedValue;
+type EntryExitFormProps = {
+  currFigId: string;
+  entryOrExit: string;
 };
 
-const EntryExitForm: React.FC<{ currFigId: string }> = ({ currFigId }) => {
-  const [search, setSearch] = useState<string>("");
-  const [proposition, setProposition] = useState<string>("");
-  const [figures, setFigures] = useState<figType[]>([]);
-  //   const { currDisciplineRef } = useUser();
+const EntryExitForm: React.FC<EntryExitFormProps> = ({
+  currFigId,
+  entryOrExit,
+}) => {
+  // const { currDiscipline } = useUser();
+  // const [figures, setFigures] = useState<figType[]>([]);
+  const [chosenFig, setChosenFig] = useState<string>("");
 
-  const debouncedSearch = useDebouncedValue(search, 300);
+  // useEffect(() => {
+  //   if (currDiscipline) {
+  //     fetchFigures(currDiscipline._id, setFigures, [], []);
+  //   }
+  // }, [currFigId]);
 
-  useEffect(() => {
-    fetchAllFigures();
-  }, [debouncedSearch]);
-
-  function chooseProp(e: React.MouseEvent<HTMLElement>, id: string) {
+  // depends on whether is entry or exit
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    console.log(id);
-    setProposition(id);
-    console.log(proposition);
-  }
-
-  async function fetchAllFigures() {
-    try {
-      const response = await aerialApi.get(`/figures/search/${search}`);
-      setFigures(response.data);
-    } catch (error) {
-      console.log(error);
+    if (entryOrExit === "entry") {
+      try {
+        await aerialApi.post(`/entriesexits/entry/${currFigId}`, {
+          entry: chosenFig,
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      try {
+        await aerialApi.post(`/entriesexits/exit/${currFigId}`, {
+          exit: chosenFig,
+        });
+      } catch (error) {
+        console.log(error);
+      }
     }
   }
-  // change search result dynamically
-  const handleChange = (e: React.FormEvent<HTMLInputElement>) => {
-    setSearch(e.currentTarget.value);
-  };
 
-  // only works for submitting an entry so far
-  async function handleSubmit() {
-    try {
-      await aerialApi.post(`/entriesexits/entry/${currFigId}`, {
-        entry: proposition,
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  }
   return (
-    <div>
-      <form action="" className="group h-full" onSubmit={handleSubmit}>
-        <label htmlFor="entry">Add a proposition:</label>
-        <input
-          id="entry"
-          type="text"
-          value={search}
-          onChange={handleChange}
-          className="relative"
+    <div className="w-full">
+      <form
+        className="w-full h-full flex flex-col px-3 gap-4 items-center"
+        onSubmit={handleSubmit}
+      >
+        <SearchBar
+          placeholder="Figure name"
+          searchAction="entryExit"
+          onFigureSelect={null}
+          setFigure={setChosenFig}
         />
-        <ul className="absolute bg-white w-full hidden group-focus-within:block">
-          {figures?.length > 15 || search === ""
-            ? "NO"
-            : figures?.length === 0
-            ? "No figure with that name"
-            : figures?.map((fig) => {
-                return (
-                  <li>
-                    <button
-                      onClick={(e) => chooseProp(e, fig._id)}
-                      className="hover:bg-main w-full text-left "
-                    >
-                      {fig.name}
-                    </button>
-                  </li>
-                );
-              })}
-        </ul>
-        <button>Add entry</button>
+        <button className="bg-main py-2 px-2 w-32 mx-auto text-white rounded-xl drop-shadow-md font-bold">
+          Add {entryOrExit}
+        </button>
       </form>
-      <span>{proposition}</span>
     </div>
   );
 };
