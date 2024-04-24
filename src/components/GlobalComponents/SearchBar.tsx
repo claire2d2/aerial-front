@@ -89,6 +89,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
           value={searchWord}
           placeholder={`${placeholder}`}
           onChange={handleSearch}
+          className="w-full"
         />
         <label htmlFor="search" className="flex items-center gap-2 ">
           {searchedFigs.length === 0 ? (
@@ -103,13 +104,13 @@ const SearchBar: React.FC<SearchBarProps> = ({
         </label>
       </div>
       {searchedFigs.length !== 0 && (
-        <div className="searchResults overflow-scroll no-scrollbar h-20 flex flex-col absolute bg-white w-full text-text">
+        <div className="searchResults overflow-scroll no-scrollbar max-h-20 flex flex-col  z-9 bg-white w-full text-text">
           {searchedFigs.map((fig, index) => {
             return (
               <button
                 onClick={(e) => action(e, fig)}
                 key={index}
-                className="capitalize hover:bg-bgmainlight"
+                className="z-10 capitalize hover:bg-bgmainlight text-text"
               >
                 {fig.name}
               </button>

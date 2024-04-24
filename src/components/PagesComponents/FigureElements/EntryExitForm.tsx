@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import aerialApi from "../../../service/aerialApi";
-// import useUser from "../../../context/useUser";
-// import { fetchFigures } from "../FiguresFunctions";
-// import { figType } from "../../Types";
+import { AxiosError } from "axios";
 
 import SearchBar from "../../GlobalComponents/SearchBar";
 
@@ -15,15 +13,8 @@ const EntryExitForm: React.FC<EntryExitFormProps> = ({
   currFigId,
   entryOrExit,
 }) => {
-  // const { currDiscipline } = useUser();
-  // const [figures, setFigures] = useState<figType[]>([]);
   const [chosenFig, setChosenFig] = useState<string>("");
-
-  // useEffect(() => {
-  //   if (currDiscipline) {
-  //     fetchFigures(currDiscipline._id, setFigures, [], []);
-  //   }
-  // }, [currFigId]);
+  const [errorMsg, setErrorMsg] = useState<string>("");
 
   // depends on whether is entry or exit
   async function handleSubmit(e: React.FormEvent) {
@@ -34,7 +25,18 @@ const EntryExitForm: React.FC<EntryExitFormProps> = ({
           entry: chosenFig,
         });
       } catch (error) {
-        console.log(error);
+        if (error instanceof AxiosError) {
+          // Handle error if it is an instance of Error
+          console.error(error);
+          setErrorMsg(error.response?.data.message); // Use type assertion to access message property
+        } else {
+          // Handle other types of errors
+          console.error(error);
+          setErrorMsg("An unknown error occurred. Please try again.");
+        }
+        setTimeout(() => {
+          setErrorMsg("");
+        }, 3000);
       }
     } else {
       try {
@@ -42,13 +44,22 @@ const EntryExitForm: React.FC<EntryExitFormProps> = ({
           exit: chosenFig,
         });
       } catch (error) {
-        console.log(error);
+        if (error instanceof AxiosError) {
+          // Handle error if it is an instance of Error
+          console.error(error);
+          setErrorMsg(error.response?.data.message); // Use type assertion to access message property
+        } else {
+          // Handle other types of errors
+          setErrorMsg("An unknown error occurred. Please try again.");
+        }
+        setTimeout(() => {
+          setErrorMsg("");
+        }, 3000);
       }
     }
   }
-
   return (
-    <div className="w-full">
+    <div className="w-full relative">
       <form
         className="w-full h-full flex flex-col px-3 gap-4 items-center"
         onSubmit={handleSubmit}
@@ -62,6 +73,9 @@ const EntryExitForm: React.FC<EntryExitFormProps> = ({
         <button className="bg-main py-2 px-2 w-32 mx-auto text-white rounded-xl drop-shadow-md font-bold">
           Add {entryOrExit}
         </button>
+        <div className="absolute bg-white bg-opacity-95 text-error rounded-lg drop-shadow-sm">
+          {errorMsg}
+        </div>
       </form>
     </div>
   );
