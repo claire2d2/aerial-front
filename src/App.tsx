@@ -40,14 +40,14 @@ function App() {
             <Route element={<IsLoggedOut />}>
               <Route path="signup" element={<SignUpPage />} />
               <Route path="login" element={<LogInPage />} />
-              <Route path="settings" element={<UserSettings />} />
               // TODO add admin path
-              <Route path="admin" element={<AdminDashboard />} />
             </Route>
             <Route index element={<HomePage />} />
             <Route path="about" element={<About />} />
             <Route path="privacy" element={<PrivacyPolicy />} />
             <Route path="site" element={<SiteMap />} />
+            <Route path="settings" element={<UserSettings />} />
+            <Route path="admin" element={<AdminDashboard />} />
 
             <Route path="pole">
               <Route index element={<PoleDance />} />
