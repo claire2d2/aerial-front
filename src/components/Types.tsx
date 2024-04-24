@@ -56,3 +56,21 @@ export type comboType = {
   owner: string;
   comment: string;
 };
+
+export type entryExitType = {
+  _id: string;
+  owner: string;
+  figureTo: {
+    id: string;
+    name: string;
+  };
+  figureFrom: {
+    id: string;
+    name: string;
+  };
+};
+
+export type likeType = {
+  entryExit: string;
+  follower: string;
+};

@@ -1,21 +1,33 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, SetStateAction } from "react";
 import aerialApi from "../../../service/aerialApi";
 import { AxiosError } from "axios";
+import { fetchEntries, fetchExits } from "./EntryExitFunctions";
 import { like } from "../FiguresFunctions";
-
+import { entryExitType } from "../../Types";
 import SearchBar from "../../GlobalComponents/SearchBar";
 
 type EntryExitFormProps = {
   currFigId: string;
   entryOrExit: string;
+  setAllEntries: React.Dispatch<SetStateAction<entryExitType[]>>;
+  setAllExits: React.Dispatch<SetStateAction<entryExitType[]>>;
 };
 
 const EntryExitForm: React.FC<EntryExitFormProps> = ({
   currFigId,
   entryOrExit,
+  setAllEntries,
+  setAllExits,
 }) => {
   const [chosenFig, setChosenFig] = useState<string>("");
   const [errorMsg, setErrorMsg] = useState<string>("");
+  const [updateList, setUpdateList] = useState<boolean>(false);
+
+  // refresh list when submitting a proposition
+  useEffect(() => {
+    fetchEntries(currFigId, setAllEntries);
+    fetchExits(currFigId, setAllExits);
+  }, [updateList]);
 
   // depends on whether is entry or exit
   async function handleSubmit(e: React.FormEvent) {
@@ -66,6 +78,7 @@ const EntryExitForm: React.FC<EntryExitFormProps> = ({
         }, 3000);
       }
     }
+    setUpdateList(true);
   }
   return (
     <div className="w-full relative">
