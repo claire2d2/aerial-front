@@ -152,6 +152,7 @@ const Figures = () => {
             placeholder="Figure Name"
             searchAction="navigate"
             onFigureSelect={null}
+            setFigure={null}
           />
         </div>
         <FigFilter />
