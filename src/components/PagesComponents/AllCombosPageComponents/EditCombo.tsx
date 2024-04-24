@@ -1,9 +1,12 @@
-import { useState } from "react";
+import { useState, SetStateAction } from "react";
 import { comboType } from "../../Types";
 import EditButton from "../../GlobalComponents/EditButton";
+import EditComboDrag from "./EditComboDrag";
 
 type EditComboProps = {
+  allCombos: comboType[];
   shownCombo: comboType | null;
+  setShownCombo: React.Dispatch<SetStateAction<comboType | null>>;
 };
 
 const EditCombo: React.FC<EditComboProps> = ({ shownCombo }) => {
@@ -25,9 +28,11 @@ const EditCombo: React.FC<EditComboProps> = ({ shownCombo }) => {
       </h2>
       {shownCombo ? (
         <div>
-          {shownCombo.figures.map((fig) => {
-            return <div>{fig.name}</div>;
-          })}
+          <EditComboDrag
+            comboKey={shownCombo._id}
+            combo={shownCombo}
+            figures={shownCombo.figures}
+          />
         </div>
       ) : (
         <div>Please choose a combo to show</div>

@@ -95,7 +95,11 @@ const AllCombos = () => {
         </div>
       </div>
       <div className="relative lg:w-2/3 lg:h-full">
-        <EditCombo shownCombo={shownCombo} />
+        <EditCombo
+          shownCombo={shownCombo}
+          allCombos={allCombos}
+          setShownCombo={setShownCombo}
+        />
       </div>
     </div>
   );
