@@ -70,8 +70,9 @@ const Figures = () => {
 
   // sort filters based on sorting choice
   useEffect(() => {
-    sortFiguresAlpha(figures, sortBy, setFigures);
-    if (sortBy === "popularity") {
+    if (sortBy === "aToZ" || sortBy === "zToA") {
+      sortFiguresAlpha(figures, sortBy, setFigures);
+    } else if (sortBy === "popularity") {
       sortFiguresPopularity(allFaves, figures, setFigures);
     }
   }, [sortBy]);

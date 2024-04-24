@@ -145,41 +145,21 @@ export const sortFiguresPopularity = (
   setFigures: SetFigures
 ) => {
   const favoriteCounts: { [key: string]: number } = {};
+
+  // populate favorite counts from the allFaves array
   allFaves.forEach((favorite) => {
-    const figureId = favorite.figure._id; // Assuming the key for the figure ID in the favorite object is `figureId`
+    const figureId = favorite.figure._id;
     favoriteCounts[figureId] = (favoriteCounts[figureId] || 0) + 1;
   });
 
-  // sort figure ids by order of popularity (descending)
-  const sortedFigureIds = Object.keys(favoriteCounts).sort(
-    (a, b) => favoriteCounts[b] - favoriteCounts[a]
-  );
+  // sort figures based on favorite count (descending)
+  const sortedFigures = figures.slice().sort((a, b) => {
+    const favCountA = favoriteCounts[a._id] || 0;
+    const favCountB = favoriteCounts[b._id] || 0;
+    return favCountB - favCountA;
+  });
 
-  // Map out the sorted Figure ids and fetch the figure data
-  const sortedFigures: (figType | undefined)[] = sortedFigureIds.map(
-    (figureId) => figures.find((fig) => fig._id === figureId)
-  );
-
-  // Filter out undefined values from the sorted figures
-  const filteredSortedFigures: figType[] = sortedFigures.filter(
-    (fig) => fig !== undefined
-  ) as figType[];
-
-  // Create an array of favorited figures
-  const favoritedFigures: figType[] = filteredSortedFigures.filter((fig) =>
-    allFaves.some((favorite) => favorite.figure._id === fig._id)
-  );
-
-  // Create an array of non-favorited figures
-  const nonFavoritedFigures: figType[] = filteredSortedFigures.filter(
-    (fig) => !allFaves.some((favorite) => favorite.figure._id === fig._id)
-  );
-
-  // Concatenate the arrays of favorited and non-favorited figures
-  const result: figType[] = [...favoritedFigures, ...nonFavoritedFigures];
-
-  // Set the sorted figures in state
-  setFigures(result);
+  setFigures(sortedFigures);
 };
 
 export async function fetchAllFaves(setAllFaves: SetFaveData) {
