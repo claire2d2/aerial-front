@@ -21,6 +21,7 @@ export default {
       linkhover: "#ffc900",
       inputfield: "#7a7672",
       disabled: "#e2e2e2",
+      error: "#ff0066",
       // for the state input range
       green: "#42b883",
       golden: "#f8b400",

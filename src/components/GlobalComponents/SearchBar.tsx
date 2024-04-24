@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, SetStateAction } from "react";
 import { HiOutlineSearch, HiX } from "react-icons/hi";
 import { useNavigate } from "react-router-dom";
 import useUser from "../../context/useUser";
@@ -10,11 +10,13 @@ type SearchBarProps = {
   placeholder: string;
   searchAction: string;
   onFigureSelect: ((figure: figType) => void) | null;
+  setFigure: React.Dispatch<SetStateAction<string>> | null;
 };
 const SearchBar: React.FC<SearchBarProps> = ({
   placeholder,
   searchAction,
   onFigureSelect,
+  setFigure,
 }) => {
   const { currDiscipline } = useUser();
   const [figures, setFigures] = useState<figType[]>([]);
@@ -67,6 +69,10 @@ const SearchBar: React.FC<SearchBarProps> = ({
       setSearchWord(figure.name);
       onFigureSelect(figure);
     }
+    if (searchAction === "entryExit" && setFigure) {
+      setSearchWord(figure.name);
+      setFigure(figure._id);
+    }
   }
 
   // clear out results if search result is chosen
@@ -75,14 +81,15 @@ const SearchBar: React.FC<SearchBarProps> = ({
   }, [onFigureSelect]);
 
   return (
-    <div>
-      <div className="searchInput flex items-center gap-2 bg-white  drop-shadow-sm px-2 py-1">
+    <div className="w-full">
+      <div className="searchInput flex justify-between items-center gap-2 bg-white  drop-shadow-sm pr-3 pl-1 py-1 relative w-full">
         <input
           type="text"
           id="search"
           value={searchWord}
           placeholder={`${placeholder}`}
           onChange={handleSearch}
+          className="w-full"
         />
         <label htmlFor="search" className="flex items-center gap-2 ">
           {searchedFigs.length === 0 ? (
@@ -97,13 +104,13 @@ const SearchBar: React.FC<SearchBarProps> = ({
         </label>
       </div>
       {searchedFigs.length !== 0 && (
-        <div className="searchResults overflow-scroll no-scrollbar h-20 flex flex-col">
+        <div className="searchResults overflow-scroll no-scrollbar max-h-20 flex flex-col  z-9 bg-white w-full text-text">
           {searchedFigs.map((fig, index) => {
             return (
               <button
                 onClick={(e) => action(e, fig)}
                 key={index}
-                className="capitalize hover:bg-bgmainlight"
+                className="z-10 capitalize hover:bg-bgmainlight text-text"
               >
                 {fig.name}
               </button>

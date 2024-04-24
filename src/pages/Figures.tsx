@@ -10,6 +10,8 @@ import {
   fetchFaves,
   filterFigures,
   sortFiguresAlpha,
+  fetchAllFaves,
+  sortFiguresPopularity,
 } from "../components/PagesComponents/FiguresFunctions";
 
 // imports for styling
@@ -27,17 +29,21 @@ const Figures = () => {
   const { currDiscipline, activeFilters, sortBy, modViewOn } = useUser();
   const [figures, setFigures] = useState<figType[]>([]);
   const [statesData, setStatesData] = useState<statusType[]>([]);
+  // for the user's personal favorites
   const [faveData, setFaveData] = useState<faveType[]>([]);
+  // for all the favorites
+  const [allFaves, setAllFaves] = useState<faveType[]>([]);
   // use state, if mod mode is on, user can add a figure
   const [showFigForm, setShowFigForm] = useState<boolean>(false);
   const [showToast, setShowToast] = useState<boolean>(false);
   const [toastMessage, setToastMessage] = useState<string>("");
 
-  // fetch figures when page renders
+  // fetch figures and all faves when page renders
   useEffect(() => {
     if (currDiscipline) {
       fetchFigures(currDiscipline._id, setFigures, [], []);
     }
+    fetchAllFaves(setAllFaves);
   }, [currDiscipline]);
 
   // when filters are chosen and unchosen, set the "states" to fetch the figures that are concerned by the statuses
@@ -64,7 +70,11 @@ const Figures = () => {
 
   // sort filters based on sorting choice
   useEffect(() => {
-    sortFiguresAlpha(figures, sortBy, setFigures);
+    if (sortBy === "aToZ" || sortBy === "zToA") {
+      sortFiguresAlpha(figures, sortBy, setFigures);
+    } else if (sortBy === "popularity") {
+      sortFiguresPopularity(allFaves, figures, setFigures);
+    }
   }, [sortBy]);
 
   // show or collapse form
@@ -142,6 +152,7 @@ const Figures = () => {
             placeholder="Figure Name"
             searchAction="navigate"
             onFigureSelect={null}
+            setFigure={null}
           />
         </div>
         <FigFilter />

@@ -113,6 +113,7 @@ const EditCombo: React.FC<EditComboProps> = ({ shownCombo }) => {
                       onFigureSelect={(figure) =>
                         handleFigureChange(index, figure)
                       }
+                      setFigure={null}
                     />
                   ) : (
                     <div className="w-full h-full">{fig.name}</div>

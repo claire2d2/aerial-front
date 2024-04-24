@@ -138,3 +138,57 @@ export const sortFiguresAlpha = (
   });
   setFigures(sortedFigures);
 };
+
+export const sortFiguresPopularity = (
+  allFaves: faveType[],
+  figures: figType[],
+  setFigures: SetFigures
+) => {
+  const favoriteCounts: { [key: string]: number } = {};
+
+  // populate favorite counts from the allFaves array
+  allFaves.forEach((favorite) => {
+    const figureId = favorite.figure._id;
+    favoriteCounts[figureId] = (favoriteCounts[figureId] || 0) + 1;
+  });
+
+  // sort figures based on favorite count (descending)
+  const sortedFigures = figures.slice().sort((a, b) => {
+    const favCountA = favoriteCounts[a._id] || 0;
+    const favCountB = favoriteCounts[b._id] || 0;
+    return favCountB - favCountA;
+  });
+
+  setFigures(sortedFigures);
+};
+
+export async function fetchAllFaves(setAllFaves: SetFaveData) {
+  try {
+    const response = await aerialApi.get("/favorites/all");
+    console.log(response.data);
+    setAllFaves(response.data);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    return 1;
+  }
+}
+
+// functions for like and unliking entry exit propositions
+export async function like(propId: string) {
+  try {
+    const response = await aerialApi.post(`/entriesexits/like/${propId}`);
+    console.log(response.data);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function unLike(propId: string) {
+  try {
+    const response = await aerialApi.delete(`/entriesexits/like/${propId}`);
+    console.log(response.data);
+  } catch (error) {
+    console.log(error);
+  }
+}

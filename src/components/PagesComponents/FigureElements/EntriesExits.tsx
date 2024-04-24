@@ -1,8 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, SetStateAction } from "react";
 import aerialApi from "../../../service/aerialApi";
 import EntryExitForm from "./EntryExitForm";
+import EntryExitLike from "./EntryExitLike";
 
 type entryExit = {
+  _id: string;
   owner: string;
   figureTo: {
     id: string;
@@ -14,9 +16,31 @@ type entryExit = {
   };
 };
 
+// styling the forms
+
+const sectionStyle = "h-1/2 flex flex-col px-";
+const titleStyle =
+  "font-semibold font-romantic text-4xl bg-main text-white text-center";
+const listStyle =
+  "overflow-y-scroll w-full overflow-x-hidden no-scrollbar h-4/6 flex flex-col gap-3 my-2 mr-4  pr-5";
+const toggleTextStyle = "flex  gap-2 py-1 ml-2 font-semibold";
+const toggleStyle = "px-2  bg-main text-white font-bold rounded-lg";
+const figurePropStyle =
+  "flex w-full justify-between bg-bgmainlight mx-3 text-center py-1 px-3 rounded-lg";
+
 const EntriesExits: React.FC<{ currFigId: string }> = ({ currFigId }) => {
   const [allEntries, setAllEntries] = useState<entryExit[]>([]);
   const [allExits, setAllExits] = useState<entryExit[]>([]);
+  // states for showing or hiding entry exit forms
+  const [showEntryForm, setShowEntryForm] = useState<boolean>(false);
+  const [showExitForm, setShowExitForm] = useState<boolean>(false);
+
+  const handleShowForm = (
+    form: boolean,
+    setForm: React.Dispatch<SetStateAction<boolean>>
+  ) => {
+    setForm(!form);
+  };
 
   useEffect(() => {
     fetchEntries();
@@ -49,34 +73,74 @@ const EntriesExits: React.FC<{ currFigId: string }> = ({ currFigId }) => {
 
   return (
     <div className="w-full h-full">
-      <div className="h-1/2 bg-inputfield">
-        <h3 className="font-semibold h-1/6">Entries</h3>
-        <div className="overflow-scroll no-scrollbar h-4/6 bg-mainlight">
+      <div className={sectionStyle}>
+        <h3 className={titleStyle}>Entries</h3>
+        <div>
+          <button
+            onClick={() => handleShowForm(showEntryForm, setShowEntryForm)}
+            className={toggleTextStyle}
+          >
+            Add an entry{" "}
+            {showEntryForm ? (
+              <div className={toggleStyle}>-</div>
+            ) : (
+              <div className={toggleStyle}>+</div>
+            )}
+          </button>
+          {showEntryForm && (
+            <EntryExitForm currFigId={currFigId} entryOrExit="entry" />
+          )}
+        </div>
+        <div className={listStyle}>
           {allEntries.length > 0 ? (
             allEntries.map((entry, index) => {
-              return <div key={index}>{entry.figureFrom?.name}</div>;
+              return (
+                <div key={index} className={figurePropStyle}>
+                  <h6 className="capitalize font-semibold italic text-mainvar">
+                    {entry.figureFrom.name}
+                  </h6>
+                  <EntryExitLike propId={entry._id} />
+                </div>
+              );
             })
           ) : (
             <div className="max-h-full">No entries yet ...</div>
           )}
         </div>
-        <div className="h-1/6">
-          <EntryExitForm currFigId={currFigId} />
-        </div>
       </div>
-      <div className="h-1/2 bg-green">
-        <h3 className="h-1/6 font-semibold">Exits</h3>
-        <div className="overflow-scroll no-scrollbar h-4/6">
+      <div className={sectionStyle}>
+        <h3 className={titleStyle}>Exits</h3>
+        <div className="">
+          <button
+            onClick={() => handleShowForm(showExitForm, setShowExitForm)}
+            className={toggleTextStyle}
+          >
+            Add an exit{" "}
+            {showExitForm ? (
+              <div className={toggleStyle}>-</div>
+            ) : (
+              <div className={toggleStyle}>+</div>
+            )}
+          </button>
+          {showExitForm && (
+            <EntryExitForm currFigId={currFigId} entryOrExit="exit" />
+          )}
+        </div>
+        <div className={listStyle}>
           {allExits.length > 0 ? (
             allExits.map((exit, index) => {
-              return <div key={index}>{exit.figureFrom.name}</div>;
+              return (
+                <div key={index} className={figurePropStyle}>
+                  <h6 className="capitalize font-semibold italic text-mainvar">
+                    {exit.figureTo.name}
+                  </h6>
+                  <EntryExitLike propId={exit._id} />
+                </div>
+              );
             })
           ) : (
             <div className="max-h-full">No exits yet ...</div>
           )}
-        </div>
-        <div className="h-1/6">
-          <EntryExitForm currFigId={currFigId} />
         </div>
       </div>
     </div>
