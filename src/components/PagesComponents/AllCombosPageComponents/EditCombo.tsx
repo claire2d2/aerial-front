@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { figType, comboType } from "../../Types";
+import aerialApi from "../../../service/aerialApi";
 import EditButton from "../../GlobalComponents/EditButton";
 import SaveButton from "../../GlobalComponents/SaveButton";
 import SearchBar from "../../GlobalComponents/SearchBar";
@@ -10,6 +11,7 @@ type EditComboProps = {
 type formStateType = {
   name: string;
   figures: figType[];
+  comment: string;
 };
 
 const EditCombo: React.FC<EditComboProps> = ({ shownCombo }) => {
@@ -17,13 +19,16 @@ const EditCombo: React.FC<EditComboProps> = ({ shownCombo }) => {
   const [formState, setFormState] = useState<formStateType>({
     name: "",
     figures: [],
+    comment: "",
   });
 
   const turnEditOn = () => {
     setEditMode(!editMode);
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const key = e.currentTarget.id;
     const value = e.currentTarget.value;
     setFormState({ ...formState, [key]: value });
@@ -40,9 +45,21 @@ const EditCombo: React.FC<EditComboProps> = ({ shownCombo }) => {
     console.log(formState.figures);
   }, [formState]);
 
-  const handleSaveCombo = () => {
+  async function handleSaveCombo(e: React.FormEvent) {
+    e.preventDefault();
+    try {
+      const response = await aerialApi.put(
+        `/combos/${shownCombo?._id}`,
+        formState
+      );
+      if (response.status === 200) {
+        console.log("combo updated", response.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
     setEditMode(false);
-  };
+  }
 
   const { name } = formState;
 
@@ -51,8 +68,9 @@ const EditCombo: React.FC<EditComboProps> = ({ shownCombo }) => {
     if (shownCombo) {
       setFormState({
         ...formState,
-        name: shownCombo?.name,
+        name: shownCombo.name,
         figures: shownCombo.figures,
+        comment: shownCombo.comment,
       });
     }
   }, [shownCombo]);
@@ -103,16 +121,26 @@ const EditCombo: React.FC<EditComboProps> = ({ shownCombo }) => {
               );
             })}
           </div>
-          {editMode && (
+          {editMode ? (
             <div className="w-full flex flex-col items-center py-4 gap-2">
               <label htmlFor="comment">Add a comment</label>
               <textarea
                 id="comment"
+                name="comment"
                 className="border border-gray w-full h-52 rounded-lg resize-none drop-shadow-sm"
+                value={formState.comment}
+                onChange={(e) => handleChange(e)}
               />
-              <SaveButton disabled={false} onClickFunction={handleSaveCombo}>
+              <SaveButton
+                disabled={false}
+                onClickFunction={(e) => handleSaveCombo(e)}
+              >
                 Save combo
               </SaveButton>
+            </div>
+          ) : (
+            <div className="w-full flex flex-col items-center py-4 gap-2">
+              <p style={{ whiteSpace: "pre-wrap" }}>{shownCombo.comment}</p>
             </div>
           )}
         </form>

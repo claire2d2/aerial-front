@@ -1,6 +1,6 @@
 type SaveButtonProps = {
   disabled: boolean;
-  onClickFunction: () => void;
+  onClickFunction: (e: React.FormEvent) => void;
   children: React.ReactNode;
 };
 
