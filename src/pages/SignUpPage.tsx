@@ -57,6 +57,14 @@ const SignUpPage = () => {
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
+    if (
+      formState.firstName === "" ||
+      formState.lastName === "" ||
+      password === ""
+    ) {
+      setErrorMsg("Please input all fields");
+      return;
+    }
     try {
       console.log(formState);
       const response = await aerialApi.post("/auth/signup", formState);
@@ -75,10 +83,10 @@ const SignUpPage = () => {
         console.error(error);
         setErrorMsg("An unknown error occurred");
       }
-      setTimeout(() => {
-        setErrorMsg("");
-      }, 2000);
     }
+    setTimeout(() => {
+      setErrorMsg("");
+    }, 2000);
   }
 
   const { email, firstName, lastName, password } = formState;
@@ -89,7 +97,7 @@ const SignUpPage = () => {
         <h2 className="font-bold text-center">Sign up</h2>
         <div className={fieldStyle}>
           <label htmlFor="email" className={labelStyle}>
-            Email:
+            Email<span className="text-error mx-1">*</span>:
           </label>
           <input
             type="email"
@@ -99,11 +107,12 @@ const SignUpPage = () => {
             value={email}
             onChange={handleChange}
             className={inputStyle}
+            required
           />
         </div>
         <div className={fieldStyle}>
           <label htmlFor="firstName" className={labelStyle}>
-            First Name
+            First Name<span className="text-error mx-1">*</span>:
           </label>
           <input
             type="text"
@@ -113,11 +122,12 @@ const SignUpPage = () => {
             value={firstName}
             onChange={handleChange}
             className={inputStyle}
+            required
           />
         </div>
         <div className={fieldStyle}>
           <label htmlFor="lastName" className={labelStyle}>
-            Last Name
+            Last Name<span className="text-error mx-1">*</span>:
           </label>
           <input
             type="text"
@@ -127,11 +137,12 @@ const SignUpPage = () => {
             value={lastName}
             onChange={handleChange}
             className={inputStyle}
+            required
           />
         </div>
         <div className={`${fieldStyle}`}>
           <label htmlFor="password" className={labelStyle}>
-            Password
+            Password<span className="text-error mx-1">*</span>:
           </label>
           <input
             type="password"
@@ -141,19 +152,10 @@ const SignUpPage = () => {
             value={password}
             onChange={handleChange}
             className={inputStyle}
+            required
           />
         </div>
-        <button
-          disabled={
-            email === "" ||
-            password === "" ||
-            firstName === "" ||
-            lastName === ""
-          }
-          className={buttonStyle}
-        >
-          Create account
-        </button>
+        <button className={buttonStyle}>Create account</button>
         <div className="text-sm text-center">
           Already have an account?{" "}
           <Link to="/login">
