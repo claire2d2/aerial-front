@@ -4,7 +4,10 @@ import { AxiosError } from "axios";
 import { figType, figFormType } from "../../Types";
 import aerialApi from "../../../service/aerialApi";
 import { fetchFigures } from "../FiguresFunctions";
-import { handleChange, handleZoneChange } from "./FigFormFunctions";
+import {
+  handleChange,
+  handleZoneChange,
+} from "../FigureElements/FigFormFunctions";
 
 type AddFigureProps = {
   currDiscipline: {

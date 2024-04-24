@@ -14,11 +14,11 @@ import {
 
 // imports for styling
 import SortBy from "../components/PagesComponents/AllFiguresPageComponents/SortBy";
-import SearchBar from "../components/PagesComponents/AllFiguresPageComponents/SearchBar";
+import SearchBar from "../components/GlobalComponents/SearchBar";
 import FigFilter from "../components/PagesComponents/AllFiguresPageComponents/FigFilter";
 import ShowFigures from "../components/PagesComponents/AllFiguresPageComponents/ShowFigures";
 import LevelAccordion from "../components/PagesComponents/AllFiguresPageComponents/LevelAccordion";
-import AddFigure from "../components/PagesComponents/FigureElements/AddFigure";
+import AddFigure from "../components/PagesComponents/AllFiguresPageComponents/AddFigure";
 import { Toast } from "flowbite-react";
 import { HiFire, HiExclamation } from "react-icons/hi";
 
@@ -138,7 +138,11 @@ const Figures = () => {
       <div className="hidden lg:flex lg:justify-between lg:w-full lg:gap-40 pr-20">
         <div>
           <div className="font-semibold">Go directly to figure page:</div>
-          <SearchBar placeholder="Figure Name" figures={figures} />
+          <SearchBar
+            placeholder="Figure Name"
+            searchAction="navigate"
+            onFigureSelect={null}
+          />
         </div>
         <FigFilter />
         <div>

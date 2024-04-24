@@ -48,3 +48,11 @@ export type figFormType = {
   imgArtistUrl: string;
   focus: string[];
 };
+
+export type comboType = {
+  _id: string;
+  name: string;
+  figures: figType[];
+  owner: string;
+  comment: string;
+};
