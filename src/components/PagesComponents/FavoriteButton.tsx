@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import aerialApi from "../../service/aerialApi";
 import useUser from "../../context/useUser";
+
+import LogInModal from "../GlobalComponents/LogInModal";
 import { HiHeart } from "react-icons/hi2";
 
 type FavoriteButtonProps = {
@@ -12,7 +14,7 @@ const FavoriteButton: React.FC<FavoriteButtonProps> = ({
   fullButton,
   figId,
 }) => {
-  const { favorites, fetchFavorites } = useUser();
+  const { favorites, fetchFavorites, isLoggedIn } = useUser();
   const [isFave, setIsFave] = useState<boolean>(false);
 
   // check whether figure is already in favorites or not
@@ -25,6 +27,10 @@ const FavoriteButton: React.FC<FavoriteButtonProps> = ({
   // add or remove figure from favorite when clicking on the button
   async function handleFavorite(e: React.MouseEvent<HTMLElement>) {
     e.preventDefault;
+    if (!isLoggedIn) {
+      openLogInModal();
+      return;
+    }
     if (isFave) {
       setIsFave(false);
       removeFave();
@@ -51,6 +57,17 @@ const FavoriteButton: React.FC<FavoriteButtonProps> = ({
     }
     fetchFavorites();
   }
+
+  // dialog that opens if user that isn't logged in clicks on favorite
+  const logInModal = useRef<HTMLDialogElement | null>(null);
+
+  function openLogInModal() {
+    logInModal.current?.showModal();
+  }
+
+  function closeLogInModal() {
+    logInModal.current?.close();
+  }
   return (
     <div className="w-full">
       {fullButton ? (
@@ -68,6 +85,9 @@ const FavoriteButton: React.FC<FavoriteButtonProps> = ({
       ) : (
         <button>Button without text</button>
       )}
+      <dialog ref={logInModal} className="no-scrollbar">
+        <LogInModal closeModal={closeLogInModal} />
+      </dialog>
     </div>
   );
 };
