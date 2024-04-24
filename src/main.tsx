@@ -12,9 +12,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     <BrowserRouter>
       <UserContextWrapper>
         <ErrorBoundary>
-          
-            <App />
-          </DragDropContext>
+          <App />
         </ErrorBoundary>
       </UserContextWrapper>
     </BrowserRouter>
