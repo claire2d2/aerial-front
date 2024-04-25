@@ -127,7 +127,8 @@ const EditComboForm: React.FC<EditComboFormProps> = ({
                 />
                 <button
                   onClick={() => removeFigure(fig, index)}
-                  className="hidden absolute group-hover:block group-focus:block hover:text-isFave active:text-isFave top-4 right-3 text-gray"
+                  disabled={formState.figures.length < 2}
+                  className="hidden absolute group-hover:block group-focus:block hover:text-isFave active:text-isFave top-4 right-3 text-gray disabled:text-transparent"
                   type="button"
                 >
                   <HiOutlineX />

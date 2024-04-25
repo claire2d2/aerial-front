@@ -13,7 +13,7 @@ const SaveButton: React.FC<SaveButtonProps> = ({
     <button
       onClick={onClickFunction}
       disabled={disabled}
-      className="bg-main px-3 rounded-lg py-1 text-white disabled:bg-disabled hover:bg-mainlight active:bg-black"
+      className="bg-main px-3 rounded-lg py-1 text-white disabled:bg-disabled hover:bg-mainlight active:bg-black font-semibold"
     >
       {children}
     </button>

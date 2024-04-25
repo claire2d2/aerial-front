@@ -31,6 +31,7 @@ const AllCombos = () => {
    */
 
   const [shownCombo, setShownCombo] = useState<comboType | null>(null);
+  const [createMode, setCreateMode] = useState<boolean>(false);
 
   function choseCombo(combo: comboType) {
     if (combo === shownCombo) {
@@ -38,6 +39,9 @@ const AllCombos = () => {
       return;
     }
     setShownCombo(combo);
+    if (createMode) {
+      setCreateMode(false);
+    }
   }
 
   function showFirstTwoFigs(figArray: figType[]) {
@@ -50,7 +54,7 @@ const AllCombos = () => {
 
   return (
     <div className="w-full flex flex-col lg:flex-row lg:h-full overflow-scroll no-scrollbar">
-      <div className="w-full h-72  lg:h-full lg:w-1/3 bg-main py-3 flex flex-col">
+      <div className="w-full h-96  lg:h-full lg:w-1/3 bg-main py-3 flex flex-col">
         <h2 className="text-white font-romantic text-4xl text-center">
           All combos
         </h2>
@@ -60,32 +64,52 @@ const AllCombos = () => {
             If you wish to edit its content, please click on the edit button
           </p>
         </div>
-        <div className="overflow-y-scroll bg-white my-2 mx-3">
+        <div className="overflow-y-scroll bg-white my-2 mx-3 flex flex-col gap-4">
           {allCombos
             ? allCombos.map((combo, index) => {
                 return (
                   <button
                     key={index}
                     onClick={() => choseCombo(combo)}
-                    className="w-full flex flex-col"
+                    className="w-full flex flex-col hover:bg-bgmainlight"
                   >
-                    <h5>{combo.name}</h5>
+                    <h5 className="font-romantic text-2xl text-main capitalize py-1">
+                      {combo.name}
+                    </h5>
 
                     {shownCombo === combo ? (
-                      <div className="flex flex-col">
+                      <div className="flex flex-col gap-1">
                         {combo.figures.map((fig, index) => {
-                          return <div key={index}>{fig.name}</div>;
-                        })}
-                      </div>
-                    ) : (
-                      <div className="flex flex-row">
-                        {showFirstTwoFigs(combo.figures).map((fig, index) => {
                           return (
-                            <div key={index} className="text-text">
+                            <div
+                              key={index}
+                              className="capitalize text-darkgray pl-3"
+                            >
                               {fig.name}
                             </div>
                           );
                         })}
+                      </div>
+                    ) : (
+                      <div className="flex flex-row gap-2 items-center">
+                        {showFirstTwoFigs(combo.figures).map((fig, index) => {
+                          return (
+                            <div
+                              key={index}
+                              className="capitalize text-darkgray pl-3"
+                            >
+                              {fig.name}
+                              {combo.figures.length > 2 ? "," : ""}
+                            </div>
+                          );
+                        })}
+                        {combo.figures.length > 2 ? (
+                          <div className="mx-3 border rounded-lg border-disabled flex items-center justify-center h-3 pb-2 px-1 text-disabled">
+                            <span>...</span>
+                          </div>
+                        ) : (
+                          ""
+                        )}
                       </div>
                     )}
                   </button>
@@ -95,7 +119,11 @@ const AllCombos = () => {
         </div>
       </div>
       <div className="relative basis-1/2 lg:basis-2/3 lg:h-full">
-        <EditCombo shownCombo={shownCombo} />
+        <EditCombo
+          shownCombo={shownCombo}
+          createMode={createMode}
+          setCreateMode={setCreateMode}
+        />
       </div>
     </div>
   );
