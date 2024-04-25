@@ -3,6 +3,8 @@ import useUser from "../../../context/useUser";
 import { logType, fetchLogData } from "./OneFigureStyles";
 import ProgressLogForm from "./ProgressLogForm";
 import OneProgressLog from "./OneProgressLog";
+import { Accordion } from "flowbite-react";
+import { panelTheme, customTheme, titleTheme } from "../../Styles";
 
 type Logs = {
   currFigId: string;
@@ -31,9 +33,17 @@ const ProgressLog: React.FC<Logs> = ({ currFigId }) => {
         </div>
       ) : (
         <div>
-          <div className="w-full">
-            <ProgressLogForm currFigId={currFigId} setLogs={setLogs} />
-          </div>
+          <Accordion theme={customTheme}>
+            <Accordion.Panel theme={customTheme}>
+              <Accordion.Title theme={titleTheme}>
+                <h3 className="font-bold">Add a new progress log</h3>
+              </Accordion.Title>
+              <Accordion.Content theme={panelTheme}>
+                <ProgressLogForm currFigId={currFigId} setLogs={setLogs} />
+              </Accordion.Content>
+            </Accordion.Panel>
+          </Accordion>
+
           <h3 className="font-bold">Logs</h3>
           <div className="h-80 overflow-y-scroll no-scrollbar overflow-x-hiddenflex flex-col px-5">
             {logs && logs.length !== 0

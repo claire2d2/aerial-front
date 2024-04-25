@@ -65,7 +65,6 @@ const ProgressLogForm: React.FC<formProps> = ({ currFigId, setLogs }) => {
       onSubmit={handleSubmit}
       className="flex flex-col gap-2 text-main dark:text-textdark px-3 lg:px-5"
     >
-      <h3 className="font-bold">Add a new progress log</h3>
       <label htmlFor="date" className="font-semibold ">
         Date
       </label>
@@ -87,7 +86,7 @@ const ProgressLogForm: React.FC<formProps> = ({ currFigId, setLogs }) => {
           }}
         />
       </div>
-      <label htmlFor="content" className="">
+      <label htmlFor="content" className="font-semibold">
         Comment
       </label>
       <textarea
@@ -95,9 +94,11 @@ const ProgressLogForm: React.FC<formProps> = ({ currFigId, setLogs }) => {
         value={content}
         onChange={handleChange}
         maxLength={200}
-        className="h-32 border-gray border rounded-lg"
+        className="h-32 border-gray border  bg-transparent rounded-lg"
       />
-      <label htmlFor="">Add a photo</label>
+      <label htmlFor="file" className="font-semibold">
+        Add a photo
+      </label>
       <input
         id="file"
         type="file"
@@ -106,6 +107,7 @@ const ProgressLogForm: React.FC<formProps> = ({ currFigId, setLogs }) => {
             setFile(e.currentTarget.files[0]);
           }
         }}
+        className=""
       />
       <button
         disabled={content === ""}
