@@ -10,6 +10,8 @@ type userType = {
   email: string;
   image: string;
   roles: string[];
+  darkModePref: string;
+  filterHistPref: string;
 };
 
 type disciplType = {
@@ -47,6 +49,10 @@ type UserContextProps = {
   setActiveFilters: React.Dispatch<React.SetStateAction<string[]>>;
   sortBy: string;
   setSortBy: React.Dispatch<React.SetStateAction<string>>;
+  darkMode: boolean;
+  setDarkMode: React.Dispatch<React.SetStateAction<boolean>>;
+  filterHistPref: boolean;
+  setFilterHistPref: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export const UserContext = createContext<UserContextProps | null>(null);
@@ -176,21 +182,83 @@ function UserContextWrapper({ children }: { children: ReactNode }) {
     }
   }
 
-  // fetch the favorites for logged in user
-  // const [favorites, setFavorites] = useState<faveType[]>([]);
+  // global state for dark mode, to store in the user preferences
 
-  // async function fetchFavorites() {
-  //   try {
-  //     const response = await aerialApi.get("/favorites");
-  //     setFavorites(response.data);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // }
+  const [darkMode, setDarkMode] = useState<boolean>(false);
 
+  const [filterHistPref, setFilterHistPref] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (user?.darkModePref === "system") {
+      const prefersDarkMode = window.matchMedia(
+        "(prefers-color-scheme: dark)"
+      ).matches;
+      if (prefersDarkMode) {
+        setDarkMode(true);
+      } else {
+        setDarkMode(false);
+      }
+    }
+    if (user?.darkModePref === "dark") {
+      setDarkMode(true);
+    }
+    if (user?.darkModePref === "light") {
+      setDarkMode(false);
+    }
+    if (user?.filterHistPref === "true") {
+      setFilterHistPref(true);
+    } else if (user?.filterHistPref === "false") {
+      setFilterHistPref(false);
+    }
+  }, [user]);
+
+  useEffect(() => {
+    authenticateUser();
+    setDarkModePreference(darkMode);
+  }, [darkMode, filterHistPref]);
+
+  function setDarkModePreference(prefersDarkMode: boolean) {
+    const html = document.documentElement;
+    if (prefersDarkMode) {
+      html.classList.add("dark");
+    } else {
+      html.classList.remove("dark");
+    }
+  }
+
+  // if preferences are stored in local storage and user has chosen to keep history, get them
+  let initialActiveFilters: string[] = [];
+  if (localStorage.getItem("activeFilters") && filterHistPref) {
+    const history = localStorage.getItem("activeFilters");
+    if (history !== null) {
+      initialActiveFilters = JSON.parse(history);
+    }
+  }
+
+  let initialSortBy: string = "level";
+  if (localStorage.getItem("sortBy") && filterHistPref) {
+    const history = localStorage.getItem("sortBy");
+    if (history !== null) {
+      initialSortBy = JSON.parse(history);
+    }
+  }
   // global states for the active filters and sort preferences, in case user wants to save them
-  const [activeFilters, setActiveFilters] = useState<string[]>([]);
-  const [sortBy, setSortBy] = useState<string>("level");
+  const [activeFilters, setActiveFilters] =
+    useState<string[]>(initialActiveFilters);
+  const [sortBy, setSortBy] = useState<string>(initialSortBy);
+
+  // update local storage to store the current team and team status every time it is changed
+  useEffect(() => {
+    if (filterHistPref) {
+      localStorage.setItem("activeFilters", JSON.stringify(activeFilters));
+    }
+  }, [activeFilters]);
+
+  useEffect(() => {
+    if (filterHistPref) {
+      localStorage.setItem("sortBy", JSON.stringify(sortBy));
+    }
+  }, [sortBy]);
 
   return (
     <UserContext.Provider
@@ -215,13 +283,14 @@ function UserContextWrapper({ children }: { children: ReactNode }) {
         setCurrDiscipline,
         zones,
         setZones,
-        // favorites,
-        // setFavorites,
-        // fetchFavorites,
         activeFilters,
         setActiveFilters,
         sortBy,
         setSortBy,
+        darkMode,
+        setDarkMode,
+        filterHistPref,
+        setFilterHistPref,
       }}
     >
       {children}
