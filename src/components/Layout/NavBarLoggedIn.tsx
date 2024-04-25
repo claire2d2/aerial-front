@@ -12,7 +12,7 @@ const NavBarLoggedIn = () => {
 
   const navigate = useNavigate();
   return (
-    <div className="w-full flex justify-end pr-3 text-white items-center">
+    <div className="w-full flex justify-end pr-3 text-white items-center z-11">
       {isAdmin || isMod ? (
         <div className="basis-2/3 hidden lg:flex">
           <label className="inline-flex items-center cursor-pointer">
@@ -47,7 +47,7 @@ const NavBarLoggedIn = () => {
         }
       >
         <Dropdown.Header>
-          <span className="block text-sm font-medium">
+          <span className="block text-sm font-medium z-11">
             {`${user?.firstName} ${user?.lastName}`}
           </span>
           <span className="block truncate text-sm">{user?.email}</span>

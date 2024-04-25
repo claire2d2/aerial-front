@@ -9,13 +9,13 @@ const HomePage = () => {
   const { isLoggedIn } = useUser();
 
   return (
-    <div
-      className="h-full w-full flex flex-col flex-1 bg-cover"
-      style={{
-        backgroundImage: "url('cloudsBG.jpg')",
-      }}
-    >
-      <div className="flex flex-col p-2 h-96 lg:flex-row lg:justify-center  text-center gap-2 items-center justify-center">
+    <div className="h-auto w-full flex flex-col">
+      <div
+        className="flex flex-col p-2 h-96 lg:flex-row lg:justify-center  text-center gap-2 items-center bg-cover justify-center"
+        style={{
+          backgroundImage: "url('cloudsBG.jpg')",
+        }}
+      >
         <div
           className={`z-9 gap-3 h-1/2 lg:h-full flex flex-col justify-center lg:py-20  font-display lg:w-1/2`}
         >

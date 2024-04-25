@@ -12,7 +12,7 @@ import FiguresCounter from "../components/PagesComponents/GenerateComboPage/Figu
 import ComboFilters from "../components/PagesComponents/GenerateComboPage/ComboFilters";
 import ComboSection from "../components/PagesComponents/GenerateComboPage/ComboSection";
 const h2Style =
-  "font-display text-2xl font-semibold bg-gradient-to-r from-main via-mainvar to-main text-white dark:text-textdark py-2 text-center w-full";
+  "font-display text-2xl font-semibold bg-gradient-to-r from-main via-mainvar to-main text-white dark:text-textdark py-2 text-center w-full dark:from-maindark dark:to-maindark";
 
 const toolTipTheme = {
   target: "w-fit",
@@ -27,7 +27,7 @@ const toolTipTheme = {
 };
 
 const GenerateCombo = () => {
-  const { currDiscipline, zones } = useUser();
+  const { currDiscipline, zones, isLoggedIn } = useUser();
 
   const [initialZoneFilts, setInitialZoneFilts] = useState<string[]>([]);
   const [statesData, setStatesData] = useState<statusType[]>([]);
@@ -95,22 +95,6 @@ const GenerateCombo = () => {
     fetchFigStatus(setStatesData, activeStatusFilts);
   }, [currDiscipline]);
 
-  // useEffect(() => {
-  //   if (statesData && statesData.length > 0 && currDiscipline) {
-  //     fetchFigures(
-  //       currDiscipline?._id,
-  //       setComboFigs,
-  //       activeLevelFilts,
-  //       activeZoneFilts
-  //     );
-  //     // Create an array of all the figures that have the chosen states
-  //     filterComboFigs();
-  //   } else {
-  //     setComboFigsWithStates(comboFigs);
-  //   }
-  //   // ok to just set combo figs with the given states as we only have "mastered" by default at the beginning
-  // }, [statesData, activeFilts]);
-
   /*
    ** function to find the matches between the fetched figures by zone/level filters and the figures that have the corresponding filters
    */
@@ -145,7 +129,7 @@ const GenerateCombo = () => {
   return (
     <div className="GenerateCombo w-full flex flex-col lg:flex-row lg:h-full">
       <div className="ComboExplanations relative flex flex-col bg-bgmainlight dark:bg-bgmaindark items-center lg:h-full lg:basis-1/2 overflow-scroll no-scrollbar">
-        <h1 className="w-full text-center font-romantic  text-white bg-gradient-to-r from-main via-mainvar to-main dark:text-textdark font-bold text-5xl py-6">
+        <h1 className="w-full text-center font-romantic  text-white bg-gradient-to-r from-main via-mainvar to-main dark:from-maindark dark:to-maindark dark:text-textdark font-bold text-5xl py-6">
           Combo Generator
         </h1>
 
@@ -196,33 +180,35 @@ const GenerateCombo = () => {
 
         <Tooltip
           content={
-            comboFigsWithStates.length < nbOfMoves
+            !isLoggedIn
+              ? "Please log in to be able to generate a combo"
+              : comboFigsWithStates.length < nbOfMoves
               ? "Not enough moves match the criteria you have given."
               : "❤️"
           }
-          placement="right"
+          placement="top"
           arrow={false}
           theme={toolTipTheme}
         >
           <button
             onClick={(e) => generateRandomCombo(e, nbOfMoves)}
-            disabled={comboFigsWithStates.length < nbOfMoves}
-            className="bg-main text-white px-5 py-2 rounded-xl my-5 disabled:bg-disabled transition-all "
+            disabled={!isLoggedIn || comboFigsWithStates.length < nbOfMoves}
+            className="bg-main dark:bg-maindark text-white px-5 py-2 rounded-xl my-5 disabled:bg-disabled transition-all "
           >
             Let's go !
           </button>
         </Tooltip>
       </div>
       <div
-        className="bg-cover  lg:h-full h-96 lg:basis-1/2 flex justify-center items-center overflow-scroll no-scrollbar"
+        className="bg-cover relative lg:h-full h-96 lg:basis-1/2 flex justify-center items-center overflow-scroll no-scrollbar"
         style={{
-          backgroundImage: "url('/cloudsBG.jpg')",
+          backgroundImage: "url('/comboSky.jpg')",
         }}
       >
         {generatedCombo.length !== 0 ? (
           <ComboSection generatedCombo={generatedCombo} />
         ) : (
-          <div className="flex flex-col justify-center items-center lg:gap-10 text-white h-full w-full text-3xl">
+          <div className="flex flex-col justify-center items-center lg:gap-10 text-white h-full w-full text-3xl z-10 relative">
             No combo yet ...
           </div>
         )}

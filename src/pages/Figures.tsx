@@ -94,13 +94,13 @@ const Figures = () => {
           backgroundImage: `url('/purpleskyBG.jpg')`,
         }}
       >
-        <h1 className="lg:text-5xl text-3xl py-5 text-white dark:text-textdark font-romantic w-2/3 lg:w-full lg:text-center z-10 flex justify-center gap-2">
+        <div className="absolute inset-0 dark:bg-maindark dark:bg-opacity-95 z-8"></div>
+        <h1 className="lg:text-5xl text-3xl py-5 text-white dark:text-textdark font-romantic w-2/3 lg:w-full lg:text-center z-9 flex justify-center gap-2 relative">
           <span className="hidden lg:block">🕊️</span>{" "}
           <span className="capitalize ">{currDiscipline?.name}</span> figures
         </h1>
-        <div className="absolute inset-0 dark:bg-maindark dark:bg-opacity-95 z-9"></div>
 
-        <div className="lg:hidden w-1/3 z-10">
+        <div className="lg:hidden w-1/3 z-9 relative">
           <SortBy />
         </div>
       </div>
@@ -150,7 +150,7 @@ const Figures = () => {
         <FigFilter />
       </div>
 
-      <div className="hidden lg:flex lg:justify-between lg:w-full lg:gap-10">
+      <div className="hidden lg:flex lg:justify-between lg:w-full lg:gap-10 z-9 ">
         <div className="basis-1/4">
           <div className="font-semibold text-main dark:text-textdark">
             Go to figure page:
