@@ -38,11 +38,8 @@ const Figures = () => {
   const [showToast, setShowToast] = useState<boolean>(false);
   const [toastMessage, setToastMessage] = useState<string>("");
 
-  // fetch figures and all faves when page renders
+  // fetch all faves when page renders
   useEffect(() => {
-    if (currDiscipline) {
-      fetchFigures(currDiscipline._id, setFigures, [], []);
-    }
     fetchAllFaves(setAllFaves);
   }, [currDiscipline]);
 
@@ -58,7 +55,7 @@ const Figures = () => {
         fetchFigures(currDiscipline._id, setFigures, [], []);
       }
     }
-  }, [activeFilters]);
+  }, [activeFilters, currDiscipline]);
 
   // filture figures based on filters
   const shownFigures: figType[] = filterFigures(

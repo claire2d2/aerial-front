@@ -1,7 +1,7 @@
 import React, { createContext, useState, useEffect, ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import aerialApi from "../service/aerialApi";
-import { figType, faveType, zoneType } from "../components/Types";
+import { zoneType } from "../components/Types";
 
 type userType = {
   _id: string;
@@ -34,17 +34,15 @@ type UserContextProps = {
   isLoading: boolean;
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
   authenticateUser: () => void;
-  allFigures: figType[];
-  setAllFigures: React.Dispatch<React.SetStateAction<figType[]>>;
   allDisciplines: disciplType[] | null;
   setAllDisciplines: React.Dispatch<React.SetStateAction<disciplType[] | null>>;
   currDiscipline: disciplType | null;
   setCurrDiscipline: React.Dispatch<React.SetStateAction<disciplType | null>>;
   zones: zoneType[];
   setZones: React.Dispatch<React.SetStateAction<zoneType[]>>;
-  favorites: faveType[];
-  setFavorites: React.Dispatch<React.SetStateAction<faveType[]>>;
-  fetchFavorites: () => void;
+  // favorites: faveType[];
+  // setFavorites: React.Dispatch<React.SetStateAction<faveType[]>>;
+  // fetchFavorites: () => void;
   activeFilters: string[];
   setActiveFilters: React.Dispatch<React.SetStateAction<string[]>>;
   sortBy: string;
@@ -66,9 +64,8 @@ function UserContextWrapper({ children }: { children: ReactNode }) {
   useEffect(() => {
     authenticateUser();
     fetchAllDisciplines();
-    fetchFigures();
     fetchZones();
-    fetchFavorites();
+    // fetchFavorites();
   }, []);
 
   // determine if user has admin role or not
@@ -156,16 +153,16 @@ function UserContextWrapper({ children }: { children: ReactNode }) {
   }
 
   // fetch all the figures
-  const [allFigures, setAllFigures] = useState<figType[]>([]);
+  // const [allFigures, setAllFigures] = useState<figType[]>([]);
 
-  async function fetchFigures() {
-    try {
-      const response = await aerialApi.get(`/figures/`);
-      setAllFigures(response.data);
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  // async function fetchFigures() {
+  //   try {
+  //     const response = await aerialApi.get(`/figures/`);
+  //     setAllFigures(response.data);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
 
   // fetch all the available zones
   const [zones, setZones] = useState<zoneType[]>([]);
@@ -180,16 +177,16 @@ function UserContextWrapper({ children }: { children: ReactNode }) {
   }
 
   // fetch the favorites for logged in user
-  const [favorites, setFavorites] = useState<faveType[]>([]);
+  // const [favorites, setFavorites] = useState<faveType[]>([]);
 
-  async function fetchFavorites() {
-    try {
-      const response = await aerialApi.get("/favorites");
-      setFavorites(response.data);
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  // async function fetchFavorites() {
+  //   try {
+  //     const response = await aerialApi.get("/favorites");
+  //     setFavorites(response.data);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
 
   // global states for the active filters and sort preferences, in case user wants to save them
   const [activeFilters, setActiveFilters] = useState<string[]>([]);
@@ -212,17 +209,15 @@ function UserContextWrapper({ children }: { children: ReactNode }) {
         logOut,
         isLoading,
         setIsLoading,
-        allFigures,
-        setAllFigures,
         allDisciplines,
         setAllDisciplines,
         currDiscipline,
         setCurrDiscipline,
         zones,
         setZones,
-        favorites,
-        setFavorites,
-        fetchFavorites,
+        // favorites,
+        // setFavorites,
+        // fetchFavorites,
         activeFilters,
         setActiveFilters,
         sortBy,
