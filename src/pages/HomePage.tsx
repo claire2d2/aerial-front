@@ -1,7 +1,5 @@
 import useUser from "../context/useUser";
-import { useNavigate } from "react-router-dom";
 
-import InviteToJoin from "../components/PagesComponents/HomePageComponents/InviteToJoin";
 import WebsiteIntro from "../components/PagesComponents/HomePageComponents/WebsiteIntro";
 import Features from "../components/PagesComponents/HomePageComponents/Features";
 import Discipline from "../components/PagesComponents/HomePageComponents/Discipline";

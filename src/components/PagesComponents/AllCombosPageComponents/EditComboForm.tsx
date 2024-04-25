@@ -25,6 +25,7 @@ const EditComboForm: React.FC<EditComboFormProps> = ({
   // setting the state for the form
   const [formState, setFormState] = useState<formStateType>({
     name: "",
+    discipline: "",
     figures: [],
     comment: "",
   });
@@ -35,6 +36,7 @@ const EditComboForm: React.FC<EditComboFormProps> = ({
       setFormState({
         ...formState,
         name: shownCombo.name,
+        discipline: shownCombo.discipline,
         figures: shownCombo.figures,
         comment: shownCombo.comment,
       });
@@ -93,6 +95,7 @@ const EditComboForm: React.FC<EditComboFormProps> = ({
                   onFigureSelect={(figure) =>
                     handleFigureChange(index, figure, formState, setFormState)
                   }
+                  chosenFigure={null}
                   setFigure={null}
                 />
                 <button
@@ -118,6 +121,7 @@ const EditComboForm: React.FC<EditComboFormProps> = ({
                   handleAddFigure(figure, formState, setFormState)
                 }
                 setFigure={null}
+                chosenFigure={null}
               />
             </div>
           )}

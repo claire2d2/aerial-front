@@ -10,7 +10,7 @@ type SearchBarProps = {
   placeholder: string;
   searchAction: string;
   onFigureSelect: ((figure: figType) => void) | null;
-  chosenFigure: string;
+  chosenFigure: string | null;
   setFigure: React.Dispatch<SetStateAction<string>> | null;
 };
 const SearchBar: React.FC<SearchBarProps> = ({

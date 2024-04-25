@@ -93,6 +93,7 @@ const CreateCombo: React.FC<CreateComboProps> = ({
                   handleFigureChange(index, figure, formState, setFormState)
                 }
                 setFigure={null}
+                chosenFigure={null}
               />
               <button
                 onClick={() =>
@@ -116,6 +117,7 @@ const CreateCombo: React.FC<CreateComboProps> = ({
             handleAddFigure(figure, formState, setFormState)
           }
           setFigure={null}
+          chosenFigure={null}
         />
 
         <label htmlFor="comment" className="font-semibold">

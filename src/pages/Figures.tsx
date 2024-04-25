@@ -161,6 +161,7 @@ const Figures = () => {
             searchAction="navigate"
             onFigureSelect={null}
             setFigure={null}
+            chosenFigure={null}
           />
         </div>
         <FigFilter />
