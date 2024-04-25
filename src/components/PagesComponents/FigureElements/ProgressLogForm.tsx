@@ -57,6 +57,11 @@ const ProgressLogForm: React.FC<formProps> = ({ currFigId, setLogs }) => {
       console.log(error);
       //TODO show error message with what is wrong
     }
+    setFormState({
+      date: Date(),
+      content: "",
+    });
+    setFile(null);
   }
   const { date, content } = formState;
 
@@ -111,7 +116,7 @@ const ProgressLogForm: React.FC<formProps> = ({ currFigId, setLogs }) => {
       />
       <button
         disabled={content === ""}
-        className="disabled:bg-disabled bg-main"
+        className="disabled:bg-disabled bg-main dark:bg-maindark rounded-lg hover:bg-bghover text-white"
       >
         Add log
       </button>
