@@ -47,15 +47,27 @@ const EditComboForm: React.FC<EditComboFormProps> = ({
   };
 
   // handle figure changes individually
-  const handleFigureChange = (index: number, newFig: figType) => {
+  function handleFigureChange(index: number, newFig: figType) {
     const newFigures = formState.figures.map((fig, i) =>
       i === index ? newFig : fig
     );
     setFormState({ ...formState, figures: newFigures });
-  };
+  }
 
   // add possibility to add a figure:
   const [addFigure, setAddFigure] = useState<boolean>(false);
+
+  function handleShowAddFigure() {
+    setAddFigure(!addFigure);
+  }
+
+  function handleAddFigure(newFig: figType) {
+    if (formState.figures.length < 7) {
+      const copy = formState.figures;
+      copy.push(newFig);
+      setFormState({ ...formState, figures: copy });
+    }
+  }
 
   // save combo when clicking on submit button
   async function handleSaveCombo(e: React.FormEvent) {
@@ -104,11 +116,24 @@ const EditComboForm: React.FC<EditComboFormProps> = ({
               </div>
             );
           })}
+          {addFigure && (
+            <div className="px-3 py-2 drop-shadow-md rounded-lg capitalize bg-white text-center">
+              <SearchBar
+                placeholder="Add a new figure"
+                searchAction="chose"
+                onFigureSelect={(figure) => handleAddFigure(figure)}
+                setFigure={null}
+              />
+            </div>
+          )}
           <div>
             Add figure{" "}
-            <button className="px-2  bg-main text-white font-bold rounded-lg">
-              {" "}
-              +
+            <button
+              type="button"
+              onClick={handleShowAddFigure}
+              className="px-2  bg-main text-white font-bold rounded-lg"
+            >
+              {addFigure ? "-" : "+"}
             </button>{" "}
           </div>
         </div>
