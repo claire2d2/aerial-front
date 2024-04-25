@@ -42,7 +42,7 @@ const FigFilterButton: React.FC<FigFilterButtonProps> = ({
       className={`w-full my-1 rounded-sm drop-shadow-sm lg:drop-shadow-none hover:text-linkhover lg:text-sm lg:py-2 ${
         isActive
           ? "bg-main text-white lg:text-main lg:bg-bgactive lg:font-semibold"
-          : "bg-bgmainlight text-white lg:text-title  "
+          : "bg-bgmainlight text-title  "
       }`}
     >
       {children}

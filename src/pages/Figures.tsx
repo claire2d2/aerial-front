@@ -87,14 +87,14 @@ const Figures = () => {
     return <p>Loading!</p>;
   }
   return (
-    <div className="flex flex-col items-center relative lg:px-4">
+    <div className="flex flex-col items-center relative px-2 lg:px-4">
       <div className="flex justify-between w-full items-center">
-        <h1 className="text-5xl py-5 text-title dark:text-textdark font-romantic w-full lg:text-center">
+        <h1 className="lg:text-5xl text-3xl py-5 text-title dark:text-textdark font-romantic w-2/3 lg:w-full lg:text-center">
           <span>🕊️</span>{" "}
           <span className="capitalize ">{currDiscipline?.name}</span> figures
         </h1>
 
-        <div className="lg:hidden">
+        <div className="lg:hidden w-1/3">
           <SortBy />
         </div>
       </div>
