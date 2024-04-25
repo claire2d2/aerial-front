@@ -9,7 +9,7 @@ export default {
     },
     colors: {
       // for all styling
-      main: "#54467B",
+      main: "#36336E",
       maindark: "#00274C",
       mainvar: "#ABA8D3",
       mainlight: "#5176BA",
@@ -32,7 +32,7 @@ export default {
       green: "#42b883",
       golden: "#f8b400",
       gray: "#878f99",
-      darkgray: "#5c715e",
+      darkgray: "#1F2937",
 
       // for fave button
       isFave: "#ff0066",

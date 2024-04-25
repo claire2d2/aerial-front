@@ -5,7 +5,6 @@ import useUser from "../context/useUser";
 
 // import relative to styling
 import {
-  formContainerStyle,
   formStyle,
   fieldStyle,
   labelStyle,
@@ -63,7 +62,9 @@ const LogInPage = () => {
   const { email, password } = formState;
 
   return (
-    <div className={`LogIn ${formContainerStyle}`}>
+    <div
+      className={`LogIn w-full flex flex-col justify-center bg-cover lg:py-10 items-center`}
+    >
       <form onSubmit={handleSubmit} className={formStyle}>
         <h2 className="font-bold text-center">Log in</h2>
         <div className={fieldStyle}>
