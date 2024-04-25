@@ -3,6 +3,7 @@ import aerialApi from "../../../service/aerialApi";
 import { figType, comboType } from "../../Types";
 import SearchBar from "../../GlobalComponents/SearchBar";
 import SaveButton from "../../GlobalComponents/SaveButton";
+import { HiOutlineX } from "react-icons/hi";
 
 type formStateType = {
   name: string;
@@ -54,7 +55,7 @@ const EditComboForm: React.FC<EditComboFormProps> = ({
     setFormState({ ...formState, figures: newFigures });
   }
 
-  // add possibility to add a figure:
+  // possibility to add a figure:
   const [addFigure, setAddFigure] = useState<boolean>(false);
 
   function handleShowAddFigure() {
@@ -67,6 +68,17 @@ const EditComboForm: React.FC<EditComboFormProps> = ({
       copy.push(newFig);
       setFormState({ ...formState, figures: copy });
     }
+  }
+
+  // possibility to remove a figure:
+  function removeFigure(fig: figType, index: number) {
+    console.log("click");
+    if (formState.figures.length > 1) {
+      const copy = formState.figures;
+      copy.splice(index, 1);
+      setFormState({ ...formState, figures: copy });
+    }
+    console.log(formState.figures);
   }
 
   // save combo when clicking on submit button
@@ -105,7 +117,7 @@ const EditComboForm: React.FC<EditComboFormProps> = ({
             return (
               <div
                 key={index}
-                className="px-3 py-2 drop-shadow-md rounded-lg capitalize bg-white text-center"
+                className="relative group pl-3 py-2 drop-shadow-md rounded-lg capitalize bg-white text-center pr-10"
               >
                 <SearchBar
                   placeholder={fig.name}
@@ -113,11 +125,18 @@ const EditComboForm: React.FC<EditComboFormProps> = ({
                   onFigureSelect={(figure) => handleFigureChange(index, figure)}
                   setFigure={null}
                 />
+                <button
+                  onClick={() => removeFigure(fig, index)}
+                  className="hidden absolute group-hover:block group-focus:block hover:text-isFave active:text-isFave top-4 right-3 text-gray"
+                  type="button"
+                >
+                  <HiOutlineX />
+                </button>
               </div>
             );
           })}
           {addFigure && (
-            <div className="px-3 py-2 drop-shadow-md rounded-lg capitalize bg-white text-center">
+            <div className="px-3 py-2 drop-shadow-md rounded-lg capitalize bg-white text-center pr-10">
               <SearchBar
                 placeholder="Add a new figure"
                 searchAction="chose"
