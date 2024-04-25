@@ -92,7 +92,7 @@ const NavBar = () => {
         </div>
       </div>
       <div className="hidden lg:block xl:w-2/3">
-        <ul className="flex gap-4 items-center font-semibold w-full text-white">
+        <ul className="flex gap-4 items-center font-semibold w-full">
           <li>
             <NavBarDiscDropDown />
           </li>

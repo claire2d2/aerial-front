@@ -39,9 +39,9 @@ const FigFilterButton: React.FC<FigFilterButtonProps> = ({
   return (
     <button
       onClick={(e) => handleFilter(e)}
-      className={`w-full my-1 rounded-sm drop-shadow-sm lg:drop-shadow-none hover:text-linkhover lg:text-sm lg:py-2 ${
+      className={`w-full my-1 rounded-sm drop-shadow-sm lg:drop-shadow-none hover:text-linkhover lg:text-sm lg:py-2 hover:bg-bghover ${
         isActive
-          ? "bg-main text-white lg:text-main lg:bg-bgactive lg:font-semibold"
+          ? "bg-main text-white  lg:font-semibold"
           : "bg-bgmainlight text-title  "
       }`}
     >
