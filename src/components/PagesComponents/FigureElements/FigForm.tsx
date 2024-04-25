@@ -1,7 +1,10 @@
 import { useState, useEffect } from "react";
 import aerialApi from "../../../service/aerialApi";
 import { figType, figFormType } from "../../Types";
-import { handleChange, handleZoneChange } from "./FigFormFunctions";
+import {
+  handleChange,
+  handleZoneChange,
+} from "../../GlobalComponents/FigFormFunctions";
 import useUser from "../../../context/useUser";
 
 // what will show when the edit mode is turned on
