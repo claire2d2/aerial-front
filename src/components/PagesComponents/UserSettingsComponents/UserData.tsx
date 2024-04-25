@@ -2,12 +2,14 @@ import { useState, ChangeEvent } from "react";
 import aerialApi from "../../../service/aerialApi";
 import SaveButton from "../../GlobalComponents/SaveButton";
 import { AxiosError } from "axios";
+import useUser from "../../../context/useUser";
 
 type passwordFormType = {
   currentPassword: string;
   newPassword: string;
 };
 const UserData = () => {
+  const { logOut } = useUser();
   const [passwordForm, setPasswordForm] = useState<passwordFormType>({
     currentPassword: "",
     newPassword: "",
@@ -54,6 +56,7 @@ const UserData = () => {
             name="currentPassword"
             value={currentPassword}
             onChange={handleChange}
+            className="bg-transparent dark:border dark:border-gray rounded-md focus:ring-2"
           />
         </div>
         <div className="flex flex-col gap-1">
@@ -64,6 +67,7 @@ const UserData = () => {
             name="newPassword"
             value={newPassword}
             onChange={handleChange}
+            className="bg-transparent dark:border dark:border-gray rounded-md focus:ring-2"
           />
         </div>
         <SaveButton disabled={false} onClickFunction={handleSubmit}>
@@ -73,7 +77,12 @@ const UserData = () => {
           {passChangeMsg}
         </div>
       </form>
-
+      <div className="flex flex-col w-1/2 my-5 gap-3">
+        <h3 className="font-bold">Sign out of your account : </h3>
+        <SaveButton disabled={false} onClickFunction={logOut}>
+          Log out
+        </SaveButton>
+      </div>
       <h3 className="font-bold">Your data:</h3>
       <div>
         For any questions regarding your account, you may fill in our contact

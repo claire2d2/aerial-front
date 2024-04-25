@@ -21,7 +21,7 @@ import AdminDashboard from "./pages/AdminDashboard";
 // website information
 import About from "./pages/About";
 import SiteMap from "./pages/SiteMap";
-import PrivacyPolicy from "./pages/PrivacyPolicy";
+import Contact from "./pages/Contact";
 
 // pages not found
 import NotFound from "./pages/NotFound";
@@ -44,7 +44,7 @@ function App() {
             </Route>
             <Route index element={<HomePage />} />
             <Route path="about" element={<About />} />
-            <Route path="privacy" element={<PrivacyPolicy />} />
+            <Route path="contact" element={<Contact />} />
             <Route path="site" element={<SiteMap />} />
             <Route path="settings" element={<UserSettings />} />
             <Route path="admin" element={<AdminDashboard />} />

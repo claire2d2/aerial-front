@@ -42,9 +42,6 @@ type UserContextProps = {
   setCurrDiscipline: React.Dispatch<React.SetStateAction<disciplType | null>>;
   zones: zoneType[];
   setZones: React.Dispatch<React.SetStateAction<zoneType[]>>;
-  // favorites: faveType[];
-  // setFavorites: React.Dispatch<React.SetStateAction<faveType[]>>;
-  // fetchFavorites: () => void;
   activeFilters: string[];
   setActiveFilters: React.Dispatch<React.SetStateAction<string[]>>;
   sortBy: string;
