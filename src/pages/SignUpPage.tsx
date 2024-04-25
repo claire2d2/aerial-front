@@ -104,7 +104,7 @@ const SignUpPage = () => {
       >
         <form
           onSubmit={handleSubmit}
-          className="h-auto py-10 lg:h-full w-full rounded-lg lg:rounded-none bg-white bg-opacity-60 px-10 flex flex-col justify-center gap-3"
+          className="h-auto py-10 lg:h-full w-full rounded-lg lg:rounded-none text-text bg-white dark:text-white dark:bg-opacity-30 bg-opacity-60 px-10 flex flex-col justify-center gap-3"
         >
           <h2 className="font-bold text-center">Sign up</h2>
           <div className={fieldStyle}>

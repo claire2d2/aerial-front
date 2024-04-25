@@ -63,7 +63,10 @@ const LogInPage = () => {
 
   return (
     <div
-      className={`LogIn w-full flex flex-col justify-center bg-cover lg:py-10 items-center`}
+      style={{
+        backgroundImage: "url('cloudsBG.jpg')",
+      }}
+      className={`LogIn w-full h-full flex flex-col justify-center bg-cover lg:py-10 items-center dark:text-white`}
     >
       <form onSubmit={handleSubmit} className={formStyle}>
         <h2 className="font-bold text-center">Log in</h2>
