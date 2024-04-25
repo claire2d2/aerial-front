@@ -52,6 +52,7 @@ export type figFormType = {
 export type comboType = {
   _id: string;
   name: string;
+  discipline: string;
   figures: figType[];
   owner: string;
   comment: string;

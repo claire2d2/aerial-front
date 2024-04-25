@@ -1,9 +1,9 @@
-import React, { useState, useEffect, SetStateAction } from "react";
+import React, { useState, SetStateAction } from "react";
 import aerialApi from "../../../service/aerialApi";
 import { AxiosError } from "axios";
 import { fetchEntries, fetchExits } from "./EntryExitFunctions";
 import { like } from "../FiguresFunctions";
-import { entryExitType } from "../../Types";
+import { figType, entryExitType } from "../../Types";
 import SearchBar from "../../GlobalComponents/SearchBar";
 
 type EntryExitFormProps = {
@@ -11,6 +11,7 @@ type EntryExitFormProps = {
   entryOrExit: string;
   setAllEntries: React.Dispatch<SetStateAction<entryExitType[]>>;
   setAllExits: React.Dispatch<SetStateAction<entryExitType[]>>;
+  figures: figType[];
 };
 
 const EntryExitForm: React.FC<EntryExitFormProps> = ({
@@ -18,16 +19,10 @@ const EntryExitForm: React.FC<EntryExitFormProps> = ({
   entryOrExit,
   setAllEntries,
   setAllExits,
+  figures,
 }) => {
   const [chosenFig, setChosenFig] = useState<string>("");
   const [errorMsg, setErrorMsg] = useState<string>("");
-  const [updateList, setUpdateList] = useState<boolean>(false);
-
-  // refresh list when submitting a proposition
-  useEffect(() => {
-    fetchEntries(currFigId, setAllEntries);
-    fetchExits(currFigId, setAllExits);
-  }, [updateList]);
 
   // depends on whether is entry or exit
   async function handleSubmit(e: React.FormEvent) {
@@ -41,6 +36,7 @@ const EntryExitForm: React.FC<EntryExitFormProps> = ({
           }
         );
         like(response.data._id);
+        fetchEntries(currFigId, setAllEntries);
       } catch (error) {
         if (error instanceof AxiosError) {
           // Handle error if it is an instance of Error
@@ -64,6 +60,7 @@ const EntryExitForm: React.FC<EntryExitFormProps> = ({
           }
         );
         like(response.data._id);
+        fetchExits(currFigId, setAllExits);
       } catch (error) {
         if (error instanceof AxiosError) {
           // Handle error if it is an instance of Error
@@ -78,19 +75,20 @@ const EntryExitForm: React.FC<EntryExitFormProps> = ({
         }, 3000);
       }
     }
-    setUpdateList(true);
   }
   return (
-    <div className="w-full relative">
+    <div className="w-full relative shadow-md py-3">
       <form
         className="w-full h-full flex flex-col px-3 gap-4 items-center"
         onSubmit={handleSubmit}
       >
         <SearchBar
+          figures={figures}
           placeholder="Figure name"
           searchAction="entryExit"
           onFigureSelect={null}
           setFigure={setChosenFig}
+          chosenFigure={chosenFig}
         />
         <button className="bg-main py-2 px-2 w-32 mx-auto text-white rounded-xl drop-shadow-md font-bold">
           Add {entryOrExit}

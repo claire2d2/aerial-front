@@ -18,11 +18,23 @@ const SortBy = () => {
   };
   return (
     <div>
-      <div className="font-semibold">Sort by:</div>
-      <select name="sortBy" id="sortBy" onChange={handleChangeSortBy}>
+      <div className="font-semibold text-main dark:text-textdark w-full">
+        Sort by:
+      </div>
+      <select
+        name="sortBy"
+        id="sortBy"
+        onChange={handleChangeSortBy}
+        className="text-text dark:text-textdark dark:bg-bgmaindark border border-inputfield rounded-lg dark:border-textdark p-1 w-full"
+      >
         {sortOptions.map((el, index) => {
           return (
-            <option key={index} value={el[0]} defaultValue={sortBy}>
+            <option
+              key={index}
+              value={el[0]}
+              defaultValue={sortBy}
+              className="text-text"
+            >
               {el[1]}
             </option>
           );

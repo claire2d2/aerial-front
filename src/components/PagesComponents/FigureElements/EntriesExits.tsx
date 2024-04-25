@@ -4,24 +4,28 @@ import EntryExitForm from "./EntryExitForm";
 import EntryExitLike from "./EntryExitLike";
 import { entryExitType } from "../../Types";
 import { fetchEntries, fetchExits } from "./EntryExitFunctions";
+import { fetchFigures } from "../FiguresFunctions";
+import { figType } from "../../Types";
 
 // styling the forms
 
 const sectionStyle = "h-1/2 flex flex-col shadow-xl";
 const titleStyle =
-  "font-semibold font-romantic text-4xl bg-main text-white text-center";
+  "font-semibold font-romantic text-4xl bg-main dark:bg-maindark text-white text-center";
 const listStyle =
-  "overflow-y-scroll overflow-x-hidden max-w-full no-scrollbar h-1/2 lg:h-5/6 flex flex-col gap-3 my-2 mr-4  pr-5";
+  "overflow-y-auto overflow-x-hidden max-w-full max-h-auto py-7 bg-white bg-opacity-5 h-1/2 no-scrollbar h-1/2 lg:h-5/6 flex flex-col gap-3 my-2 mr-4  pr-5";
 const toggleTextStyle = "flex  gap-2 py-1 ml-2 font-semibold";
-const toggleStyle = "px-2  bg-main text-white font-bold rounded-lg";
+const toggleStyle =
+  "px-2  bg-main dark:bg-maindark text-white font-bold rounded-lg";
 const figurePropStyle =
-  "flex w-full justify-between bg-bgmainlight mx-3 text-center py-1 px-3 rounded-lg";
+  "flex w-full justify-between bg-bgmainlight dark:bg-bgmaindark dark:border dark:border-textdark dark:text-textdark mx-3 text-center py-1 px-3 rounded-lg";
 
 const EntriesExits: React.FC<{ currFigId: string }> = ({ currFigId }) => {
+  const [figures, setFigures] = useState<figType[]>([]);
   const [allEntries, setAllEntries] = useState<entryExitType[]>([]);
   const [allExits, setAllExits] = useState<entryExitType[]>([]);
   // states for showing or hiding entry exit forms
-  const { isLoggedIn } = useUser();
+  const { isLoggedIn, currDiscipline } = useUser();
   const [showEntryForm, setShowEntryForm] = useState<boolean>(false);
   const [showExitForm, setShowExitForm] = useState<boolean>(false);
 
@@ -33,9 +37,12 @@ const EntriesExits: React.FC<{ currFigId: string }> = ({ currFigId }) => {
   };
 
   useEffect(() => {
-    fetchEntries(currFigId, setAllEntries);
-    fetchExits(currFigId, setAllExits);
-  }, [currFigId]);
+    if (currDiscipline) {
+      fetchEntries(currFigId, setAllEntries);
+      fetchExits(currFigId, setAllExits);
+      fetchFigures(currDiscipline._id, setFigures, [], []);
+    }
+  }, [currFigId, currDiscipline]);
 
   if (!allEntries || !allExits) {
     return <div>Loading</div>;
@@ -46,7 +53,7 @@ const EntriesExits: React.FC<{ currFigId: string }> = ({ currFigId }) => {
       <div className={sectionStyle}>
         <h3 className={titleStyle}>Entries</h3>
         {isLoggedIn ? (
-          <div>
+          <div className="h-full w-full flex flex-col">
             <div>
               <button
                 onClick={() => handleShowForm(showEntryForm, setShowEntryForm)}
@@ -65,6 +72,7 @@ const EntriesExits: React.FC<{ currFigId: string }> = ({ currFigId }) => {
                   entryOrExit="entry"
                   setAllEntries={setAllEntries}
                   setAllExits={setAllExits}
+                  figures={figures}
                 />
               )}
             </div>
@@ -73,7 +81,7 @@ const EntriesExits: React.FC<{ currFigId: string }> = ({ currFigId }) => {
                 allEntries.map((entry, index) => {
                   return (
                     <div key={index} className={figurePropStyle}>
-                      <h6 className="capitalize font-semibold italic text-mainvar">
+                      <h6 className="capitalize font-semibold italic text-white dark:text-textdark">
                         {entry.figureFrom.name}
                       </h6>
                       <EntryExitLike propId={entry._id} />
@@ -94,8 +102,8 @@ const EntriesExits: React.FC<{ currFigId: string }> = ({ currFigId }) => {
       <div className={sectionStyle}>
         <h3 className={titleStyle}>Exits</h3>
         {isLoggedIn ? (
-          <div>
-            <div className="">
+          <div className="h-full w-full flex flex-col">
+            <div>
               <button
                 onClick={() => handleShowForm(showExitForm, setShowExitForm)}
                 className={toggleTextStyle}
@@ -113,6 +121,7 @@ const EntriesExits: React.FC<{ currFigId: string }> = ({ currFigId }) => {
                   entryOrExit="exit"
                   setAllEntries={setAllEntries}
                   setAllExits={setAllExits}
+                  figures={figures}
                 />
               )}
             </div>
@@ -121,7 +130,7 @@ const EntriesExits: React.FC<{ currFigId: string }> = ({ currFigId }) => {
                 allExits.map((exit, index) => {
                   return (
                     <div key={index} className={figurePropStyle}>
-                      <h6 className="capitalize font-semibold italic text-mainvar">
+                      <h6 className="capitalize font-semibold italic text-white dark:text-textdark">
                         {exit.figureTo.name}
                       </h6>
                       <EntryExitLike propId={exit._id} />

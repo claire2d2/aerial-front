@@ -38,11 +38,8 @@ const Figures = () => {
   const [showToast, setShowToast] = useState<boolean>(false);
   const [toastMessage, setToastMessage] = useState<string>("");
 
-  // fetch figures and all faves when page renders
+  // fetch all faves when page renders
   useEffect(() => {
-    if (currDiscipline) {
-      fetchFigures(currDiscipline._id, setFigures, [], []);
-    }
     fetchAllFaves(setAllFaves);
   }, [currDiscipline]);
 
@@ -58,7 +55,7 @@ const Figures = () => {
         fetchFigures(currDiscipline._id, setFigures, [], []);
       }
     }
-  }, [activeFilters]);
+  }, [activeFilters, currDiscipline]);
 
   // filture figures based on filters
   const shownFigures: figType[] = filterFigures(
@@ -90,29 +87,37 @@ const Figures = () => {
     return <p>Loading!</p>;
   }
   return (
-    <div className="flex flex-col items-center relative">
-      <div className="flex justify-between w-full items-center">
-        <h1 className="text-5xl py-5 text-main font-romantic w-full lg:text-center">
-          <span>🕊️</span>{" "}
+    <div className="flex flex-col h-full w-full items-center relative bg-bgmain">
+      <div
+        className="flex justify-between w-full items-center bg-cover dark:bg-bgmaindark relative lg:h-96 min-h-32 px-2 gap-3"
+        style={{
+          backgroundImage: `url('/purpleskyBG.jpg')`,
+        }}
+      >
+        <h1 className="lg:text-5xl text-3xl py-5 text-white dark:text-textdark font-romantic w-2/3 lg:w-full lg:text-center z-10 flex justify-center gap-2">
+          <span className="hidden lg:block">🕊️</span>{" "}
           <span className="capitalize ">{currDiscipline?.name}</span> figures
         </h1>
+        <div className="absolute inset-0 dark:bg-maindark dark:bg-opacity-95 z-9"></div>
 
-        <div className="lg:hidden">
+        <div className="lg:hidden w-1/3 z-10">
           <SortBy />
         </div>
       </div>
       {modViewOn && currDiscipline ? (
-        <div>
-          <div className="flex gap-1 justify-start w-full px-2">
+        <div className="py-3 w-full">
+          <div className="flex gap-4 justify-center w-full px-2">
             <button
               onClick={handleShowForm}
-              className="bg-main px-2 rounded-lg text-white"
+              className={` px-2 rounded-lg text-white hover:bg-bghover ${
+                showFigForm ? "bg-main" : "dark:bg-gray bg-bginactive"
+              }`}
             >
               {showFigForm ? "-" : "+"}
             </button>
             {showFigForm ? "Hide form" : "Add a new figure"}
           </div>
-          <div className={showFigForm ? "block" : "hidden"}>
+          <div className={`w-full ${showFigForm ? "block" : "hidden"}`}>
             <AddFigure
               currDiscipline={currDiscipline}
               setFigures={setFigures}
@@ -145,14 +150,18 @@ const Figures = () => {
         <FigFilter />
       </div>
 
-      <div className="hidden lg:flex lg:justify-between lg:w-full lg:gap-40 pr-20">
-        <div>
-          <div className="font-semibold">Go directly to figure page:</div>
+      <div className="hidden lg:flex lg:justify-between lg:w-full lg:gap-10">
+        <div className="basis-1/4">
+          <div className="font-semibold text-main dark:text-textdark">
+            Go to figure page:
+          </div>
           <SearchBar
-            placeholder="Figure Name"
+            figures={figures}
+            placeholder="..."
             searchAction="navigate"
             onFigureSelect={null}
             setFigure={null}
+            chosenFigure={null}
           />
         </div>
         <FigFilter />

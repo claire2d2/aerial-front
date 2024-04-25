@@ -1,155 +1,87 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, SetStateAction } from "react";
+import useUser from "../../../context/useUser";
 import { figType, comboType } from "../../Types";
-import aerialApi from "../../../service/aerialApi";
-import EditButton from "../../GlobalComponents/EditButton";
+import { fetchFigures } from "../FiguresFunctions";
 import SaveButton from "../../GlobalComponents/SaveButton";
-import SearchBar from "../../GlobalComponents/SearchBar";
+import EditButton from "../../GlobalComponents/EditButton";
+import EditComboForm from "./EditComboForm";
+import ShowCombo from "./ShowCombo";
+import CreateCombo from "./CreateCombo";
 
 type EditComboProps = {
   shownCombo: comboType | null;
-};
-type formStateType = {
-  name: string;
-  figures: figType[];
-  comment: string;
+  createMode: boolean;
+  setCreateMode: React.Dispatch<SetStateAction<boolean>>;
 };
 
-const EditCombo: React.FC<EditComboProps> = ({ shownCombo }) => {
+const EditCombo: React.FC<EditComboProps> = ({
+  shownCombo,
+  createMode,
+  setCreateMode,
+}) => {
+  // fetch all the figures for the current discipline (for the searchbar components)
+  const [figures, setFigures] = useState<figType[]>([]);
+  const { currDiscipline } = useUser();
+
+  useEffect(() => {
+    if (currDiscipline) {
+      fetchFigures(currDiscipline._id, setFigures, [], []);
+    }
+  }, [currDiscipline]);
+
+  // turn edit mode on (show form) or off (just show combo)
   const [editMode, setEditMode] = useState<boolean>(false);
-  const [formState, setFormState] = useState<formStateType>({
-    name: "",
-    figures: [],
-    comment: "",
-  });
 
   const turnEditOn = () => {
     setEditMode(!editMode);
   };
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const key = e.currentTarget.id;
-    const value = e.currentTarget.value;
-    setFormState({ ...formState, [key]: value });
-  };
-
-  const handleFigureChange = (index: number, newFig: figType) => {
-    const newFigures = formState.figures.map((fig, i) =>
-      i === index ? newFig : fig
-    );
-    setFormState({ ...formState, figures: newFigures });
-  };
-
-  useEffect(() => {
-    console.log(formState.figures);
-  }, [formState]);
-
-  async function handleSaveCombo(e: React.FormEvent) {
-    e.preventDefault();
-    try {
-      const response = await aerialApi.put(
-        `/combos/${shownCombo?._id}`,
-        formState
-      );
-      if (response.status === 200) {
-        console.log("combo updated", response.data);
-      }
-    } catch (error) {
-      console.log(error);
+  const turnCreateOn = () => {
+    setCreateMode(!createMode);
+    if (editMode) {
+      setEditMode(false);
     }
-    setEditMode(false);
-  }
-
-  const { name } = formState;
-
-  // set initial state of form to the shown combo initial state
-  useEffect(() => {
-    if (shownCombo) {
-      setFormState({
-        ...formState,
-        name: shownCombo.name,
-        figures: shownCombo.figures,
-        comment: shownCombo.comment,
-      });
-    }
-  }, [shownCombo]);
-
+  };
   return (
-    <div className="h-full w-full overflow-scroll">
-      {shownCombo && (
+    <div className="h-full w-full overflow-scroll lg:py-6">
+      {shownCombo && !createMode && (
         <div>
           <EditButton handleEditFunction={turnEditOn} editOn={editMode} />
         </div>
       )}
+      {shownCombo && !editMode && !createMode && (
+        <ShowCombo shownCombo={shownCombo} />
+      )}
+      {shownCombo && editMode && !createMode && (
+        <EditComboForm
+          figures={figures}
+          shownCombo={shownCombo}
+          setEditMode={setEditMode}
+        />
+      )}
 
-      {shownCombo ? (
-        <form className="flex flex-col items-center gap-2 px-5">
-          <h2 className="font-romantic text-2xl">
-            {editMode ? (
-              <input
-                type="text"
-                id="name"
-                name="name"
-                value={name}
-                onChange={(e) => handleChange(e)}
-              />
-            ) : (
-              <span>{shownCombo.name}</span>
-            )}
-          </h2>
-
-          <div className="flex flex-col gap-2 w-full">
-            {shownCombo.figures.map((fig, index) => {
-              return (
-                <div
-                  key={index}
-                  className="px-3 py-2 drop-shadow-md rounded-lg capitalize bg-white text-center"
-                >
-                  {editMode ? (
-                    <SearchBar
-                      placeholder={formState.figures[index].name}
-                      searchAction="chose"
-                      onFigureSelect={(figure) =>
-                        handleFigureChange(index, figure)
-                      }
-                      setFigure={null}
-                    />
-                  ) : (
-                    <div className="w-full h-full">{fig.name}</div>
-                  )}
-                </div>
-              );
-            })}
+      {!shownCombo && !createMode && (
+        <div className="flex flex-col items-center justify-center h-full gap-3 text-center">
+          <div>
+            <h2 className="font-romantic text-3xl text-center">
+              No combo chosen
+            </h2>
+            <div>Please choose a combo to show</div>
           </div>
-          {editMode ? (
-            <div className="w-full flex flex-col items-center py-4 gap-2">
-              <label htmlFor="comment">Add a comment</label>
-              <textarea
-                id="comment"
-                name="comment"
-                className="border border-gray w-full h-52 rounded-lg resize-none drop-shadow-sm"
-                value={formState.comment}
-                onChange={(e) => handleChange(e)}
-              />
-              <SaveButton
-                disabled={false}
-                onClickFunction={(e) => handleSaveCombo(e)}
-              >
-                Save combo
-              </SaveButton>
-            </div>
-          ) : (
-            <div className="w-full flex flex-col items-center py-4 gap-2">
-              <p style={{ whiteSpace: "pre-wrap" }}>{shownCombo.comment}</p>
-            </div>
-          )}
-        </form>
-      ) : (
-        <div className="flex flex-col items-center">
-          <h2 className="font-romantic text-2xl">No combo chosen</h2>
-          <div>Please choose a combo</div>to show
+          <div>or </div>
+          <SaveButton disabled={false} onClickFunction={turnCreateOn}>
+            Create a new combo
+          </SaveButton>
+          <div>No inspiration ? Generate a combo randomly!</div>
         </div>
+      )}
+
+      {createMode && (
+        <CreateCombo
+          figures={figures}
+          createMode={createMode}
+          setCreateMode={setCreateMode}
+        />
       )}
     </div>
   );

@@ -2,24 +2,26 @@ import React, { useState, useEffect, SetStateAction } from "react";
 import { HiOutlineSearch, HiX } from "react-icons/hi";
 import { useNavigate } from "react-router-dom";
 import useUser from "../../context/useUser";
-import { fetchFigures } from "../PagesComponents/FiguresFunctions";
 
 import { figType } from "../Types";
 
 type SearchBarProps = {
+  figures: figType[];
   placeholder: string;
   searchAction: string;
   onFigureSelect: ((figure: figType) => void) | null;
+  chosenFigure: string | null;
   setFigure: React.Dispatch<SetStateAction<string>> | null;
 };
 const SearchBar: React.FC<SearchBarProps> = ({
+  figures,
   placeholder,
   searchAction,
   onFigureSelect,
+  chosenFigure,
   setFigure,
 }) => {
   const { currDiscipline } = useUser();
-  const [figures, setFigures] = useState<figType[]>([]);
   const [searchedFigs, setSearchedFigs] = useState<figType[]>([]);
   const [searchWord, setSearchWord] = useState<string>("");
 
@@ -27,13 +29,6 @@ const SearchBar: React.FC<SearchBarProps> = ({
     const searchValue = e.currentTarget.value;
     setSearchWord(searchValue);
   };
-
-  // fetch figures when component renders
-  useEffect(() => {
-    if (currDiscipline) {
-      fetchFigures(currDiscipline._id, setFigures, [], []);
-    }
-  }, [currDiscipline]);
 
   // use effect hook to refresh figures search instantaneously
   useEffect(() => {
@@ -52,14 +47,11 @@ const SearchBar: React.FC<SearchBarProps> = ({
     setSearchWord("");
   }
 
-  //
-
-  const navigate = useNavigate();
-
   /* Search bar can be used to either
    ** - navigate to a chosen page
    ** - choose a figure
    */
+  const navigate = useNavigate();
   function action(e: React.MouseEvent, figure: figType) {
     e.preventDefault();
     if (searchAction === "navigate") {
@@ -78,20 +70,26 @@ const SearchBar: React.FC<SearchBarProps> = ({
   // clear out results if search result is chosen
   useEffect(() => {
     setSearchedFigs([]);
-  }, [onFigureSelect]);
+    setTimeout(() => {
+      setSearchWord("");
+    }, 1000);
+  }, [chosenFigure]);
 
   return (
-    <div className="w-full">
-      <div className="searchInput flex justify-between items-center gap-2 bg-white  drop-shadow-sm pr-3 pl-1 py-1 relative w-full">
+    <div className="w-full group">
+      <div className="searchInput flex justify-between items-center gap-2 bg-white dark:bg-bgmaindark border border-inputfield  rounded-lg dark:border-textdark drop-shadow-sm pr-3 pl-1 py-1 relative w-full">
         <input
           type="text"
           id="search"
           value={searchWord}
           placeholder={`${placeholder}`}
           onChange={handleSearch}
-          className="w-full"
+          className={`w-full placeholder:text-text dark:placeholder:text-textdark capitalize focus:ring-2 focus:ring-bgmainlight border-0 outline-none bg-transparent`}
         />
-        <label htmlFor="search" className="flex items-center gap-2 ">
+        <label
+          htmlFor="search"
+          className="hidden group-hover:flex group-focus:flex items-center gap-2 "
+        >
           {searchedFigs.length === 0 ? (
             <div className="hover:cursor-pointer">
               <HiOutlineSearch />
@@ -104,13 +102,13 @@ const SearchBar: React.FC<SearchBarProps> = ({
         </label>
       </div>
       {searchedFigs.length !== 0 && (
-        <div className="searchResults overflow-scroll no-scrollbar max-h-20 flex flex-col  z-9 bg-white w-full text-text">
+        <div className="searchResults overflow-scroll no-scrollbar max-h-20 flex flex-col  z-9 bg-white dark:bg-bgmaindark w-full text-text dark:text-textdark ">
           {searchedFigs.map((fig, index) => {
             return (
               <button
                 onClick={(e) => action(e, fig)}
                 key={index}
-                className="z-10 capitalize hover:bg-bgmainlight text-text"
+                className="z-10 capitalize hover:bg-bgmainlight dark:hover:bg-darkgray text-text dark:text-textdark"
               >
                 {fig.name}
               </button>

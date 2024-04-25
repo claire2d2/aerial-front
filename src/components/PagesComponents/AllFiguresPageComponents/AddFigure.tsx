@@ -94,11 +94,15 @@ const AddFigure: React.FC<AddFigureProps> = ({
   }, [name]);
 
   return (
-    <div>
-      <h3>Add a figure to the database:</h3>
-      <form onSubmit={(e) => handleSubmit(e)} className="flex flex-col">
-        <div>
-          <label htmlFor="figName">Figure Name:</label>
+    <div className="w-full group">
+      <form
+        onSubmit={(e) => handleSubmit(e)}
+        className="flex flex-col gap-2 w-[900px] mx-auto py-4"
+      >
+        <div className="flex gap-3">
+          <label htmlFor="figName" className="font-medium">
+            Figure Name:
+          </label>
           <input
             type="text"
             id="name"
@@ -108,11 +112,14 @@ const AddFigure: React.FC<AddFigureProps> = ({
             onChange={(e) => handleChange(e, formState, setFormState)}
           />
         </div>
-        <div>
-          <div>Discipline:</div> <div>{currDiscipline?.name}</div>
+        <div className="flex gap-3">
+          <div className="font-medium">Discipline:</div>{" "}
+          <div className="capitalize">{currDiscipline?.name}</div>
         </div>
-        <div>
-          <label htmlFor="difficulty">Difficulty</label>
+        <div className="flex gap-3">
+          <label htmlFor="difficulty" className="font-medium">
+            Difficulty
+          </label>
           <select
             name="difficulty"
             id="difficulty"
@@ -124,8 +131,10 @@ const AddFigure: React.FC<AddFigureProps> = ({
             <option value="advanced">Advanced</option>
           </select>
         </div>
-        <div>
-          <label htmlFor="image">Figure image</label>
+        <div className="flex gap-3">
+          <label htmlFor="image" className="font-medium">
+            Figure image
+          </label>
           <input
             type="text"
             id="image"
@@ -135,9 +144,13 @@ const AddFigure: React.FC<AddFigureProps> = ({
             onChange={(e) => handleChange(e, formState, setFormState)}
           />
         </div>
-        <div>And don't forget to give credit to the owners of the image!</div>
-        <div>
-          <label htmlFor="imgArtist">Image artist/ website :</label>
+        <div className="flex gap-3 font-medium">
+          And don't forget to give credit to the owners of the image!
+        </div>
+        <div className="flex gap-3">
+          <label htmlFor="imgArtist" className="font-medium">
+            Image artist/ website :
+          </label>
           <input
             type="text"
             id="imgArtist"
@@ -147,8 +160,10 @@ const AddFigure: React.FC<AddFigureProps> = ({
             onChange={(e) => handleChange(e, formState, setFormState)}
           />
         </div>
-        <div>
-          <label htmlFor="imgArtist">Link to the artist / website :</label>
+        <div className="flex gap-3">
+          <label htmlFor="imgArtist" className="font-medium">
+            Link to the artist / website :
+          </label>
           <input
             type="text"
             id="imgArtistUrl"
@@ -159,23 +174,27 @@ const AddFigure: React.FC<AddFigureProps> = ({
           />
         </div>
 
-        <label htmlFor="focus">Zones of the body the figure focuses on:</label>
-        {zones.map((zone, index) => (
-          <div key={index}>
-            <input
-              type="checkbox"
-              id={`focus-${index}`}
-              name="focus"
-              value={zone._id}
-              onChange={(e) => handleZoneChange(e, formState, setFormState)}
-            />
-            <label htmlFor={`zone-${index}`}>{zone.name}</label>
-          </div>
-        ))}
+        <label htmlFor="focus" className="font-medium">
+          Zones of the body the figure focuses on:
+        </label>
+        <div className="flex flex-wrap gap-4">
+          {zones.map((zone, index) => (
+            <div key={index} className="flex gap-1">
+              <input
+                type="checkbox"
+                id={`focus-${index}`}
+                name="focus"
+                value={zone._id}
+                onChange={(e) => handleZoneChange(e, formState, setFormState)}
+              />
+              <label htmlFor={`zone-${index}`}>{zone.name}</label>
+            </div>
+          ))}
+        </div>
 
         <button
           disabled={name === "" || difficulty === "" || image === ""}
-          className="bg-main px-3 disabled:bg-disabled"
+          className="bg-main px-3 disabled:bg-disabled text-white font-medium"
         >
           Submit
         </button>
