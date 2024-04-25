@@ -10,6 +10,7 @@ type SearchBarProps = {
   placeholder: string;
   searchAction: string;
   onFigureSelect: ((figure: figType) => void) | null;
+  chosenFigure: string;
   setFigure: React.Dispatch<SetStateAction<string>> | null;
 };
 const SearchBar: React.FC<SearchBarProps> = ({
@@ -17,6 +18,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
   placeholder,
   searchAction,
   onFigureSelect,
+  chosenFigure,
   setFigure,
 }) => {
   const { currDiscipline } = useUser();
@@ -68,7 +70,10 @@ const SearchBar: React.FC<SearchBarProps> = ({
   // clear out results if search result is chosen
   useEffect(() => {
     setSearchedFigs([]);
-  }, [onFigureSelect, setFigure]);
+    setTimeout(() => {
+      setSearchWord("");
+    }, 1000);
+  }, [chosenFigure]);
 
   return (
     <div className="w-full group">

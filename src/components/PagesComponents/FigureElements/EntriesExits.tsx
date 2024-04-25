@@ -13,7 +13,7 @@ const sectionStyle = "h-1/2 flex flex-col shadow-xl";
 const titleStyle =
   "font-semibold font-romantic text-4xl bg-main dark:bg-maindark text-white text-center";
 const listStyle =
-  "overflow-y-scroll overflow-x-hidden max-w-full no-scrollbar h-1/2 lg:h-5/6 flex flex-col gap-3 my-2 mr-4  pr-5";
+  "overflow-y-auto overflow-x-hidden max-w-full max-h-auto py-7 bg-white bg-opacity-5 h-1/2 no-scrollbar h-1/2 lg:h-5/6 flex flex-col gap-3 my-2 mr-4  pr-5";
 const toggleTextStyle = "flex  gap-2 py-1 ml-2 font-semibold";
 const toggleStyle =
   "px-2  bg-main dark:bg-maindark text-white font-bold rounded-lg";
@@ -53,7 +53,7 @@ const EntriesExits: React.FC<{ currFigId: string }> = ({ currFigId }) => {
       <div className={sectionStyle}>
         <h3 className={titleStyle}>Entries</h3>
         {isLoggedIn ? (
-          <div>
+          <div className="h-full w-full flex flex-col">
             <div>
               <button
                 onClick={() => handleShowForm(showEntryForm, setShowEntryForm)}
@@ -102,8 +102,8 @@ const EntriesExits: React.FC<{ currFigId: string }> = ({ currFigId }) => {
       <div className={sectionStyle}>
         <h3 className={titleStyle}>Exits</h3>
         {isLoggedIn ? (
-          <div>
-            <div className="">
+          <div className="h-full w-full flex flex-col">
+            <div>
               <button
                 onClick={() => handleShowForm(showExitForm, setShowExitForm)}
                 className={toggleTextStyle}
