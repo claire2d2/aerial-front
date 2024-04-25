@@ -1,5 +1,5 @@
 import { ChangeEvent, SetStateAction } from "react";
-import { figFormType } from "../../Types";
+import { figFormType } from "../Types";
 
 type SetFormState = React.Dispatch<SetStateAction<figFormType>>;
 
@@ -15,7 +15,7 @@ export async function handleChange(
 }
 
 // handle multiple values selection
-export async function handleZoneChange(
+export function handleZoneChange(
   e: ChangeEvent<HTMLInputElement>,
   formState: figFormType,
   setFormState: SetFormState

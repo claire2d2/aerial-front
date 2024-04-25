@@ -38,7 +38,7 @@ const AllCombos = () => {
   const [createMode, setCreateMode] = useState<boolean>(false);
 
   function choseCombo(combo: comboType) {
-    if (combo === shownCombo) {
+    if (shownCombo && shownCombo._id === combo._id) {
       setShownCombo(null);
       return;
     }
@@ -72,26 +72,26 @@ const AllCombos = () => {
             If you wish to edit its content, please click on the edit button
           </p>
         </div>
-        <div className="overflow-y-scroll no-scrollbar bg-bgmainlight dark:bg-bgmaindark my-2 mx-3 flex flex-col gap-4">
+        <div className="overflow-y-scroll no-scrollbar items-center my-2 px-2 flex flex-col gap-4">
           {allCombos?.length > 0 ? (
             allCombos.map((combo, index) => {
               return (
                 <button
                   key={index}
                   onClick={() => choseCombo(combo)}
-                  className="w-full flex flex-col hover:bg-bgmainlight"
+                  className="w-5/6 flex flex-col bg-bgmainlight dark:bg-bgmaindark py-1 px-2 rounded-lg"
                 >
-                  <h5 className="font-romantic text-2xl text-main capitalize py-1">
+                  <h5 className="font-romantic text-2xl text-main dark:text-white capitalize py-1">
                     {combo.name}
                   </h5>
 
-                  {shownCombo === combo ? (
-                    <div className="flex flex-col gap-1">
+                  {shownCombo && shownCombo._id === combo._id ? (
+                    <div className="flex flex-col gap-1 rounded-lg">
                       {combo.figures.map((fig, index) => {
                         return (
                           <div
                             key={index}
-                            className="capitalize text-darkgray pl-3"
+                            className="capitalize text-darkgray dark:text-white pl-3 rounded-lg"
                           >
                             {fig.name}
                           </div>
@@ -99,12 +99,12 @@ const AllCombos = () => {
                       })}
                     </div>
                   ) : (
-                    <div className="flex flex-row gap-2 items-center">
+                    <div className="flex flex-row gap-2 items-center rounded-lg ">
                       {showFirstTwoFigs(combo.figures).map((fig, index) => {
                         return (
                           <div
                             key={index}
-                            className="capitalize text-darkgray pl-3"
+                            className="capitalize text-darkgray dark:text-white pl-3 rounded-lg"
                           >
                             {fig.name}
                             {combo.figures.length > 2 ? "," : ""}

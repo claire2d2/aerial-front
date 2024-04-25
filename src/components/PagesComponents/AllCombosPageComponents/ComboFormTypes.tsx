@@ -25,7 +25,7 @@ export function handleAddFigure(
   formState: formStateType,
   setFormState: React.Dispatch<SetStateAction<formStateType>>
 ) {
-  if (formState.figures.length < 7) {
+  if (formState.figures.length < 8) {
     const copy = formState.figures;
     copy.push(newFig);
     setFormState({ ...formState, figures: copy });

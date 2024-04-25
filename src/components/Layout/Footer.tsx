@@ -7,8 +7,8 @@ const Footer = () => {
       <div className={linkStyle} onClick={() => navigate("/about")}>
         About
       </div>
-      <div className={linkStyle} onClick={() => navigate("/privacy")}>
-        Privacy Policy
+      <div className={linkStyle} onClick={() => navigate("/contact")}>
+        Contact
       </div>
       <div className={linkStyle} onClick={() => navigate("/site")}>
         Site Map

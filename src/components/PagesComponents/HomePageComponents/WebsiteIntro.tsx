@@ -26,22 +26,22 @@ const WebsiteIntro = () => {
 
       <div className="hidden lg:block w-full lg:w-1/2 relative">
         <div className="absolute right-10 top-20">
-          <div className="relative mx-auto border-bgmainlight dark:border-bgmainlight bg-bgmainlight border-[6px] rounded-t-xl h-[129px] max-w-[226px] md:h-[220px] md:max-w-[384px]">
-            <div className="rounded-lg overflow-hidden h-[117px] md:h-[208px] bg-white dark:bg-bgmainlight">
+          <div className="relative mx-auto border-bgmainlight dark:border-darkgray dark:bg-darkgray bg-bgmainlight border-[6px] rounded-t-xl h-[129px] max-w-[226px] md:h-[220px] md:max-w-[384px]">
+            <div className="rounded-lg overflow-hidden h-[117px] md:h-[208px] bg-white dark:border-darkgray dark:bg-darkgray">
               <img
-                src="https://flowbite.s3.amazonaws.com/docs/device-mockups/laptop-screen.png"
+                src="pcscreenshot.png"
                 className="dark:hidden h-[117px] md:h-[208px] w-full rounded-xl"
                 alt=""
               />
               <img
-                src="https://flowbite.s3.amazonaws.com/docs/device-mockups/laptop-screen-dark.png"
+                src="pcscreenshotdark.png"
                 className="hidden dark:block h-[117px] md:h-[208px] w-full rounded-lg"
                 alt=""
               />
             </div>
           </div>
           <div className="relative mx-auto bg-gray-900 dark:bg-gray-700 rounded-b-xl rounded-t-sm h-[13px] max-w-[263px] md:h-[16px] md:max-w-[448px]">
-            <div className="absolute left-1/2 top-0 -translate-x-1/2 rounded-b-xl w-[42px] h-[4px] md:w-[72px] md:h-[6px] bg-bgmainlight"></div>
+            <div className="absolute left-1/2 top-0 -translate-x-1/2 rounded-b-xl w-[42px] h-[4px] md:w-[72px] md:h-[6px] bg-bgmainlight dark:bg-darkgray"></div>
           </div>
         </div>
         <div className="absolute top-0 left-20 z-9">

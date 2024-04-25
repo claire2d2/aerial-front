@@ -7,7 +7,7 @@ import { fetchFigures } from "../FiguresFunctions";
 import {
   handleChange,
   handleZoneChange,
-} from "../FigureElements/FigFormFunctions";
+} from "../../GlobalComponents/FigFormFunctions";
 
 type AddFigureProps = {
   currDiscipline: {
@@ -52,7 +52,6 @@ const AddFigure: React.FC<AddFigureProps> = ({
     e.preventDefault();
 
     try {
-      console.log(formState);
       const response = await aerialApi.post("/figures", formState);
       console.log(response.data);
       if (response.status === 201) {

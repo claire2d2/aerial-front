@@ -1,6 +1,8 @@
 import { useNavigate } from "react-router-dom";
+import useUser from "../../../context/useUser";
 const Features = () => {
   const navigate = useNavigate();
+  const { isLoggedIn } = useUser();
   return (
     <section
       className="bg-center bg-no-repeat  bg-blend-multiply"
@@ -20,20 +22,22 @@ const Features = () => {
         <div className="my-5">
           Head on over to the discipline of your choice to get started!
         </div>
-        <div className="flex flex-col space-y-4 sm:flex-row sm:justify-center sm:space-y-0 gap-10">
-          <button
-            onClick={() => navigate("/login")}
-            className="bg-main dark:bg-maindark px-10 py-3 rounded-md text-white font-semibold hover:bg-white dark:hover:bg-white hover:text-text"
-          >
-            Log in
-          </button>
-          <button
-            onClick={() => navigate("/signup")}
-            className="border border-white dark:border-textdark px-10 py-3 rounded-md text-white font-semibold hover:text-main hover:border-main dark:hover:border-main"
-          >
-            Sign up
-          </button>
-        </div>
+        {!isLoggedIn && (
+          <div className="flex flex-col space-y-4 sm:flex-row sm:justify-center sm:space-y-0 gap-10">
+            <button
+              onClick={() => navigate("/login")}
+              className="bg-main dark:bg-maindark px-10 py-3 rounded-md text-white font-semibold hover:bg-white dark:hover:bg-white hover:text-text"
+            >
+              Log in
+            </button>
+            <button
+              onClick={() => navigate("/signup")}
+              className="border border-white dark:border-textdark px-10 py-3 rounded-md text-white font-semibold hover:text-main hover:border-main dark:hover:border-main"
+            >
+              Sign up
+            </button>
+          </div>
+        )}
       </div>
     </section>
   );

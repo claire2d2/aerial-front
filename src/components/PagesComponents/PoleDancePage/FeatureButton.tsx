@@ -16,9 +16,9 @@ const FeatureButton: React.FC<FeatureButtonProps> = ({
   return (
     <button
       onClick={() => navigate(link)}
-      className="group hover:basis-3/4 basis-1/3 bg-white my-1 ml-1 transition-all"
+      className="group hover:basis-3/4 basis-1/3 bg-white text-main  bg-opacity-50 my-1 ml-1 transition-all"
     >
-      <div className="text-xl">{title}</div>
+      <div className="text-xl font-bold">{title}</div>
       <div className="lg:hidden lg:group-hover:block">{children}</div>
     </button>
   );

@@ -74,7 +74,7 @@ const CreateCombo: React.FC<CreateComboProps> = ({
           value={name}
           placeholder="Set a name for your combo"
           onChange={(e) => handleChange(e, formState, setFormState)}
-          className="outline-none focus:ring-2 focus:ring-bgmainlight"
+          className="outline-none focus:ring-2 bg-transparent border border-disabled dark:border-textdark p-1 rounded-lg focus:ring-bgmainlight"
         />
         <div className="font-semibold">
           Add figures to your combo (up to 8 max):{" "}
@@ -107,16 +107,18 @@ const CreateCombo: React.FC<CreateComboProps> = ({
           );
         })}
         <div className="font-medium">Add a figure: </div>
-        <SearchBar
-          figures={figures}
-          placeholder=""
-          searchAction="chose"
-          onFigureSelect={(figure) =>
-            handleAddFigure(figure, formState, setFormState)
-          }
-          setFigure={null}
-          chosenFigure={null}
-        />
+        {formState.figures.length < 8 && (
+          <SearchBar
+            figures={figures}
+            placeholder="..."
+            searchAction="chose"
+            onFigureSelect={(figure) =>
+              handleAddFigure(figure, formState, setFormState)
+            }
+            setFigure={null}
+            chosenFigure={null}
+          />
+        )}
 
         <label htmlFor="comment" className="font-semibold">
           Add comment :{" "}
@@ -124,7 +126,7 @@ const CreateCombo: React.FC<CreateComboProps> = ({
         <textarea
           id="comment"
           name="comment"
-          className="border border-gray w-full h-32 rounded-lg resize-none drop-shadow-sm outline-none focus:ring-2 focus:ring-bgmainlight p-2"
+          className="border border-disabled w-full h-32 rounded-lg resize-none drop-shadow-sm outline-none focus:ring-2 focus:ring-bgmainlight p-2 bg-transparent"
           value={formState.comment}
           placeholder="Comment here"
           onChange={(e) => handleChange(e, formState, setFormState)}
