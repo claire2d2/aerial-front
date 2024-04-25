@@ -52,10 +52,10 @@ const EntryExitLike: React.FC<EntryExitLikeProps> = ({ propId }) => {
 
   return (
     <div className="flex gap-2 items-center">
-      <div>{nbLikes}</div>
+      <div className="text-gray dark:text-textdark">{nbLikes}</div>
       <button
         onClick={() => handleLike()}
-        className={`${isLiked ? "text-isFave" : "text-text"}`}
+        className={`${isLiked ? "text-isFave" : "text-disabled"}`}
       >
         <HiOutlineThumbUp />
       </button>

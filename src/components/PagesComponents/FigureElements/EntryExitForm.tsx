@@ -3,7 +3,7 @@ import aerialApi from "../../../service/aerialApi";
 import { AxiosError } from "axios";
 import { fetchEntries, fetchExits } from "./EntryExitFunctions";
 import { like } from "../FiguresFunctions";
-import { entryExitType } from "../../Types";
+import { figType, entryExitType } from "../../Types";
 import SearchBar from "../../GlobalComponents/SearchBar";
 
 type EntryExitFormProps = {
@@ -11,6 +11,7 @@ type EntryExitFormProps = {
   entryOrExit: string;
   setAllEntries: React.Dispatch<SetStateAction<entryExitType[]>>;
   setAllExits: React.Dispatch<SetStateAction<entryExitType[]>>;
+  figures: figType[];
 };
 
 const EntryExitForm: React.FC<EntryExitFormProps> = ({
@@ -18,10 +19,13 @@ const EntryExitForm: React.FC<EntryExitFormProps> = ({
   entryOrExit,
   setAllEntries,
   setAllExits,
+  figures,
 }) => {
   const [chosenFig, setChosenFig] = useState<string>("");
   const [errorMsg, setErrorMsg] = useState<string>("");
   const [updateList, setUpdateList] = useState<boolean>(false);
+
+  // fetch figures for the search bar
 
   // refresh list when submitting a proposition
   useEffect(() => {
@@ -87,6 +91,7 @@ const EntryExitForm: React.FC<EntryExitFormProps> = ({
         onSubmit={handleSubmit}
       >
         <SearchBar
+          figures={figures}
           placeholder="Figure name"
           searchAction="entryExit"
           onFigureSelect={null}

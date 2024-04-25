@@ -97,13 +97,13 @@ const SearchBar: React.FC<SearchBarProps> = ({
         </label>
       </div>
       {searchedFigs.length !== 0 && (
-        <div className="searchResults overflow-scroll no-scrollbar max-h-20 flex flex-col  z-9 bg-white w-full text-text">
+        <div className="searchResults overflow-scroll no-scrollbar max-h-20 flex flex-col  z-9 bg-white dark:bg-bgmaindark w-full text-text dark:text-textdark ">
           {searchedFigs.map((fig, index) => {
             return (
               <button
                 onClick={(e) => action(e, fig)}
                 key={index}
-                className="z-10 capitalize hover:bg-bgmainlight text-text"
+                className="z-10 capitalize hover:bg-bgmainlight dark:hover:bg-darkgray text-text dark:text-textdark"
               >
                 {fig.name}
               </button>
