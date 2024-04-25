@@ -2,24 +2,24 @@ import React, { useState, useEffect, SetStateAction } from "react";
 import { HiOutlineSearch, HiX } from "react-icons/hi";
 import { useNavigate } from "react-router-dom";
 import useUser from "../../context/useUser";
-import { fetchFigures } from "../PagesComponents/FiguresFunctions";
 
 import { figType } from "../Types";
 
 type SearchBarProps = {
+  figures: figType[];
   placeholder: string;
   searchAction: string;
   onFigureSelect: ((figure: figType) => void) | null;
   setFigure: React.Dispatch<SetStateAction<string>> | null;
 };
 const SearchBar: React.FC<SearchBarProps> = ({
+  figures,
   placeholder,
   searchAction,
   onFigureSelect,
   setFigure,
 }) => {
   const { currDiscipline } = useUser();
-  const [figures, setFigures] = useState<figType[]>([]);
   const [searchedFigs, setSearchedFigs] = useState<figType[]>([]);
   const [searchWord, setSearchWord] = useState<string>("");
 
@@ -27,13 +27,6 @@ const SearchBar: React.FC<SearchBarProps> = ({
     const searchValue = e.currentTarget.value;
     setSearchWord(searchValue);
   };
-
-  // fetch figures when component renders
-  useEffect(() => {
-    if (currDiscipline) {
-      fetchFigures(currDiscipline._id, setFigures, [], []);
-    }
-  }, [currDiscipline]);
 
   // use effect hook to refresh figures search instantaneously
   useEffect(() => {

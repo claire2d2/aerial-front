@@ -12,10 +12,12 @@ type formStateType = {
 };
 
 type EditComboFormProps = {
+  figures: figType[];
   shownCombo: comboType;
   setEditMode: React.Dispatch<SetStateAction<boolean>>;
 };
 const EditComboForm: React.FC<EditComboFormProps> = ({
+  figures,
   shownCombo,
   setEditMode,
 }) => {
@@ -120,6 +122,7 @@ const EditComboForm: React.FC<EditComboFormProps> = ({
                 className="relative group pl-3 py-2 drop-shadow-md rounded-lg capitalize bg-white text-center pr-10"
               >
                 <SearchBar
+                  figures={figures}
                   placeholder={fig.name}
                   searchAction="chose"
                   onFigureSelect={(figure) => handleFigureChange(index, figure)}
@@ -139,6 +142,7 @@ const EditComboForm: React.FC<EditComboFormProps> = ({
           {addFigure && (
             <div className="px-3 py-2 drop-shadow-md rounded-lg capitalize bg-white text-center pr-10">
               <SearchBar
+                figures={figures}
                 placeholder="Add a new figure"
                 searchAction="chose"
                 onFigureSelect={(figure) => handleAddFigure(figure)}

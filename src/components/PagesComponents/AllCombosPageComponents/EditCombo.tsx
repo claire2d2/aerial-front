@@ -1,5 +1,7 @@
-import { useState, SetStateAction } from "react";
-import { comboType } from "../../Types";
+import { useState, useEffect, SetStateAction } from "react";
+import useUser from "../../../context/useUser";
+import { figType, comboType } from "../../Types";
+import { fetchFigures } from "../FiguresFunctions";
 import SaveButton from "../../GlobalComponents/SaveButton";
 import EditButton from "../../GlobalComponents/EditButton";
 import EditComboForm from "./EditComboForm";
@@ -17,6 +19,17 @@ const EditCombo: React.FC<EditComboProps> = ({
   createMode,
   setCreateMode,
 }) => {
+  // fetch all the figures for the current discipline (for the searchbar components)
+  const [figures, setFigures] = useState<figType[]>([]);
+  const { currDiscipline } = useUser();
+
+  useEffect(() => {
+    if (currDiscipline) {
+      fetchFigures(currDiscipline._id, setFigures, [], []);
+    }
+  }, [currDiscipline]);
+
+  // turn edit mode on (show form) or off (just show combo)
   const [editMode, setEditMode] = useState<boolean>(false);
 
   const turnEditOn = () => {
@@ -40,7 +53,11 @@ const EditCombo: React.FC<EditComboProps> = ({
         <ShowCombo shownCombo={shownCombo} />
       )}
       {shownCombo && editMode && !createMode && (
-        <EditComboForm shownCombo={shownCombo} setEditMode={setEditMode} />
+        <EditComboForm
+          figures={figures}
+          shownCombo={shownCombo}
+          setEditMode={setEditMode}
+        />
       )}
 
       {!shownCombo && !createMode && (
@@ -60,7 +77,11 @@ const EditCombo: React.FC<EditComboProps> = ({
       )}
 
       {createMode && (
-        <CreateCombo createMode={createMode} setCreateMode={setCreateMode} />
+        <CreateCombo
+          figures={figures}
+          createMode={createMode}
+          setCreateMode={setCreateMode}
+        />
       )}
     </div>
   );
