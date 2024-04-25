@@ -1,4 +1,3 @@
-import DarkLightToggle from "./DarkLightToggle";
 import { useNavigate, Link } from "react-router-dom";
 import useUser from "../../context/useUser";
 
@@ -36,8 +35,6 @@ const NavBar = () => {
           </div>
         </Link>
       </div>
-
-      <DarkLightToggle />
 
       <div className="flex md:order-2 basis-1/5">
         {isLoggedIn ? <NavBarLoggedIn /> : <NavBarLoggedOut />}
