@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import useUser from "../../../context/useUser";
-import LogInModal from "../../GlobalComponents/LogInModal";
 
 type FigFilterButtonProps = {
   children: React.ReactNode;
