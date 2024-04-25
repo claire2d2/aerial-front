@@ -1,7 +1,7 @@
 import { Dropdown, Avatar } from "flowbite-react";
 import { useNavigate } from "react-router-dom";
 import { dropDownTheme, avatarTheme } from "./Style/NavBarStyle";
-import { HiOutlineAdjustments, HiLogout } from "react-icons/hi";
+import { HiOutlineAdjustments, HiLogout, HiDatabase } from "react-icons/hi";
 import useUser from "../../context/useUser";
 
 const NavBarLoggedIn = () => {
@@ -59,8 +59,9 @@ const NavBarLoggedIn = () => {
         </Dropdown.Item>
         {isAdmin ? (
           <Dropdown.Item>
-            {" "}
-            <div onClick={() => navigate("/admin")}>Admin Dashboard</div>
+            <div onClick={() => navigate("/admin")} className="flex gap-2">
+              <HiDatabase /> Admin Dashboard
+            </div>
           </Dropdown.Item>
         ) : (
           ""

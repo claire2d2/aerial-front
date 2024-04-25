@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Dropdown } from "flowbite-react";
 import useUser from "../../context/useUser";
 
@@ -25,6 +25,7 @@ const dropDownTheme = {
 };
 
 const NavBarDiscDropDown = () => {
+  const navigate = useNavigate();
   const { currDiscipline, allDisciplines } = useUser();
   let restOfPath = "";
   const isSpecificPage = location.pathname.split("/")[2];
@@ -49,15 +50,20 @@ const NavBarDiscDropDown = () => {
       {allDisciplines
         ? allDisciplines.map((disc, index) => (
             <Dropdown.Item key={index}>
-              <Link
-                to={`/${
-                  disc.ref === currDiscipline?.ref
-                    ? `${disc.ref}`
-                    : `${disc.ref}${restOfPath}`
-                }`}
+              <span
+                onClick={() =>
+                  navigate(
+                    `/${
+                      disc.ref === currDiscipline?.ref
+                        ? `${disc.ref}`
+                        : `${disc.ref}${restOfPath}`
+                    }`
+                  )
+                }
+                className="capitalize w-full hover:cursor-pointer"
               >
-                <span className="capitalize">{disc.name}</span>
-              </Link>
+                {disc.name}
+              </span>
             </Dropdown.Item>
           ))
         : "Loading"}
