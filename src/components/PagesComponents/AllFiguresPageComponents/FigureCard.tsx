@@ -16,7 +16,7 @@ const FigureCard: React.FC<FigureCardProps> = ({ fig }) => {
           }}
           className="relative h-full bg-cover bg-center aspect-square rounded-lg"
         >
-          <div className="absolute uppercase flex items-center justify-center text-white text-xl inset-0 text-center font-bold bg-maindark bg-opacity-50 hover:bg-opacity-20 active:bg-opacity-20 rounded-lg">
+          <div className="absolute uppercase flex items-center justify-center text-white text-xl inset-0 text-center font-bold bg-maindark bg-opacity-30 hover:bg-opacity-20 active:bg-opacity-20 rounded-lg">
             {fig.name}
           </div>
         </div>

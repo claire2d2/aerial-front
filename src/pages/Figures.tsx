@@ -87,9 +87,9 @@ const Figures = () => {
     return <p>Loading!</p>;
   }
   return (
-    <div className="flex flex-col items-center relative">
+    <div className="flex flex-col items-center relative lg:px-4">
       <div className="flex justify-between w-full items-center">
-        <h1 className="text-5xl py-5 text-main font-romantic w-full lg:text-center">
+        <h1 className="text-5xl py-5 text-title dark:text-textdark font-romantic w-full lg:text-center">
           <span>🕊️</span>{" "}
           <span className="capitalize ">{currDiscipline?.name}</span> figures
         </h1>
@@ -142,11 +142,14 @@ const Figures = () => {
         <FigFilter />
       </div>
 
-      <div className="hidden lg:flex lg:justify-between lg:w-full lg:gap-40 pr-20">
-        <div>
-          <div className="font-semibold">Go directly to figure page:</div>
+      <div className="hidden lg:flex lg:justify-between lg:w-full lg:gap-10">
+        <div className="basis-1/4">
+          <div className="font-semibold text-main dark:text-textdark">
+            Go to figure page:
+          </div>
           <SearchBar
-            placeholder="Figure Name"
+            figures={figures}
+            placeholder="..."
             searchAction="navigate"
             onFigureSelect={null}
             setFigure={null}

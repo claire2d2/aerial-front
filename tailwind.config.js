@@ -9,17 +9,19 @@ export default {
     },
     colors: {
       // for all styling
-      main: "#003162",
+      main: "#D1492E",
       maindark: "#123f52",
-      mainvar: "#03386e",
+      mainvar: "#C75146",
       mainlight: "#5176BA",
-      bgmain: "#F7FCFC",
-      bgmainlight: "#D8EDF9",
+      bgmain: "#FFFCF1",
+      bgmainlight: "#FAF0CA",
       bgmaindark: "#33334d",
+      title: "#0D3B66",
       text: "#121927",
       textdark: "#f0f0f5",
-      linkhover: "#ffc900",
-      inputfield: "#7a7672",
+      linkhover: "#EE964B",
+      bgactive: "#F7DBC3",
+      inputfield: "#d5e1df",
       disabled: "#e2e2e2",
       error: "#ff0066",
       placeholder: "#5c715e",
@@ -27,7 +29,7 @@ export default {
       // for the state input range
       green: "#42b883",
       golden: "#f8b400",
-      gray: "#b6cdbd",
+      gray: "#878f99",
       darkgray: "#5c715e",
 
       // for fave button

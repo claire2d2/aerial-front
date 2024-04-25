@@ -23,7 +23,7 @@ export const customTheme = {
     off: "hover:bg-transparent focus:ring-0 focus:ring-transparent dark:hover:bg-transparent dark:focus:ring-transparent",
     on: "bg-transparent dark:bg-transparent",
   },
-  base: "flex flex-col w-full items-center justify-between text-left font-medium border-transparent focus:ring-transparent focus:ring-0",
+  base: "flex flex-col w-full items-center justify-between text-left font-medium border-transparent focus:ring-transparent focus:ring-0 text-main",
 };
 
 export const titleTheme = {
@@ -39,5 +39,5 @@ export const titleTheme = {
     on: "border-0 bg-transparent dark:bg-transparent",
   },
   root: "border-0 focus:ring-transparent",
-  base: "border-0 flex w-full items-center justify-between text-center focus:ring-transparent",
+  base: "border-0 flex w-full items-center justify-between text-center focus:ring-transparent font-semibold text-main",
 };

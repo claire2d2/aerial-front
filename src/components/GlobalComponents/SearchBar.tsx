@@ -72,14 +72,14 @@ const SearchBar: React.FC<SearchBarProps> = ({
 
   return (
     <div className="w-full group">
-      <div className="searchInput flex justify-between items-center gap-2 bg-white  drop-shadow-sm pr-3 pl-1 py-1 relative w-full">
+      <div className="searchInput flex justify-between items-center gap-2 bg-white dark:bg-bgmaindark border border-inputfield  rounded-lg dark:border-textdark drop-shadow-sm pr-3 pl-1 py-1 relative w-full">
         <input
           type="text"
           id="search"
           value={searchWord}
           placeholder={`${placeholder}`}
           onChange={handleSearch}
-          className={`w-full placeholder:text-text capitalize focus:ring-2 focus:ring-bgmainlight border-0 outline-none`}
+          className={`w-full placeholder:text-text dark:placeholder:text-textdark capitalize focus:ring-2 focus:ring-bgmainlight border-0 outline-none bg-transparent`}
         />
         <label
           htmlFor="search"

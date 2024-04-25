@@ -66,7 +66,7 @@ const FigFilter = () => {
              */}
 
             <div className="hidden lg:w-full lg:flex lg:flex-col">
-              <div className="flex w-full justify-between">
+              <div className="lg:flex lg:w-full lg:justify-between lg:gap-2">
                 {availableFilters.map((filt) => {
                   return (
                     <FigFilterButton status={filt}>{filt}</FigFilterButton>
@@ -76,7 +76,7 @@ const FigFilter = () => {
               <button
                 onClick={(e) => resetFilters(e)}
                 disabled={activeFilters.length === 0}
-                className="text-main w-full disabled:text-gray"
+                className="text-title w-full disabled:text-gray"
               >
                 Reset filters
               </button>
