@@ -53,7 +53,7 @@ const FavoriteButton: React.FC<FavoriteButtonProps> = ({
     } catch (error) {
       console.log(error);
     }
-    fetchFavorites();
+    fetchFaves(setFaves);
   }
   // add favorite article to backend
   async function makeFave() {
@@ -62,7 +62,7 @@ const FavoriteButton: React.FC<FavoriteButtonProps> = ({
     } catch (error) {
       console.log(error);
     }
-    fetchFavorites();
+    fetchFaves(setFaves);
   }
 
   // dialog that opens if user that isn't logged in clicks on favorite

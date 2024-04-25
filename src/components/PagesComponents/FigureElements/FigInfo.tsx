@@ -2,7 +2,7 @@ import { useState } from "react";
 import { figType } from "../../Types";
 
 import StatusToggle from "./StatusToggle";
-import FavoriteButton from "../FavoriteButton";
+import FavoriteButton from "../../GlobalComponents/FavoriteButton";
 // what will show for the basic user, when the edit mode isn't on
 
 type FigInfoProps = {
@@ -17,16 +17,18 @@ const FigInfo: React.FC<FigInfoProps> = ({ figData }) => {
     <div className="FigInfo  flex flex-col lg:flex-row lg:basis-1/2 gap-2 justify-center items-center mb-2 lg:py-5">
       {/* Title, figure image + figure credits */}
       <div className="FigCard flex flex-col justify-center items-center gap-4">
-        <h1 className="font-bold text-4xl capitalize">{figData.name}</h1>
+        <h1 className="font-bold text-6xl text-main dark:text-textdark capitalize font-romantic">
+          {figData.name}
+        </h1>
         <div className="aspect-square h-60 drop-shadow-md dark:brightness-90 ">
           <img
             src={figData.image}
             alt={`image of ${figData?.name}`}
-            className="object-cover h-full w-full rounded-lg"
+            className="object-cover h-full w-full rounded-lg opacity-80"
           />
         </div>
         <div className="text-xs text-darkgray">
-          This image was found on{" "}
+          Image credit:{" "}
           <a href={figData.imgArtistUrl} target="blank" className="underline">
             {figData.imgArtist}
           </a>
@@ -43,7 +45,7 @@ const FigInfo: React.FC<FigInfoProps> = ({ figData }) => {
         <div className="font-semibold text-lg text-center text-main dark:text-textdark">
           <p>Focuses on:</p>
 
-          <ul className="text-text font-normal flex flex-row gap-2 capitalize">
+          <ul className="text-text dark:text-textdark font-normal flex flex-row gap-2 capitalize">
             {figData.focus.map((focus) => {
               return <li>{focus.name}</li>;
             })}

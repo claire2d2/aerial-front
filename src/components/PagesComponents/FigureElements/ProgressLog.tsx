@@ -1,18 +1,9 @@
 import { useState, useEffect } from "react";
 import useUser from "../../../context/useUser";
-import aerialApi from "../../../service/aerialApi";
+import { logType, fetchLogData } from "./OneFigureStyles";
 import ProgressLogForm from "./ProgressLogForm";
+import OneProgressLog from "./OneProgressLog";
 
-// style imports
-import { HiOutlineTrash } from "react-icons/hi";
-
-type logType = {
-  _id: string;
-  owner: string;
-  content: string;
-  date: string;
-  image: string;
-};
 type Logs = {
   currFigId: string;
 };
@@ -25,36 +16,13 @@ const ProgressLog: React.FC<Logs> = ({ currFigId }) => {
    **(configured on backend will only show logs made by current user)
    */
 
-  async function fetchLogData() {
-    try {
-      const response = await aerialApi.get(`/logs/${currFigId}`);
-      setLogs(response.data);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
   useEffect(() => {
-    fetchLogData();
-  }, []);
-
-  /*
-   ** Handle deleting existing log (only accessible to current user)
-   */
-
-  async function handleDeleteLog(e: React.MouseEvent<HTMLElement>, id: string) {
-    e.preventDefault;
-    try {
-      const response = await aerialApi.delete(`/logs/${id}`);
-      console.log(response);
-    } catch (error) {
-      console.log(error);
-    }
-  }
+    fetchLogData(setLogs, currFigId);
+  }, [currFigId]);
 
   return (
     <div className="w-full h-full">
-      <h2 className="font-bold text-2xl capitalize text-center">
+      <h2 className="font-bold text-2xl capitalize text-center ">
         Progress log
       </h2>
       {!isLoggedIn ? (
@@ -64,35 +32,17 @@ const ProgressLog: React.FC<Logs> = ({ currFigId }) => {
       ) : (
         <div>
           <div className="w-full">
-            <ProgressLogForm
-              currFigId={currFigId}
-              fetchLogData={fetchLogData}
-            />
+            <ProgressLogForm currFigId={currFigId} setLogs={setLogs} />
           </div>
           <h3 className="font-bold">Logs</h3>
-          <div className="h-80 overflow-scroll">
-            {logs.length !== 0
+          <div className="h-80 overflow-y-scroll no-scrollbar overflow-x-hiddenflex flex-col px-5">
+            {logs && logs.length !== 0
               ? logs?.map((log) => (
-                  <div className="OneLog flex flex-col h-20">
-                    {/* <div>{log.date.split("T")[0]}</div> */}
-                    <div className="flex h-32">
-                      {log.image ? (
-                        <div>
-                          <img
-                            src={log.image}
-                            alt="image of figure"
-                            className="object-cover h-full"
-                          />
-                        </div>
-                      ) : (
-                        ""
-                      )}
-                      <div>{log.content}</div>
-                      <button onClick={(e) => handleDeleteLog(e, log._id)}>
-                        <HiOutlineTrash />
-                      </button>
-                    </div>
-                  </div>
+                  <OneProgressLog
+                    log={log}
+                    setLogs={setLogs}
+                    currFigId={currFigId}
+                  />
                 ))
               : "No progress logs yet ..."}
           </div>

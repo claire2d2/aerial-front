@@ -18,7 +18,7 @@ export default {
       bgmaindark: "#333436",
       title: "#0D3B66",
       text: "#121927",
-      textdark: "#F5E0DC",
+      textdark: "#BEC3C6",
       linkhover: "#FEE4AA",
       bgactive: "#F7DBC3",
       bginactive: "#cbbcd8",
@@ -28,7 +28,7 @@ export default {
       error: "#ff0066",
       placeholder: "#5c715e",
       link: "#f8b400",
-      // for the state input range
+      cancel: "#8B0000",
       green: "#42b883",
       golden: "#f8b400",
       gray: "#878f99",
