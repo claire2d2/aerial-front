@@ -97,7 +97,7 @@ const NavBar = () => {
             <NavBarDiscDropDown />
           </li>
           {currDiscipline ? (
-            <div className="flex gap-4">
+            <div className="flex gap-4 text-white dark:text-textdark">
               <li>
                 <button
                   className="hover:text-linkhover"

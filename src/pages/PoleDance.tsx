@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import useUser from "../context/useUser";
 import { fetchFigures } from "../components/PagesComponents/FiguresFunctions";
 import { figType } from "../components/Types";
@@ -15,23 +15,6 @@ const PoleDance = () => {
     }
   }, [currDiscipline]);
 
-  // use state for styling
-  const [showBeginner, setShowBeginner] = useState<boolean>(false);
-  const [showIntermediate, setShowIntermediate] = useState<boolean>(false);
-  const [showAdvanced, setShowAdvanced] = useState<boolean>(false);
-
-  function handleShow(
-    e: React.MouseEvent<HTMLElement>,
-    showState: boolean,
-    setShow: React.Dispatch<React.SetStateAction<boolean>>
-  ) {
-    e.preventDefault;
-    if (showState) {
-      setShow(false);
-    } else {
-      setShow(true);
-    }
-  }
   return (
     <div className="flex flex-col w-full h-auto items-center text-center overflow-scroll no-scrollbar">
       <div className="Header relative w-full flex flex-col gap-5 h-64 lg:h-80  items-center justify-center">
