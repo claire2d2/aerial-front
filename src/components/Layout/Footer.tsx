@@ -3,7 +3,7 @@ const Footer = () => {
   const navigate = useNavigate();
   const linkStyle = "hover:cursor-pointer hover:text-golden transition-all";
   return (
-    <footer className="h-full flex justify-between px-10 font-semibold items-center">
+    <footer className="h-full flex justify-between px-10 font-semibold items-center ">
       <div className={linkStyle} onClick={() => navigate("/about")}>
         About
       </div>

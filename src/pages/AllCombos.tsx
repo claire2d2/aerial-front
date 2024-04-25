@@ -9,7 +9,7 @@ import EditCombo from "../components/PagesComponents/AllCombosPageComponents/Edi
 const AllCombos = () => {
   const navigate = useNavigate();
   // get the data from existing combos
-  const { currDiscipline } = useUser();
+  const { currDiscipline, isLoggedIn } = useUser();
   const [allCombos, setAllCombos] = useState<comboType[]>([]);
 
   useEffect(() => {
@@ -62,7 +62,7 @@ const AllCombos = () => {
 
   return (
     <div className="w-full flex flex-col lg:flex-row lg:h-full overflow-scroll no-scrollbar">
-      <div className="w-full h-96  lg:h-full lg:w-1/3 bg-main py-3 flex flex-col">
+      <div className="w-full h-96  lg:h-full lg:w-1/3 bg-main dark:bg-maindark py-3 flex flex-col">
         <h2 className="text-white font-romantic text-4xl text-center">
           All combos
         </h2>
@@ -72,7 +72,7 @@ const AllCombos = () => {
             If you wish to edit its content, please click on the edit button
           </p>
         </div>
-        <div className="overflow-y-scroll bg-bgmainlight dark:bg-bgmaindark my-2 mx-3 flex flex-col gap-4">
+        <div className="overflow-y-scroll no-scrollbar bg-bgmainlight dark:bg-bgmaindark my-2 mx-3 flex flex-col gap-4">
           {allCombos?.length > 0 ? (
             allCombos.map((combo, index) => {
               return (
@@ -124,28 +124,34 @@ const AllCombos = () => {
               );
             })
           ) : (
-            <div className="h-80 flex flex-col gap-5 justify-center items-center text-center py-2">
+            <div className="h-80 flex flex-col gap-5 justify-center items-center text-center py-2 ">
               <div>🥹🥹🥹</div>
               <div>There are no combos to show yet...</div>
 
-              <div>
-                You can{" "}
-                <span
-                  onClick={() => setCreateMode(true)}
-                  className="underline hover:cursor-pointer hover:text-link"
-                >
-                  create a combo
-                </span>{" "}
-                on this page here or{" "}
-                <span
-                  onClick={() =>
-                    navigate(`/${currDiscipline?.ref}/combo-generator`)
-                  }
-                  className="underline hover:cursor-pointer hover:text-link"
-                >
-                  generate a random combo
-                </span>
-              </div>
+              {isLoggedIn ? (
+                <div>
+                  You can{" "}
+                  <span
+                    onClick={() => setCreateMode(true)}
+                    className="underline hover:cursor-pointer hover:text-link"
+                  >
+                    create a combo
+                  </span>{" "}
+                  on this page here or{" "}
+                  <span
+                    onClick={() =>
+                      navigate(`/${currDiscipline?.ref}/combo-generator`)
+                    }
+                    className="underline hover:cursor-pointer hover:text-link"
+                  >
+                    generate a random combo
+                  </span>
+                </div>
+              ) : (
+                <div>
+                  You need to log in to be able to use this functionnality
+                </div>
+              )}
             </div>
           )}
         </div>

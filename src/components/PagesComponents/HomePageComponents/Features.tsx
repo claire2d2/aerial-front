@@ -2,7 +2,12 @@ import { useNavigate } from "react-router-dom";
 const Features = () => {
   const navigate = useNavigate();
   return (
-    <section className="bg-center bg-no-repeat bg-[url('cloudsBG.jpg')] bg-blend-multiply">
+    <section
+      className="bg-center bg-no-repeat  bg-blend-multiply"
+      style={{
+        backgroundImage: "url('cloudsBG.jpg')",
+      }}
+    >
       <div className="px-4 mx-auto max-w-screen-xl text-center py-24 text-white dark:text-textdark">
         <h2 className="mb-4 text-4xl font-extrabold tracking-tight leading-none text-white md:text-5xl lg:text-6xl">
           3 disciplines

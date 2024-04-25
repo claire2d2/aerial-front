@@ -11,7 +11,7 @@ export default {
       // for all styling
       main: "#36336E",
       maindark: "#00274C",
-      mainvar: "#ABA8D3",
+      mainvar: "#3C4A7F",
       mainlight: "#5176BA",
       bgmain: "ffeaeb",
       bgmainlight: "#cbbcd8",
@@ -50,7 +50,6 @@ export default {
       height: {
         all: "100dvh",
         outlet: "87dvh",
-        allbutnav: "95dvh",
         nav: "8dvh",
         footer: "5dvh",
       },

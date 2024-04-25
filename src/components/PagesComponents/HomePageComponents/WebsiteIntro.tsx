@@ -48,12 +48,12 @@ const WebsiteIntro = () => {
           <div className="relative mx-auto border-bgmainlight dark:border-darkgray bg-darkgray border-[11px] rounded-[1.875rem] h-[225px] w-[150px]">
             <div className="rounded-[0.75rem] overflow-hidden w-[129px] h-[205px] bg-white dark:bg-darkgray">
               <img
-                src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/hero/mockup-1-light.png"
+                src="mobilescreenshot.png"
                 className="dark:hidden w-[129px] h-[205px]"
                 alt=""
               />
               <img
-                src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/hero/mockup-1-dark.png"
+                src="mobilescreenshotdark.png"
                 className="hidden dark:block w-[129px] h-[205px]"
                 alt=""
               />

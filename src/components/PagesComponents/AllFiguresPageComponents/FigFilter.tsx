@@ -67,9 +67,11 @@ const FigFilter = () => {
 
             <div className="hidden lg:w-full lg:flex lg:flex-col">
               <div className="lg:flex lg:w-full lg:justify-between lg:gap-2">
-                {availableFilters.map((filt) => {
+                {availableFilters.map((filt, index) => {
                   return (
-                    <FigFilterButton status={filt}>{filt}</FigFilterButton>
+                    <FigFilterButton key={index} status={filt}>
+                      {filt}
+                    </FigFilterButton>
                   );
                 })}
               </div>

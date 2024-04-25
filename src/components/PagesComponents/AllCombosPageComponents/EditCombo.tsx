@@ -21,7 +21,7 @@ const EditCombo: React.FC<EditComboProps> = ({
 }) => {
   // fetch all the figures for the current discipline (for the searchbar components)
   const [figures, setFigures] = useState<figType[]>([]);
-  const { currDiscipline } = useUser();
+  const { currDiscipline, isLoggedIn } = useUser();
 
   useEffect(() => {
     if (currDiscipline) {
@@ -43,7 +43,7 @@ const EditCombo: React.FC<EditComboProps> = ({
     }
   };
   return (
-    <div className="h-full w-full overflow-scroll lg:py-6">
+    <div className="h-full w-full overflow-scroll no-scrollbar lg:py-6">
       {shownCombo && !createMode && (
         <div>
           <EditButton handleEditFunction={turnEditOn} editOn={editMode} />
@@ -60,7 +60,7 @@ const EditCombo: React.FC<EditComboProps> = ({
         />
       )}
 
-      {!shownCombo && !createMode && (
+      {!shownCombo && !createMode && isLoggedIn && (
         <div className="flex flex-col items-center justify-center h-full gap-3 text-center">
           <div>
             <h2 className="font-romantic text-3xl text-center">

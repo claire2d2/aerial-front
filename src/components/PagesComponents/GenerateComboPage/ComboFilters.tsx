@@ -32,7 +32,7 @@ const ComboFilters: React.FC<ComboFiltersProps> = ({
 }) => {
   // styling
   const filtButtonStyle =
-    "rounded-lg bg-white drop-shadow-sm py-1 px-2 capitalize dark:bg-main dark:text-white dark:hover:bg-maindark hover:bg-bgmainlight active:bg-main active:text-white";
+    "rounded-lg bg-white drop-shadow-sm py-1 px-2 capitalize dark:text-textdark dark:hover:bg-maindark hover:bg-bgmainlight active:bg-main active:text-white dark:bg-darkgray";
   // initial state for filters array
   const difficulties = ["beginner", "intermediate", "advanced"];
 
@@ -123,7 +123,7 @@ const ComboFilters: React.FC<ComboFiltersProps> = ({
   return (
     <div className="AllFilters w-full py-4 px-3">
       <div>
-        <h3 className="text-xl font-semibold text-main flex justify-between pr-3">
+        <h3 className="text-xl font-semibold text-main flex justify-between pr-3 dark:text-textdark">
           Active filters{" "}
           <button
             onClick={(e) => resetFilters(e)}

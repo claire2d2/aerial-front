@@ -1,12 +1,12 @@
 export const dropDownTheme = {
   floating: {
     animation: "transition-opacity",
-    base: "z-0 w-fit divide-y divide-gray-100 rounded shadow focus:outline-none",
+    base: "z-11 w-fit divide-y divide-gray-100 rounded shadow focus:outline-none",
     divider: "my-1 h-px dark:bg-bgmaindark",
     header: "block px-4 py-2 text-sm text-text dark:text-white",
     hidden: "invisible opacity-0",
     style: {
-      auto: " bg-white text-text dark:border-textdark dark:bg-bgmaindark dark:text-textdark active:text-white",
+      auto: " bg-white text-text dark:border-textdark dark:bg-bgmaindark dark:text-textdark active:text-white z-10",
     },
     target: "w-fit border-none",
   },
@@ -15,7 +15,7 @@ export const dropDownTheme = {
 
 export const avatarTheme = {
   root: {
-    base: "flex items-center justify-center space-x-4 rounded",
+    base: "flex items-center justify-center space-x-4 rounded z-11",
     bordered: "p-1 ring-2",
     rounded: "rounded-full",
     color: {
