@@ -50,7 +50,7 @@ const AllCombos = () => {
 
   return (
     <div className="w-full flex flex-col lg:flex-row lg:h-full overflow-scroll no-scrollbar">
-      <div className="w-full h-72 py-3 lg:h-full lg:w-1/3 bg-main py-2 flex flex-col">
+      <div className="w-full h-72  lg:h-full lg:w-1/3 bg-main py-3 flex flex-col">
         <h2 className="text-white font-romantic text-4xl text-center">
           All combos
         </h2>
@@ -94,7 +94,7 @@ const AllCombos = () => {
             : "Loading"}
         </div>
       </div>
-      <div className="relative basis-1/2 lg:w-2/3 lg:h-full">
+      <div className="relative basis-1/2 lg:basis-2/3 lg:h-full">
         <EditCombo shownCombo={shownCombo} />
       </div>
     </div>
