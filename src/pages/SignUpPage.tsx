@@ -1,7 +1,7 @@
 import aerialApi from "../service/aerialApi";
-import { useState, FormEvent, ChangeEvent } from "react";
+import { useState, useEffect, FormEvent, ChangeEvent } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import useUser from "../context/useUser";
+import { fetchFigures } from "../components/PagesComponents/FiguresFunctions";
 import { AxiosError } from "axios";
 import { figType } from "../components/Types";
 
@@ -26,9 +26,6 @@ type formType = {
 };
 
 const SignUpPage = () => {
-  // fetch figures
-  const { allFigures } = useUser();
-
   // set states to handle form changes and submission
   const [formState, setFormState] = useState<formType>({
     firstName: "",
@@ -37,6 +34,12 @@ const SignUpPage = () => {
     password: "",
     figures: [],
   });
+
+  // fetch figures to create not seen states for the user
+  const [figures, setFigures] = useState<figType[]>([]);
+  useEffect(() => {
+    fetchFigures(null, setFigures, [], []);
+  }, []);
 
   //set states to show error from backend if something wrong with input
   const [errorMsg, setErrorMsg] = useState<string>("");
@@ -47,7 +50,7 @@ const SignUpPage = () => {
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
     const key = e.currentTarget.id;
     const value = e.currentTarget.value;
-    setFormState({ ...formState, [key]: value, figures: allFigures });
+    setFormState({ ...formState, [key]: value, figures: figures });
   }
 
   /* function to handle form submission (=> user creation)
