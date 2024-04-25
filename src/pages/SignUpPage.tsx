@@ -187,8 +187,10 @@ const SignUpPage = () => {
           ""
         )}
       </div>
-      <div className="hidden lg:flex flex-col gap-5 text-white lg:w-1/2 px-20 justify-center">
-        <div className="font-bold">Once you've signed up you can :</div>
+      <div className="hidden lg:flex flex-col gap-3 text-white lg:w-1/2 px-20 justify-center">
+        <div className="font-bold">
+          Once you've signed up you wil be able to :
+        </div>
         <p className="font-semibold">
           🐣 Log in{" "}
           <span className="font-light">
@@ -214,8 +216,9 @@ const SignUpPage = () => {
             Create and save combos with your favorite figures!
           </li>
         </ul>
+        <p className="font-semibold">🐣 Set up user preferences</p>
         <p className="font-semibold">
-          🐣 If at any point you have questions, feel free to contact us
+          If you have questions at any point, feel free to contact us
         </p>
       </div>
     </div>
