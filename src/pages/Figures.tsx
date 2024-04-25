@@ -110,7 +110,7 @@ const Figures = () => {
             <button
               onClick={handleShowForm}
               className={` px-2 rounded-lg text-white hover:bg-bghover ${
-                showFigForm ? "bg-main" : "bg-bginactive"
+                showFigForm ? "bg-main" : "dark:bg-gray bg-bginactive"
               }`}
             >
               {showFigForm ? "-" : "+"}
