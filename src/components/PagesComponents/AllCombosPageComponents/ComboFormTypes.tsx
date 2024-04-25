@@ -34,7 +34,6 @@ export function handleAddFigure(
 
 // handle removing a figure from the combo
 export function removeFigure(
-  fig: figType,
   index: number,
   formState: formStateType,
   setFormState: React.Dispatch<SetStateAction<formStateType>>
