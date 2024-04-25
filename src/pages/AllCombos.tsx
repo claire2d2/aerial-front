@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import useUser from "../context/useUser";
 import aerialApi from "../service/aerialApi";
 import { figType, comboType } from "../components/Types";
@@ -6,18 +7,21 @@ import { figType, comboType } from "../components/Types";
 import EditCombo from "../components/PagesComponents/AllCombosPageComponents/EditCombo";
 
 const AllCombos = () => {
+  const navigate = useNavigate();
   // get the data from existing combos
   const { currDiscipline } = useUser();
   const [allCombos, setAllCombos] = useState<comboType[]>([]);
 
   useEffect(() => {
-    fetchCombos();
+    if (currDiscipline) {
+      fetchCombos();
+    }
   }, [currDiscipline]);
 
   async function fetchCombos() {
     try {
       const response = await aerialApi.get(
-        `/combos?discipline=${currDiscipline?.ref}`
+        `/combos?discipline=${currDiscipline?._id}`
       );
       setAllCombos(response.data);
     } catch (error) {
@@ -44,6 +48,10 @@ const AllCombos = () => {
     }
   }
 
+  useEffect(() => {
+    fetchCombos();
+  }, [createMode, shownCombo]);
+
   function showFirstTwoFigs(figArray: figType[]) {
     if (figArray.length < 3) {
       return figArray;
@@ -64,58 +72,82 @@ const AllCombos = () => {
             If you wish to edit its content, please click on the edit button
           </p>
         </div>
-        <div className="overflow-y-scroll bg-white my-2 mx-3 flex flex-col gap-4">
-          {allCombos
-            ? allCombos.map((combo, index) => {
-                return (
-                  <button
-                    key={index}
-                    onClick={() => choseCombo(combo)}
-                    className="w-full flex flex-col hover:bg-bgmainlight"
-                  >
-                    <h5 className="font-romantic text-2xl text-main capitalize py-1">
-                      {combo.name}
-                    </h5>
+        <div className="overflow-y-scroll bg-bgmainlight dark:bg-bgmaindark my-2 mx-3 flex flex-col gap-4">
+          {allCombos?.length > 0 ? (
+            allCombos.map((combo, index) => {
+              return (
+                <button
+                  key={index}
+                  onClick={() => choseCombo(combo)}
+                  className="w-full flex flex-col hover:bg-bgmainlight"
+                >
+                  <h5 className="font-romantic text-2xl text-main capitalize py-1">
+                    {combo.name}
+                  </h5>
 
-                    {shownCombo === combo ? (
-                      <div className="flex flex-col gap-1">
-                        {combo.figures.map((fig, index) => {
-                          return (
-                            <div
-                              key={index}
-                              className="capitalize text-darkgray pl-3"
-                            >
-                              {fig.name}
-                            </div>
-                          );
-                        })}
-                      </div>
-                    ) : (
-                      <div className="flex flex-row gap-2 items-center">
-                        {showFirstTwoFigs(combo.figures).map((fig, index) => {
-                          return (
-                            <div
-                              key={index}
-                              className="capitalize text-darkgray pl-3"
-                            >
-                              {fig.name}
-                              {combo.figures.length > 2 ? "," : ""}
-                            </div>
-                          );
-                        })}
-                        {combo.figures.length > 2 ? (
-                          <div className="mx-3 border rounded-lg border-disabled flex items-center justify-center h-3 pb-2 px-1 text-disabled">
-                            <span>...</span>
+                  {shownCombo === combo ? (
+                    <div className="flex flex-col gap-1">
+                      {combo.figures.map((fig, index) => {
+                        return (
+                          <div
+                            key={index}
+                            className="capitalize text-darkgray pl-3"
+                          >
+                            {fig.name}
                           </div>
-                        ) : (
-                          ""
-                        )}
-                      </div>
-                    )}
-                  </button>
-                );
-              })
-            : "Loading"}
+                        );
+                      })}
+                    </div>
+                  ) : (
+                    <div className="flex flex-row gap-2 items-center">
+                      {showFirstTwoFigs(combo.figures).map((fig, index) => {
+                        return (
+                          <div
+                            key={index}
+                            className="capitalize text-darkgray pl-3"
+                          >
+                            {fig.name}
+                            {combo.figures.length > 2 ? "," : ""}
+                          </div>
+                        );
+                      })}
+                      {combo.figures.length > 2 ? (
+                        <div className="mx-3 border rounded-lg border-disabled flex items-center justify-center h-3 pb-2 px-1 text-disabled">
+                          <span>...</span>
+                        </div>
+                      ) : (
+                        ""
+                      )}
+                    </div>
+                  )}
+                </button>
+              );
+            })
+          ) : (
+            <div className="h-80 flex flex-col gap-5 justify-center items-center text-center py-2">
+              <div>🥹🥹🥹</div>
+              <div>There are no combos to show yet...</div>
+
+              <div>
+                You can{" "}
+                <span
+                  onClick={() => setCreateMode(true)}
+                  className="underline hover:cursor-pointer hover:text-link"
+                >
+                  create a combo
+                </span>{" "}
+                on this page here or{" "}
+                <span
+                  onClick={() =>
+                    navigate(`/${currDiscipline?.ref}/combo-generator`)
+                  }
+                  className="underline hover:cursor-pointer hover:text-link"
+                >
+                  generate a random combo
+                </span>
+              </div>
+            </div>
+          )}
         </div>
       </div>
       <div className="relative basis-1/2 lg:basis-2/3 lg:h-full">

@@ -1,15 +1,16 @@
 import { useState, useEffect, SetStateAction } from "react";
 import aerialApi from "../../../service/aerialApi";
 import { figType, comboType } from "../../Types";
+import {
+  formStateType,
+  handleChange,
+  handleAddFigure,
+  removeFigure,
+  handleFigureChange,
+} from "./ComboFormTypes";
 import SearchBar from "../../GlobalComponents/SearchBar";
 import SaveButton from "../../GlobalComponents/SaveButton";
 import { HiOutlineX } from "react-icons/hi";
-
-type formStateType = {
-  name: string;
-  figures: figType[];
-  comment: string;
-};
 
 type EditComboFormProps = {
   figures: figType[];
@@ -40,47 +41,11 @@ const EditComboForm: React.FC<EditComboFormProps> = ({
     }
   }, [shownCombo]);
 
-  // change function for the name input field
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const key = e.currentTarget.id;
-    const value = e.currentTarget.value;
-    setFormState({ ...formState, [key]: value });
-  };
-
-  // handle figure changes individually
-  function handleFigureChange(index: number, newFig: figType) {
-    const newFigures = formState.figures.map((fig, i) =>
-      i === index ? newFig : fig
-    );
-    setFormState({ ...formState, figures: newFigures });
-  }
-
-  // possibility to add a figure:
+  // toggle possibility to add a figure:
   const [addFigure, setAddFigure] = useState<boolean>(false);
 
   function handleShowAddFigure() {
     setAddFigure(!addFigure);
-  }
-
-  function handleAddFigure(newFig: figType) {
-    if (formState.figures.length < 7) {
-      const copy = formState.figures;
-      copy.push(newFig);
-      setFormState({ ...formState, figures: copy });
-    }
-  }
-
-  // possibility to remove a figure:
-  function removeFigure(fig: figType, index: number) {
-    console.log("click");
-    if (formState.figures.length > 1) {
-      const copy = formState.figures;
-      copy.splice(index, 1);
-      setFormState({ ...formState, figures: copy });
-    }
-    console.log(formState.figures);
   }
 
   // save combo when clicking on submit button
@@ -110,7 +75,7 @@ const EditComboForm: React.FC<EditComboFormProps> = ({
             id="name"
             name="name"
             value={name}
-            onChange={(e) => handleChange(e)}
+            onChange={(e) => handleChange(e, formState, setFormState)}
           />
         </h2>
 
@@ -125,11 +90,15 @@ const EditComboForm: React.FC<EditComboFormProps> = ({
                   figures={figures}
                   placeholder={fig.name}
                   searchAction="chose"
-                  onFigureSelect={(figure) => handleFigureChange(index, figure)}
+                  onFigureSelect={(figure) =>
+                    handleFigureChange(index, figure, formState, setFormState)
+                  }
                   setFigure={null}
                 />
                 <button
-                  onClick={() => removeFigure(fig, index)}
+                  onClick={() =>
+                    removeFigure(fig, index, formState, setFormState)
+                  }
                   disabled={formState.figures.length < 2}
                   className="hidden absolute group-hover:block group-focus:block hover:text-isFave active:text-isFave top-4 right-3 text-gray disabled:text-transparent"
                   type="button"
@@ -145,7 +114,9 @@ const EditComboForm: React.FC<EditComboFormProps> = ({
                 figures={figures}
                 placeholder="Add a new figure"
                 searchAction="chose"
-                onFigureSelect={(figure) => handleAddFigure(figure)}
+                onFigureSelect={(figure) =>
+                  handleAddFigure(figure, formState, setFormState)
+                }
                 setFigure={null}
               />
             </div>
@@ -169,9 +140,9 @@ const EditComboForm: React.FC<EditComboFormProps> = ({
           <textarea
             id="comment"
             name="comment"
-            className="border border-gray w-full h-52 rounded-lg resize-none drop-shadow-sm"
+            className="border border-gray w-full h-52 rounded-lg resize-none drop-shadow-sm p-2"
             value={formState.comment}
-            onChange={(e) => handleChange(e)}
+            onChange={(e) => handleChange(e, formState, setFormState)}
           />
           <SaveButton
             disabled={false}

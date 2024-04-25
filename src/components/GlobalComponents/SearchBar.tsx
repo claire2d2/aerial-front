@@ -45,14 +45,11 @@ const SearchBar: React.FC<SearchBarProps> = ({
     setSearchWord("");
   }
 
-  //
-
-  const navigate = useNavigate();
-
   /* Search bar can be used to either
    ** - navigate to a chosen page
    ** - choose a figure
    */
+  const navigate = useNavigate();
   function action(e: React.MouseEvent, figure: figType) {
     e.preventDefault();
     if (searchAction === "navigate") {
@@ -71,10 +68,10 @@ const SearchBar: React.FC<SearchBarProps> = ({
   // clear out results if search result is chosen
   useEffect(() => {
     setSearchedFigs([]);
-  }, [onFigureSelect]);
+  }, [onFigureSelect, setFigure]);
 
   return (
-    <div className="w-full">
+    <div className="w-full group">
       <div className="searchInput flex justify-between items-center gap-2 bg-white  drop-shadow-sm pr-3 pl-1 py-1 relative w-full">
         <input
           type="text"
@@ -82,9 +79,12 @@ const SearchBar: React.FC<SearchBarProps> = ({
           value={searchWord}
           placeholder={`${placeholder}`}
           onChange={handleSearch}
-          className="w-full"
+          className={`w-full placeholder:text-text capitalize focus:ring-2 focus:ring-bgmainlight border-0 outline-none`}
         />
-        <label htmlFor="search" className="flex items-center gap-2 ">
+        <label
+          htmlFor="search"
+          className="hidden group-hover:flex group-focus:flex items-center gap-2 "
+        >
           {searchedFigs.length === 0 ? (
             <div className="hover:cursor-pointer">
               <HiOutlineSearch />
