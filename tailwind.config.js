@@ -15,7 +15,7 @@ export default {
       mainlight: "#5176BA",
       bgmain: "ffeaeb",
       bgmainlight: "#cbbcd8",
-      bgmaindark: "#121212",
+      bgmaindark: "#333436",
       title: "#0D3B66",
       text: "#121927",
       textdark: "#F5E0DC",

@@ -12,7 +12,7 @@ const HomePage = () => {
 
   return (
     <div
-      className="h-full w-full flex flex-col flex-1 bg-cover bg-repeat  "
+      className="h-full w-full flex flex-col flex-1 bg-cover"
       style={{
         backgroundImage: "url('cloudsBG.jpg')",
       }}

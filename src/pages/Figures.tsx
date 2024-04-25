@@ -87,29 +87,37 @@ const Figures = () => {
     return <p>Loading!</p>;
   }
   return (
-    <div className="flex flex-col items-center relative px-2 lg:px-4">
-      <div className="flex justify-between w-full items-center">
-        <h1 className="lg:text-5xl text-3xl py-5 text-title dark:text-textdark font-romantic w-2/3 lg:w-full lg:text-center">
-          <span>🕊️</span>{" "}
+    <div className="flex flex-col h-full w-full items-center relative bg-bgmain">
+      <div
+        className="flex justify-between w-full items-center bg-cover dark:bg-bgmaindark relative lg:h-96 min-h-32 px-2 gap-3"
+        style={{
+          backgroundImage: `url('/purpleskyBG.jpg')`,
+        }}
+      >
+        <h1 className="lg:text-5xl text-3xl py-5 text-white dark:text-textdark font-romantic w-2/3 lg:w-full lg:text-center z-10 flex justify-center gap-2">
+          <span className="hidden lg:block">🕊️</span>{" "}
           <span className="capitalize ">{currDiscipline?.name}</span> figures
         </h1>
+        <div className="absolute inset-0 dark:bg-maindark dark:bg-opacity-95 z-9"></div>
 
-        <div className="lg:hidden w-1/3">
+        <div className="lg:hidden w-1/3 z-10">
           <SortBy />
         </div>
       </div>
       {modViewOn && currDiscipline ? (
-        <div>
-          <div className="flex gap-1 justify-start w-full px-2">
+        <div className="py-3 w-full">
+          <div className="flex gap-4 justify-center w-full px-2">
             <button
               onClick={handleShowForm}
-              className="bg-main px-2 rounded-lg text-white"
+              className={` px-2 rounded-lg text-white hover:bg-bghover ${
+                showFigForm ? "bg-main" : "bg-bginactive"
+              }`}
             >
               {showFigForm ? "-" : "+"}
             </button>
             {showFigForm ? "Hide form" : "Add a new figure"}
           </div>
-          <div className={showFigForm ? "block" : "hidden"}>
+          <div className={`w-full ${showFigForm ? "block" : "hidden"}`}>
             <AddFigure
               currDiscipline={currDiscipline}
               setFigures={setFigures}
