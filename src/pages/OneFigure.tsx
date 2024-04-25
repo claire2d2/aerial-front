@@ -76,7 +76,7 @@ const OneFigure = () => {
         )}
         <button
           onClick={() => navigate(`/${currDiscipline?.ref}/figures`)}
-          className="absolute top-2 left-2 text-3xl text-main"
+          className="absolute top-2 left-2 text-3xl text-main dark:text-textdark"
         >
           {" "}
           <HiArrowCircleLeft />{" "}
