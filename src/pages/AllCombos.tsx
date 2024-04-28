@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import useUser from "../context/useUser";
 import aerialApi from "../service/aerialApi";
@@ -64,7 +64,7 @@ const AllCombos = () => {
   // be able to delete a combo
   async function deleteCombo(
     e: React.MouseEvent<HTMLElement>,
-    comboId: string
+    comboId: string | null
   ) {
     e.preventDefault();
     try {
@@ -73,6 +73,21 @@ const AllCombos = () => {
     } catch (error) {
       console.log(error);
     }
+    setComboToDelete(null);
+  }
+
+  // dialog for deleting a combo
+
+  const [comboToDelete, setComboToDelete] = useState<string | null>(null);
+  const deleteModal = useRef<HTMLDialogElement | null>(null);
+
+  function openDeleteModal(comboId: string | null) {
+    setComboToDelete(comboId);
+    deleteModal.current?.showModal();
+  }
+
+  function closeDeleteModal() {
+    deleteModal.current?.close();
   }
 
   return (
@@ -138,9 +153,35 @@ const AllCombos = () => {
                       </div>
                     )}
                   </button>
-                  <button onClick={(e) => deleteCombo(e, combo._id)}>
+                  <button onClick={() => openDeleteModal(combo._id)}>
                     <HiOutlineX />
                   </button>
+                  <dialog
+                    ref={deleteModal}
+                    id={combo._id}
+                    className="p-5 bg-white dark:bg-bgmaindark rounded-lg drop-shadow-sm"
+                  >
+                    <div className=" text-text dark:text-textdark py-3 px-2">
+                      <div className="flex flex-col gap-3">
+                        <h6 className="font-semibold">Are you sure?</h6>
+                        <p>This action is irreversible!</p>
+                        <div className="flex gap-3">
+                          <button
+                            onClick={(e) => deleteCombo(e, comboToDelete)}
+                            className="bg-main dark:bg-maindark px-4 py-2 rounded-lg text-white"
+                          >
+                            Yes
+                          </button>
+                          <button
+                            onClick={() => closeDeleteModal()}
+                            className="bg-gray px-4 py-2 rounded-lg text-white"
+                          >
+                            Never mind
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </dialog>
                 </div>
               );
             })
