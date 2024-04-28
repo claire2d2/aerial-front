@@ -7,10 +7,17 @@ import { AxiosError } from "axios";
 
 // styling
 import { Toast } from "flowbite-react";
-import { HiX, HiFire, HiExclamation } from "react-icons/hi";
+import {
+  HiX,
+  HiFire,
+  HiExclamation,
+  HiChevronUp,
+  HiChevronDown,
+} from "react-icons/hi";
+
 import { toastTheme } from "../../Styles";
 const figureStyle =
-  "capitalize bg-white px-4 py-2 text-xl text-text font-semibold w-64 text-center rounded-lg animate-fade bg-opacity-90 hover:text-mainlight";
+  "capitalize bg-white px-4 py-2 text-xl text-text font-semibold w-64 text-center rounded-lg animate-fade bg-opacity-90 hover:text-mainlight flex justify-between";
 
 type ComboSectionProps = {
   generatedCombo: figType[];
@@ -37,6 +44,30 @@ const ComboSection: React.FC<ComboSectionProps> = ({ generatedCombo }) => {
     };
   }, [generatedCombo]);
 
+  // user can click on arrow to move figure up and down in the combo list
+  function switchFigures(index: number, toSwitch: number) {
+    // Make a copy of the array
+    const copy = [...displayedCombo];
+
+    // Check if the index is within the array bounds
+    if (index < 0 || index >= copy.length) {
+      return; // Return if index is out of bounds
+    }
+
+    // Determine the index of the element to switch with
+    const targetIndex = index + toSwitch;
+
+    // Check if the target index is within the array bounds
+    if (targetIndex < 0 || targetIndex >= copy.length) {
+      return; // Return if target index is out of bounds
+    }
+
+    // Swap the elements at the given index and target index
+    [copy[index], copy[targetIndex]] = [copy[targetIndex], copy[index]];
+
+    // Update the displayedCombo with the modified array
+    setDisplayedCombo(copy);
+  }
   // save combo to your combos list
   const [comboName, setComboName] = useState<string>("");
 
@@ -58,7 +89,7 @@ const ComboSection: React.FC<ComboSectionProps> = ({ generatedCombo }) => {
       const response = await aerialApi.post("/combos", {
         name: comboName,
         discipline: currDiscipline?._id,
-        figures: generatedCombo,
+        figures: displayedCombo,
         comment: "",
       });
       console.log(response.data);
@@ -91,14 +122,27 @@ const ComboSection: React.FC<ComboSectionProps> = ({ generatedCombo }) => {
       <div className="flex flex-col justify-center items-center gap-5 lg:gap-10">
         {displayedCombo.map((fig, index) => {
           return (
-            <Link
-              to={`/${currDiscipline?.ref}/figures/${fig.ref}`}
-              key={index}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <div className={figureStyle}>{fig.name}</div>
-            </Link>
+            <div key={index} className={figureStyle}>
+              <Link
+                to={`/${currDiscipline?.ref}/figures/${fig.ref}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <div>{fig.name}</div>
+              </Link>
+              <div className="flex flex-col">
+                {index !== 0 && (
+                  <button onClick={() => switchFigures(index, -1)}>
+                    <HiChevronUp />
+                  </button>
+                )}
+                {index !== displayedCombo.length - 1 && (
+                  <button onClick={() => switchFigures(index, 1)}>
+                    <HiChevronDown />
+                  </button>
+                )}
+              </div>
+            </div>
           );
         })}
       </div>
