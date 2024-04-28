@@ -5,6 +5,7 @@ import aerialApi from "../service/aerialApi";
 import { figType, comboType } from "../components/Types";
 
 import EditCombo from "../components/PagesComponents/AllCombosPageComponents/EditCombo";
+import { HiOutlineX } from "react-icons/hi";
 
 const AllCombos = () => {
   const navigate = useNavigate();
@@ -50,7 +51,7 @@ const AllCombos = () => {
 
   useEffect(() => {
     fetchCombos();
-  }, [createMode, shownCombo]);
+  }, [createMode, shownCombo, deleteCombo]);
 
   function showFirstTwoFigs(figArray: figType[]) {
     if (figArray.length < 3) {
@@ -58,6 +59,20 @@ const AllCombos = () => {
     }
     const slicedFigArray = figArray.slice(0, 2);
     return slicedFigArray;
+  }
+
+  // be able to delete a combo
+  async function deleteCombo(
+    e: React.MouseEvent<HTMLElement>,
+    comboId: string
+  ) {
+    e.preventDefault();
+    try {
+      const response = await aerialApi.delete(`/combos/${comboId}`);
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   return (
@@ -76,51 +91,57 @@ const AllCombos = () => {
           {allCombos?.length > 0 ? (
             allCombos.map((combo, index) => {
               return (
-                <button
+                <div
                   key={index}
-                  onClick={() => choseCombo(combo)}
-                  className="w-5/6 flex flex-col bg-bgmainlight dark:bg-bgmaindark py-1 px-2 rounded-lg"
+                  className="w-5/6 flex justify-between items-center bg-bgmainlight dark:bg-bgmaindark py-1 px-2 rounded-lg"
                 >
-                  <h5 className="font-romantic text-2xl text-main dark:text-white capitalize py-1">
-                    {combo.name}
-                  </h5>
-
-                  {shownCombo && shownCombo._id === combo._id ? (
-                    <div className="flex flex-col gap-1 rounded-lg">
-                      {combo.figures.map((fig, index) => {
-                        return (
-                          <div
-                            key={index}
-                            className="capitalize text-darkgray dark:text-white pl-3 rounded-lg"
-                          >
-                            {fig.name}
+                  <button
+                    onClick={() => choseCombo(combo)}
+                    className="flex flex-col items-start"
+                  >
+                    <h5 className="font-romantic text-2xl text-main dark:text-white capitalize py-1">
+                      {combo.name}
+                    </h5>
+                    {shownCombo && shownCombo._id === combo._id ? (
+                      <div className="flex flex-col gap-1 rounded-lg">
+                        {combo.figures.map((fig, index) => {
+                          return (
+                            <div
+                              key={index}
+                              className="capitalize text-darkgray dark:text-white pl-3 rounded-lg"
+                            >
+                              {fig.name}
+                            </div>
+                          );
+                        })}
+                      </div>
+                    ) : (
+                      <div className="flex flex-row gap-2 items-center rounded-lg ">
+                        {showFirstTwoFigs(combo.figures).map((fig, index) => {
+                          return (
+                            <div
+                              key={index}
+                              className="capitalize text-darkgray dark:text-white pl-3 rounded-lg"
+                            >
+                              {fig.name}
+                              {combo.figures.length > 2 ? "," : ""}
+                            </div>
+                          );
+                        })}
+                        {combo.figures.length > 2 ? (
+                          <div className="mx-3 border rounded-lg border-disabled flex items-center justify-center h-3 pb-2 px-1 text-disabled">
+                            <span>...</span>
                           </div>
-                        );
-                      })}
-                    </div>
-                  ) : (
-                    <div className="flex flex-row gap-2 items-center rounded-lg ">
-                      {showFirstTwoFigs(combo.figures).map((fig, index) => {
-                        return (
-                          <div
-                            key={index}
-                            className="capitalize text-darkgray dark:text-white pl-3 rounded-lg"
-                          >
-                            {fig.name}
-                            {combo.figures.length > 2 ? "," : ""}
-                          </div>
-                        );
-                      })}
-                      {combo.figures.length > 2 ? (
-                        <div className="mx-3 border rounded-lg border-disabled flex items-center justify-center h-3 pb-2 px-1 text-disabled">
-                          <span>...</span>
-                        </div>
-                      ) : (
-                        ""
-                      )}
-                    </div>
-                  )}
-                </button>
+                        ) : (
+                          ""
+                        )}
+                      </div>
+                    )}
+                  </button>
+                  <button onClick={(e) => deleteCombo(e, combo._id)}>
+                    <HiOutlineX />
+                  </button>
+                </div>
               );
             })
           ) : (
