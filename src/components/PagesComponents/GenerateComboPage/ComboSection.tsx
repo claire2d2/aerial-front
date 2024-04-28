@@ -46,26 +46,20 @@ const ComboSection: React.FC<ComboSectionProps> = ({ generatedCombo }) => {
 
   // user can click on arrow to move figure up and down in the combo list
   function switchFigures(index: number, toSwitch: number) {
-    // Make a copy of the array
     const copy = [...displayedCombo];
 
-    // Check if the index is within the array bounds
     if (index < 0 || index >= copy.length) {
       return; // Return if index is out of bounds
     }
 
-    // Determine the index of the element to switch with
     const targetIndex = index + toSwitch;
 
-    // Check if the target index is within the array bounds
     if (targetIndex < 0 || targetIndex >= copy.length) {
       return; // Return if target index is out of bounds
     }
 
-    // Swap the elements at the given index and target index
     [copy[index], copy[targetIndex]] = [copy[targetIndex], copy[index]];
 
-    // Update the displayedCombo with the modified array
     setDisplayedCombo(copy);
   }
   // save combo to your combos list
