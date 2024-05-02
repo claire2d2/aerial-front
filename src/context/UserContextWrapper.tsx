@@ -83,7 +83,7 @@ function UserContextWrapper({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     fetchCurrDiscipline();
-  }, [fetchCurrDiscipline]);
+  }, [fetchCurrDiscipline, location.pathname]);
 
   const storeToken = (token: string) => localStorage.setItem("token", token);
   const removeToken = () => localStorage.removeItem("token");

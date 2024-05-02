@@ -40,23 +40,23 @@ const OneFigure = () => {
     fetchFigData();
   }, [currDiscipline, formMode]);
 
-  /* if user tries to access a figure that does not match the current discipline, redirect:
+  /* //TODO if user tries to access a figure that does not match the current discipline, redirect:
    ** find the location name that is being accessed
    ** check whether the current figure data discipline matches the location
    ** if not show error message, and button to go back to the correct discipline*/
 
-  const currLocation = location.pathname.split("/")[1];
-  if (figData && figData.discipline.ref !== currLocation) {
-    return (
-      <div>
-        Looks like this figure doesn't exist for the {currDiscipline?.name}
-        discipline
-        <button onClick={() => navigate(`/${currDiscipline?.ref}/figures`)}>
-          Go back to {currDiscipline?.name} figures
-        </button>
-      </div>
-    );
-  }
+  // const currLocation = location.pathname.split("/")[1];
+  // if (figData && figData.discipline.ref !== currLocation) {
+  //   return (
+  //     <div>
+  //       Looks like this figure doesn't exist for the {currDiscipline?.name}
+  //       discipline
+  //       <button onClick={() => navigate(`/${currDiscipline?.ref}/figures`)}>
+  //         Go back to {currDiscipline?.name} figures
+  //       </button>
+  //     </div>
+  //   );
+  // }
 
   // If data is still loading, return loading page
   if (!figData || !figureRef) {

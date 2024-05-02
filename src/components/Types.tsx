@@ -7,11 +7,7 @@ export type figType = {
   name: string;
   ref: string;
   image: string;
-  discipline: {
-    _id: string;
-    name: string;
-    ref: string;
-  };
+  discipline: string;
   difficulty: string;
   imgArtist: string;
   imgArtistUrl: string;

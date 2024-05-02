@@ -80,19 +80,25 @@ export function filterFigures(
   figures: figType[],
   activeFilters: string[],
   faveData: faveType[],
-  statesData: statusType[]
+  statesData: statusType[],
+  currDisciplineId: string
 ) {
   let shownFigures;
   if (activeFilters.length === 0) {
     shownFigures = figures;
   } else {
-    const figsWithFaves = faveData.map((fave) => fave.figure);
-    const figsWithStates = statesData.map((state) => state.figure);
+    const figsWithFaves = faveData
+      .map((fave) => fave.figure)
+      .filter((fig) => fig.discipline === currDisciplineId);
+    const figsWithStates = statesData
+      .map((state) => state.figure)
+      .filter((fig) => fig.discipline === currDisciplineId);
+    console.log(figsWithFaves);
     if (activeFilters.includes("Favorites")) {
       // only the favorites button is selected
       if (activeFilters.length === 1) {
         shownFigures = figsWithFaves;
-        console.log("shown", shownFigures);
+        console.log(shownFigures);
       }
       // favorite and another filter button is selected
       else {
