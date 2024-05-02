@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, SetStateAction } from "react";
 import aerialApi from "../../../service/aerialApi";
 import { figType, figFormType } from "../../Types";
 import {
@@ -11,9 +11,10 @@ import useUser from "../../../context/useUser";
 
 type FigFormProps = {
   figData: figType;
+  setFormMode: React.Dispatch<SetStateAction<boolean>>;
 };
 
-const FigForm: React.FC<FigFormProps> = ({ figData }) => {
+const FigForm: React.FC<FigFormProps> = ({ figData, setFormMode }) => {
   const { zones } = useUser();
   const [formState, setFormState] = useState<figFormType>({
     name: figData.name,
@@ -39,6 +40,7 @@ const FigForm: React.FC<FigFormProps> = ({ figData }) => {
     } catch (error) {
       console.log(error);
     }
+    setFormMode(false);
   }
 
   useEffect(() => {
@@ -52,10 +54,10 @@ const FigForm: React.FC<FigFormProps> = ({ figData }) => {
   const { name, difficulty, image, imgArtist, imgArtistUrl } = formState;
 
   // use effect so that ref is correctly inputted when submitting form
-  useEffect(() => {
-    const ref = formState.name.split(" ").join("-");
-    setFormState({ ...formState, ref: ref });
-  }, [name]);
+  // useEffect(() => {
+  //   const ref = formState.name.split(" ").join("-");
+  //   setFormState({ ...formState, ref: ref });
+  // }, [name]);
 
   return (
     <form
@@ -69,7 +71,7 @@ const FigForm: React.FC<FigFormProps> = ({ figData }) => {
           value={name}
           name="name"
           placeholder="Figure Name"
-          className="font-bold text-4xl capitalize text-darkgray text-center"
+          className="font-bold text-4xl capitalize text-darkgray text-center dark:text-textdark dark:border dark:border-textdark rounded-lg dark:bg-transparent"
           onChange={(e) => handleChange(e, formState, setFormState)}
         ></input>
         <div className="aspect-square h-60 drop-shadow-md dark:brightness-90 ">
@@ -79,20 +81,26 @@ const FigForm: React.FC<FigFormProps> = ({ figData }) => {
             className="object-cover h-full w-full rounded-lg"
           />
         </div>
-        <button>Save</button>
+        <button className="bg-main dark:bg-maindark text-white font-bold px-4 py-2 rounded-xl hover:bg-mainvar dark:hover:bg-mainvar">
+          Save
+        </button>
       </div>
       {/* Level, difficulty and favorite */}
       <div className="flex-col flex lg:basis-1/2">
-        <div className="font-semibold text-lg  text-main dark:text-textdark text-base ">
+        <div className="font-semibold text-lg  text-main dark:text-textdark bg-transparent ">
           <label htmlFor="difficulty">Level:</label>{" "}
           <p className="capitalize font-normal text-text dark:text-textdark">
-            <input
-              type="text"
+            <select
               id="difficulty"
               name="difficulty"
               value={difficulty}
               onChange={(e) => handleChange(e, formState, setFormState)}
-            />
+              className="bg-transparent dark:border dark:border-textdark rounded-lg p-1 capitalize"
+            >
+              <option value="beginner">Beginner</option>
+              <option value="intermediate">Intermediate</option>
+              <option value="advanced">Advanced</option>
+            </select>
           </p>
         </div>
         <div className="font-semibold  text-main dark:text-textdark text-base ">
@@ -109,13 +117,20 @@ const FigForm: React.FC<FigFormProps> = ({ figData }) => {
                   checked={formState.focus.includes(zone._id)}
                   onChange={(e) => handleZoneChange(e, formState, setFormState)}
                 />
-                <label htmlFor={`zone-${index}`}>{zone.name}</label>
+                <label
+                  htmlFor={`zone-${index}`}
+                  className="text-text dark:text-textdark"
+                >
+                  {zone.name}
+                </label>
               </div>
             ))}
           </div>
 
           <div className={`flex flex-col w-full font-normal text-base `}>
-            <div className="font-semibold text-main">Image info: </div>
+            <div className="font-semibold text-main dark:text-textdark">
+              Image info:{" "}
+            </div>
             <label htmlFor="image">Image url:</label>
             <input
               type="text"
@@ -123,7 +138,7 @@ const FigForm: React.FC<FigFormProps> = ({ figData }) => {
               name="image"
               value={image}
               onChange={(e) => handleChange(e, formState, setFormState)}
-              className="border-disabled border rounded-lg drop-shadow-md py-1 px-2"
+              className="bg-transparent dark:border dark:border-textdark rounded-lg p-1"
             />
             <label htmlFor="imgArtist">Name of Website</label>
             <input
@@ -132,7 +147,7 @@ const FigForm: React.FC<FigFormProps> = ({ figData }) => {
               name="image"
               value={imgArtist}
               onChange={(e) => handleChange(e, formState, setFormState)}
-              className="border-disabled border rounded-lg drop-shadow-md py-1 px-2"
+              className="bg-transparent dark:border dark:border-textdark rounded-lg p-1"
             />
             <label htmlFor="imgArtistUrl">Website link</label>
             <input
@@ -141,7 +156,7 @@ const FigForm: React.FC<FigFormProps> = ({ figData }) => {
               name="image"
               value={imgArtistUrl}
               onChange={(e) => handleChange(e, formState, setFormState)}
-              className="border-disabled border rounded-lg drop-shadow-md py-1 px-2"
+              className="bg-transparent dark:border dark:border-textdark rounded-lg p-1"
             />
           </div>
         </div>

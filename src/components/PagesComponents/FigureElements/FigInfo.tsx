@@ -27,7 +27,7 @@ const FigInfo: React.FC<FigInfoProps> = ({ figData }) => {
             className="object-cover h-full w-full rounded-lg opacity-80"
           />
         </div>
-        <div className="text-xs text-darkgray">
+        <div className="text-xs text-darkgray dark:text-textdark">
           Image credit:{" "}
           <a href={figData.imgArtistUrl} target="blank" className="underline">
             {figData.imgArtist}
