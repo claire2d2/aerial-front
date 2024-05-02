@@ -22,14 +22,16 @@ const SiteMap = () => {
   }, []);
 
   useEffect(() => {
-    const onlyPoleFigs = allFigs.filter((fig) => fig.discipline.ref === "pole");
+    const onlyPoleFigs = allFigs.filter(
+      (fig) => fig.discipline === "661e485f64c347c27353960d"
+    );
     setPoleFigs(onlyPoleFigs);
     const onlyHoopFigs = allFigs.filter(
-      (fig) => fig.discipline.ref === "aerial-hoop"
+      (fig) => fig.discipline === "661e485f64c347c27353960e"
     );
     setHoopFigs(onlyHoopFigs);
     const onlyContorsionFigs = allFigs.filter(
-      (fig) => fig.discipline.ref === "contorsion"
+      (fig) => fig.discipline === "661e485f64c347c27353960f"
     );
     setContorsionFigs(onlyContorsionFigs);
   }, [allFigs]);
