@@ -20,7 +20,7 @@ const AllCombos = () => {
     if (currDiscipline) {
       fetchCombos();
     }
-  }, [currDiscipline, comboToDelete]);
+  }, [currDiscipline, comboToDelete, createMode, shownCombo]);
 
   async function fetchCombos() {
     try {
