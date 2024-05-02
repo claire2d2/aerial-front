@@ -66,7 +66,7 @@ const OneProgressLog: React.FC<OneProgressLogProps> = ({
         <div className="font-medium px-2 w-full bg-main dark:bg-maindark text-white">
           {new Date(log.date).getDate()}
           {getDaySuffix(new Date(log.date).getDate())} of{" "}
-          {new Date(log.date).toLocaleString("default", {
+          {new Date(log.date).toLocaleString("en", {
             month: "long",
           })}{" "}
           {new Date(log.date).getFullYear()}
