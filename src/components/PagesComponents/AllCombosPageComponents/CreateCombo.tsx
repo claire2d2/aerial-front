@@ -83,7 +83,7 @@ const CreateCombo: React.FC<CreateComboProps> = ({
 
   return (
     <div className="w-full h-full flex flex-col items-center gap-3">
-      <h2 className="font-romantic text-4xl text-mainvar">
+      <h2 className="font-romantic text-4xl text-mainvar dark:text-white">
         Create your own combo
       </h2>
       <form className="flex flex-col gap-3">
@@ -174,7 +174,7 @@ const CreateCombo: React.FC<CreateComboProps> = ({
 
       <button
         onClick={() => setCreateMode(!createMode)}
-        className="underline text-darkgray"
+        className="underline text-darkgray dark:text-textdark"
       >
         Never mind
       </button>
