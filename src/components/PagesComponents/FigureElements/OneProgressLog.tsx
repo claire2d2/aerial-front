@@ -49,13 +49,16 @@ const OneProgressLog: React.FC<OneProgressLogProps> = ({
 
   return (
     <div className="OneLog flex gap-3  w-full py-1 group relative">
-      <div className="flex max-w-1/2 ">
+      <div className="flex max-h-32 items-center aspect-square object-cover rounded-lg">
         {log.image ? (
-          <button onClick={openImageModal} className="max-h-32 max-w-40 px-3">
+          <button
+            onClick={openImageModal}
+            className="h-full w-full p-1 object-cover rounded-lg"
+          >
             <img
               src={log.image}
               alt="image of figure"
-              className="object-cover h-full w-full"
+              className="object-cover h-full w-full rounded-lg"
             />
           </button>
         ) : (
@@ -66,7 +69,7 @@ const OneProgressLog: React.FC<OneProgressLogProps> = ({
         <div className="font-medium px-2 w-full bg-main dark:bg-maindark text-white">
           {new Date(log.date).getDate()}
           {getDaySuffix(new Date(log.date).getDate())} of{" "}
-          {new Date(log.date).toLocaleString("default", {
+          {new Date(log.date).toLocaleString("en", {
             month: "long",
           })}{" "}
           {new Date(log.date).getFullYear()}
@@ -74,7 +77,7 @@ const OneProgressLog: React.FC<OneProgressLogProps> = ({
         <div>{contentParagraphs}</div>
         <button
           onClick={(e) => handleDeleteLog(e, log._id)}
-          className="group-hover:text-text text-transparent absolute right-0 top-12"
+          className="group-hover:text-text dark:group-hover:text-textdark text-transparent absolute right-0 top-12 dark:hover:text-linkhover"
         >
           <HiOutlineTrash />
         </button>

@@ -1,13 +1,7 @@
 import React, { useState, ChangeEvent, FormEvent, SetStateAction } from "react";
 import useUser from "../../../context/useUser";
 import aerialApi from "../../../service/aerialApi";
-import { Datepicker } from "flowbite-react";
-import {
-  logType,
-  formatDate,
-  datePickerTheme,
-  fetchLogData,
-} from "./OneFigureStyles";
+import { logType, fetchLogData } from "./OneFigureStyles";
 
 type formStateType = {
   content: string;
@@ -74,21 +68,12 @@ const ProgressLogForm: React.FC<formProps> = ({ currFigId, setLogs }) => {
         Date
       </label>
       <div className="relative">
-        <Datepicker
-          theme={datePickerTheme}
-          autoHide={true}
+        <input
+          type="date"
           id="date"
-          maxDate={new Date()}
-          value={formatDate(new Date(date))}
-          onChange={() => handleChange}
-          className="focus:outline-none rounded-lg flex-1 "
-          style={{
-            paddingTop: "0.5rem",
-            paddingBottom: "0.5rem",
-            borderColor: "gray",
-            backgroundColor: "transparent",
-            width: "100%",
-          }}
+          value={date}
+          onChange={handleChange}
+          max={new Date().toJSON().slice(0, 10)}
         />
       </div>
       <label htmlFor="content" className="font-semibold">

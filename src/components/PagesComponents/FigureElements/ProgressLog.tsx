@@ -36,7 +36,7 @@ const ProgressLog: React.FC<Logs> = ({ currFigId }) => {
           <Accordion theme={customTheme}>
             <Accordion.Panel theme={customTheme}>
               <Accordion.Title theme={titleTheme}>
-                <h3 className="font-bold">Add a new progress log</h3>
+                <h3 className="font-bold px-5">Add a new progress log</h3>
               </Accordion.Title>
               <Accordion.Content theme={panelTheme}>
                 <ProgressLogForm currFigId={currFigId} setLogs={setLogs} />
@@ -44,7 +44,7 @@ const ProgressLog: React.FC<Logs> = ({ currFigId }) => {
             </Accordion.Panel>
           </Accordion>
 
-          <h3 className="font-bold">Logs</h3>
+          <h3 className="font-bold px-5">Logs</h3>
           <div className="h-80 overflow-y-scroll no-scrollbar overflow-x-hiddenflex flex-col px-5">
             {logs && logs.length !== 0
               ? logs?.map((log) => (

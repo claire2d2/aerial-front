@@ -38,7 +38,7 @@ const OneFigure = () => {
 
   useEffect(() => {
     fetchFigData();
-  }, []);
+  }, [currDiscipline, formMode]);
 
   /* if user tries to access a figure that does not match the current discipline, redirect:
    ** find the location name that is being accessed
@@ -84,7 +84,7 @@ const OneFigure = () => {
         {!formMode ? (
           <FigInfo figData={figData} />
         ) : (
-          <FigForm figData={figData} />
+          <FigForm figData={figData} setFormMode={setFormMode} />
         )}
         {/* Progress log */}
         <div className="">
