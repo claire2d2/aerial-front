@@ -10,7 +10,7 @@ import {
 } from "./ComboFormTypes";
 import SearchBar from "../../GlobalComponents/SearchBar";
 import SaveButton from "../../GlobalComponents/SaveButton";
-import { HiOutlineX } from "react-icons/hi";
+import { HiOutlineX, HiChevronUp, HiChevronDown } from "react-icons/hi";
 
 type EditComboFormProps = {
   figures: figType[];
@@ -66,6 +66,30 @@ const EditComboForm: React.FC<EditComboFormProps> = ({
     }
     setEditMode(false);
   }
+
+  function switchFigures(
+    e: React.MouseEvent<HTMLButtonElement>,
+    index: number,
+    toSwitch: number
+  ) {
+    e.preventDefault();
+    const copy = [...formState.figures];
+
+    if (index < 0 || index >= copy.length) {
+      return; // Return if index is out of bounds
+    }
+
+    const targetIndex = index + toSwitch;
+
+    if (targetIndex < 0 || targetIndex >= copy.length) {
+      return; // Return if target index is out of bounds
+    }
+
+    [copy[index], copy[targetIndex]] = [copy[targetIndex], copy[index]];
+
+    setFormState({ ...formState, figures: copy });
+  }
+
   const { name } = formState;
 
   return (
@@ -78,6 +102,7 @@ const EditComboForm: React.FC<EditComboFormProps> = ({
             name="name"
             value={name}
             onChange={(e) => handleChange(e, formState, setFormState)}
+            className="dark:bg-transparent dark:border dark:border-textdark dark:rounded-lg"
           />
         </h2>
 
@@ -86,7 +111,7 @@ const EditComboForm: React.FC<EditComboFormProps> = ({
             return (
               <div
                 key={index}
-                className="relative group pl-3 py-2 drop-shadow-md rounded-lg capitalize bg-white text-center pr-10"
+                className="relative group pl-3 py-2 drop-shadow-md rounded-lg capitalize bg-white dark:bg-transparent dark:border dark:border-textdark text-center pr-10 flex gap-3"
               >
                 <SearchBar
                   figures={figures}
@@ -98,6 +123,18 @@ const EditComboForm: React.FC<EditComboFormProps> = ({
                   chosenFigure={null}
                   setFigure={null}
                 />
+                <div className="flex flex-col">
+                  {index > 0 && (
+                    <button onClick={(e) => switchFigures(e, index, -1)}>
+                      <HiChevronUp />
+                    </button>
+                  )}
+                  {index < formState.figures.length - 1 && (
+                    <button onClick={(e) => switchFigures(e, index, 1)}>
+                      <HiChevronDown />
+                    </button>
+                  )}
+                </div>
                 <button
                   onClick={() => removeFigure(index, formState, setFormState)}
                   disabled={formState.figures.length < 2}

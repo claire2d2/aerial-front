@@ -73,6 +73,8 @@ const EntriesExits: React.FC<{ currFigId: string }> = ({ currFigId }) => {
                   setAllEntries={setAllEntries}
                   setAllExits={setAllExits}
                   figures={figures}
+                  setShowEntryForm={setShowEntryForm}
+                  setShowExitForm={setShowExitForm}
                 />
               )}
             </div>
@@ -122,6 +124,8 @@ const EntriesExits: React.FC<{ currFigId: string }> = ({ currFigId }) => {
                   setAllEntries={setAllEntries}
                   setAllExits={setAllExits}
                   figures={figures}
+                  setShowEntryForm={setShowEntryForm}
+                  setShowExitForm={setShowExitForm}
                 />
               )}
             </div>
