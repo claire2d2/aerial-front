@@ -11,7 +11,7 @@ import {
 } from "./ComboFormTypes";
 
 // styling components
-import { HiOutlineX } from "react-icons/hi";
+import { HiOutlineX, HiChevronUp, HiChevronDown } from "react-icons/hi";
 import SearchBar from "../../GlobalComponents/SearchBar";
 import SaveButton from "../../GlobalComponents/SaveButton";
 
@@ -58,9 +58,32 @@ const CreateCombo: React.FC<CreateComboProps> = ({
     setCreateMode(false);
   }
 
+  function switchFigures(
+    e: React.MouseEvent<HTMLButtonElement>,
+    index: number,
+    toSwitch: number
+  ) {
+    e.preventDefault();
+    const copy = [...formState.figures];
+
+    if (index < 0 || index >= copy.length) {
+      return; // Return if index is out of bounds
+    }
+
+    const targetIndex = index + toSwitch;
+
+    if (targetIndex < 0 || targetIndex >= copy.length) {
+      return; // Return if target index is out of bounds
+    }
+
+    [copy[index], copy[targetIndex]] = [copy[targetIndex], copy[index]];
+
+    setFormState({ ...formState, figures: copy });
+  }
+
   return (
     <div className="w-full h-full flex flex-col items-center gap-3">
-      <h2 className="font-romantic text-4xl text-mainvar">
+      <h2 className="font-romantic text-4xl text-mainvar dark:text-white">
         Create your own combo
       </h2>
       <form className="flex flex-col gap-3">
@@ -83,7 +106,7 @@ const CreateCombo: React.FC<CreateComboProps> = ({
           return (
             <div
               key={index}
-              className="relative group pl-3 py-2 drop-shadow-md rounded-lg capitalize bg-white text-center pr-10"
+              className="relative group pl-3 py-2 drop-shadow-md rounded-lg capitalize bg-white dark:bg-transparent dark:border dark:border-textdark text-center pr-10 flex gap-3"
             >
               <SearchBar
                 figures={figures}
@@ -95,6 +118,18 @@ const CreateCombo: React.FC<CreateComboProps> = ({
                 setFigure={null}
                 chosenFigure={null}
               />
+              <div className="flex flex-col">
+                {index > 0 && (
+                  <button onClick={(e) => switchFigures(e, index, -1)}>
+                    <HiChevronUp />
+                  </button>
+                )}
+                {index < formState.figures.length - 1 && (
+                  <button onClick={(e) => switchFigures(e, index, 1)}>
+                    <HiChevronDown />
+                  </button>
+                )}
+              </div>
               <button
                 onClick={() => removeFigure(index, formState, setFormState)}
                 disabled={formState.figures.length < 2}
@@ -139,7 +174,7 @@ const CreateCombo: React.FC<CreateComboProps> = ({
 
       <button
         onClick={() => setCreateMode(!createMode)}
-        className="underline text-darkgray"
+        className="underline text-darkgray dark:text-textdark"
       >
         Never mind
       </button>

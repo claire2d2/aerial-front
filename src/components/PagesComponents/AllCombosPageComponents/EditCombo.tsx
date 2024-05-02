@@ -1,4 +1,5 @@
 import { useState, useEffect, SetStateAction } from "react";
+import { Link } from "react-router-dom";
 import useUser from "../../../context/useUser";
 import { figType, comboType } from "../../Types";
 import { fetchFigures } from "../FiguresFunctions";
@@ -72,7 +73,15 @@ const EditCombo: React.FC<EditComboProps> = ({
           <SaveButton disabled={false} onClickFunction={turnCreateOn}>
             Create a new combo
           </SaveButton>
-          <div>No inspiration ? Generate a combo randomly!</div>
+          <div>
+            No inspiration ?{" "}
+            <Link
+              to={`/${currDiscipline?.ref}/combo-generator`}
+              className="underline"
+            >
+              Generate a combo randomly!
+            </Link>
+          </div>
         </div>
       )}
 

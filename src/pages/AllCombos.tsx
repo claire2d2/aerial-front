@@ -5,18 +5,22 @@ import aerialApi from "../service/aerialApi";
 import { figType, comboType } from "../components/Types";
 
 import EditCombo from "../components/PagesComponents/AllCombosPageComponents/EditCombo";
+import { HiOutlineX } from "react-icons/hi";
 
 const AllCombos = () => {
   const navigate = useNavigate();
   // get the data from existing combos
   const { currDiscipline, isLoggedIn } = useUser();
   const [allCombos, setAllCombos] = useState<comboType[]>([]);
+  const [shownCombo, setShownCombo] = useState<comboType | null>(null);
+  const [createMode, setCreateMode] = useState<boolean>(false);
+  const [comboToDelete, setComboToDelete] = useState<string | null>(null);
 
   useEffect(() => {
     if (currDiscipline) {
       fetchCombos();
     }
-  }, [currDiscipline]);
+  }, [currDiscipline, comboToDelete]);
 
   async function fetchCombos() {
     try {
@@ -34,9 +38,6 @@ const AllCombos = () => {
    ** - the full list of figures will show in a flex-col instead of flex-row in the button
    */
 
-  const [shownCombo, setShownCombo] = useState<comboType | null>(null);
-  const [createMode, setCreateMode] = useState<boolean>(false);
-
   function choseCombo(combo: comboType) {
     if (shownCombo && shownCombo._id === combo._id) {
       setShownCombo(null);
@@ -48,10 +49,6 @@ const AllCombos = () => {
     }
   }
 
-  useEffect(() => {
-    fetchCombos();
-  }, [createMode, shownCombo]);
-
   function showFirstTwoFigs(figArray: figType[]) {
     if (figArray.length < 3) {
       return figArray;
@@ -59,6 +56,40 @@ const AllCombos = () => {
     const slicedFigArray = figArray.slice(0, 2);
     return slicedFigArray;
   }
+
+  // be able to delete a combo
+  async function deleteCombo(comboId: string | null) {
+    try {
+      setComboToDelete(comboId);
+      const response = await aerialApi.delete(`/combos/${comboToDelete}`);
+      console.log(response.data);
+      // closeDeleteModal();
+      // Fetch updated combos
+      setComboToDelete(null);
+    } catch (error) {
+      console.log(error);
+    }
+    // closeDeleteModal();
+    // setComboToDelete(null);
+  }
+
+  // dialog for deleting a combo
+
+  // const [comboToDelete, setComboToDelete] = useState<string | null>(null);
+  // const deleteModal = useRef<HTMLDialogElement | null>(null);
+
+  // function openDeleteModal(comboId: string | null) {
+  //   setComboToDelete(comboId);
+  //   deleteModal.current?.showModal();
+  // }
+
+  // function closeDeleteModal() {
+  //   deleteModal.current?.close();
+  // }
+
+  // useEffect(() => {
+  //   fetchCombos();
+  // }, [createMode, shownCombo, comboToDelete]);
 
   return (
     <div className="w-full flex flex-col lg:flex-row lg:h-full overflow-scroll no-scrollbar">
@@ -76,55 +107,87 @@ const AllCombos = () => {
           {allCombos?.length > 0 ? (
             allCombos.map((combo, index) => {
               return (
-                <button
+                <div
                   key={index}
-                  onClick={() => choseCombo(combo)}
-                  className="w-5/6 flex flex-col bg-bgmainlight dark:bg-bgmaindark py-1 px-2 rounded-lg"
+                  className="w-5/6 flex justify-between items-center bg-bgmainlight dark:bg-bgmaindark py-1 px-2 rounded-lg"
                 >
-                  <h5 className="font-romantic text-2xl text-main dark:text-white capitalize py-1">
-                    {combo.name}
-                  </h5>
-
-                  {shownCombo && shownCombo._id === combo._id ? (
-                    <div className="flex flex-col gap-1 rounded-lg">
-                      {combo.figures.map((fig, index) => {
-                        return (
-                          <div
-                            key={index}
-                            className="capitalize text-darkgray dark:text-white pl-3 rounded-lg"
-                          >
-                            {fig.name}
+                  <button
+                    onClick={() => choseCombo(combo)}
+                    className="flex flex-col items-start"
+                  >
+                    <h5 className="font-romantic text-2xl text-main dark:text-white capitalize py-1">
+                      {combo.name}
+                    </h5>
+                    {shownCombo && shownCombo._id === combo._id ? (
+                      <div className="flex flex-col gap-1 rounded-lg">
+                        {combo.figures.map((fig, index) => {
+                          return (
+                            <div
+                              key={index}
+                              className="capitalize text-darkgray dark:text-white pl-3 rounded-lg"
+                            >
+                              {fig.name}
+                            </div>
+                          );
+                        })}
+                      </div>
+                    ) : (
+                      <div className="flex flex-row gap-2 items-center rounded-lg ">
+                        {showFirstTwoFigs(combo.figures).map((fig, index) => {
+                          return (
+                            <div
+                              key={index}
+                              className="capitalize text-darkgray dark:text-white pl-3 rounded-lg"
+                            >
+                              {fig.name}
+                              {combo.figures.length > 2 ? "," : ""}
+                            </div>
+                          );
+                        })}
+                        {combo.figures.length > 2 ? (
+                          <div className="mx-3 border rounded-lg border-disabled flex items-center justify-center h-3 pb-2 px-1 text-disabled">
+                            <span>...</span>
                           </div>
-                        );
-                      })}
-                    </div>
-                  ) : (
-                    <div className="flex flex-row gap-2 items-center rounded-lg ">
-                      {showFirstTwoFigs(combo.figures).map((fig, index) => {
-                        return (
-                          <div
-                            key={index}
-                            className="capitalize text-darkgray dark:text-white pl-3 rounded-lg"
+                        ) : (
+                          ""
+                        )}
+                      </div>
+                    )}
+                  </button>
+                  <button onClick={() => deleteCombo(combo._id)}>
+                    <HiOutlineX />
+                  </button>
+                  {/* <dialog
+                    ref={deleteModal}
+                    id={combo._id}
+                    className="p-5 bg-white dark:bg-bgmaindark rounded-lg drop-shadow-sm"
+                  >
+                    <div className=" text-text dark:text-textdark py-3 px-2">
+                      <div className="flex flex-col gap-3">
+                        <h6 className="font-semibold">Are you sure?</h6>
+                        <p>This action is irreversible!</p>
+                        <div className="flex gap-3">
+                          <button
+                            onClick={() => deleteCombo(comboToDelete)}
+                            className="bg-main dark:bg-maindark px-4 py-2 rounded-lg text-white"
                           >
-                            {fig.name}
-                            {combo.figures.length > 2 ? "," : ""}
-                          </div>
-                        );
-                      })}
-                      {combo.figures.length > 2 ? (
-                        <div className="mx-3 border rounded-lg border-disabled flex items-center justify-center h-3 pb-2 px-1 text-disabled">
-                          <span>...</span>
+                            Yes
+                          </button>
+                          <button
+                            onClick={() => closeDeleteModal()}
+                            className="bg-gray px-4 py-2 rounded-lg text-white"
+                          >
+                            Never mind
+                          </button>
                         </div>
-                      ) : (
-                        ""
-                      )}
+                      </div>
                     </div>
-                  )}
-                </button>
+                  </dialog> */}
+                </div>
               );
             })
           ) : (
-            <div className="h-80 flex flex-col gap-5 justify-center items-center text-center py-2 ">
+            <div className="h-80 flex flex-col gap-5 justify-center items-center text-center py-2 text-white">
               <div>🥹🥹🥹</div>
               <div>There are no combos to show yet...</div>
 
