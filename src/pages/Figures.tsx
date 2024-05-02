@@ -28,6 +28,7 @@ import { HiFire, HiExclamation } from "react-icons/hi";
 const Figures = () => {
   const { currDiscipline, activeFilters, sortBy, modViewOn } = useUser();
   const [figures, setFigures] = useState<figType[]>([]);
+  const [shownFigures, setShownFigures] = useState<figType[]>([]);
   const [statesData, setStatesData] = useState<statusType[]>([]);
   // for the user's personal favorites
   const [faveData, setFaveData] = useState<faveType[]>([]);
@@ -58,12 +59,18 @@ const Figures = () => {
   }, [activeFilters, currDiscipline]);
 
   // filture figures based on filters
-  const shownFigures: figType[] = filterFigures(
-    figures,
-    activeFilters,
-    faveData,
-    statesData
-  );
+  useEffect(() => {
+    if (currDiscipline) {
+      const copy = filterFigures(
+        figures,
+        activeFilters,
+        faveData,
+        statesData,
+        currDiscipline._id
+      );
+      setShownFigures(copy);
+    }
+  }, [figures, activeFilters, currDiscipline, statesData, faveData]);
 
   // sort filters based on sorting choice
   useEffect(() => {

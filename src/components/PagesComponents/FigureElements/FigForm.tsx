@@ -19,7 +19,7 @@ const FigForm: React.FC<FigFormProps> = ({ figData, setFormMode }) => {
   const [formState, setFormState] = useState<figFormType>({
     name: figData.name,
     ref: figData.ref,
-    discipline: figData.discipline._id,
+    discipline: figData.discipline,
     difficulty: figData.difficulty,
     image: figData.image,
     imgArtist: figData.imgArtist,
