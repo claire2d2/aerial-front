@@ -12,6 +12,8 @@ type EntryExitFormProps = {
   setAllEntries: React.Dispatch<SetStateAction<entryExitType[]>>;
   setAllExits: React.Dispatch<SetStateAction<entryExitType[]>>;
   figures: figType[];
+  setShowEntryForm: React.Dispatch<SetStateAction<boolean>>;
+  setShowExitForm: React.Dispatch<SetStateAction<boolean>>;
 };
 
 const EntryExitForm: React.FC<EntryExitFormProps> = ({
@@ -20,6 +22,8 @@ const EntryExitForm: React.FC<EntryExitFormProps> = ({
   setAllEntries,
   setAllExits,
   figures,
+  setShowEntryForm,
+  setShowExitForm,
 }) => {
   const [chosenFig, setChosenFig] = useState<string>("");
   const [errorMsg, setErrorMsg] = useState<string>("");
@@ -61,6 +65,8 @@ const EntryExitForm: React.FC<EntryExitFormProps> = ({
         );
         like(response.data._id);
         fetchExits(currFigId, setAllExits);
+        setShowEntryForm(false);
+        setShowExitForm(false);
       } catch (error) {
         if (error instanceof AxiosError) {
           // Handle error if it is an instance of Error
