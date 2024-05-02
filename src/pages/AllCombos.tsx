@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import useUser from "../context/useUser";
 import aerialApi from "../service/aerialApi";
@@ -12,12 +12,15 @@ const AllCombos = () => {
   // get the data from existing combos
   const { currDiscipline, isLoggedIn } = useUser();
   const [allCombos, setAllCombos] = useState<comboType[]>([]);
+  const [shownCombo, setShownCombo] = useState<comboType | null>(null);
+  const [createMode, setCreateMode] = useState<boolean>(false);
+  const [comboToDelete, setComboToDelete] = useState<string | null>(null);
 
   useEffect(() => {
     if (currDiscipline) {
       fetchCombos();
     }
-  }, [currDiscipline]);
+  }, [currDiscipline, comboToDelete]);
 
   async function fetchCombos() {
     try {
@@ -35,9 +38,6 @@ const AllCombos = () => {
    ** - the full list of figures will show in a flex-col instead of flex-row in the button
    */
 
-  const [shownCombo, setShownCombo] = useState<comboType | null>(null);
-  const [createMode, setCreateMode] = useState<boolean>(false);
-
   function choseCombo(combo: comboType) {
     if (shownCombo && shownCombo._id === combo._id) {
       setShownCombo(null);
@@ -49,10 +49,6 @@ const AllCombos = () => {
     }
   }
 
-  useEffect(() => {
-    fetchCombos();
-  }, [createMode, shownCombo, deleteCombo]);
-
   function showFirstTwoFigs(figArray: figType[]) {
     if (figArray.length < 3) {
       return figArray;
@@ -62,33 +58,38 @@ const AllCombos = () => {
   }
 
   // be able to delete a combo
-  async function deleteCombo(
-    e: React.MouseEvent<HTMLElement>,
-    comboId: string | null
-  ) {
-    e.preventDefault();
+  async function deleteCombo(comboId: string | null) {
     try {
-      const response = await aerialApi.delete(`/combos/${comboId}`);
-      console.log(response);
+      setComboToDelete(comboId);
+      const response = await aerialApi.delete(`/combos/${comboToDelete}`);
+      console.log(response.data);
+      // closeDeleteModal();
+      // Fetch updated combos
+      setComboToDelete(null);
     } catch (error) {
       console.log(error);
     }
-    setComboToDelete(null);
+    // closeDeleteModal();
+    // setComboToDelete(null);
   }
 
   // dialog for deleting a combo
 
-  const [comboToDelete, setComboToDelete] = useState<string | null>(null);
-  const deleteModal = useRef<HTMLDialogElement | null>(null);
+  // const [comboToDelete, setComboToDelete] = useState<string | null>(null);
+  // const deleteModal = useRef<HTMLDialogElement | null>(null);
 
-  function openDeleteModal(comboId: string | null) {
-    setComboToDelete(comboId);
-    deleteModal.current?.showModal();
-  }
+  // function openDeleteModal(comboId: string | null) {
+  //   setComboToDelete(comboId);
+  //   deleteModal.current?.showModal();
+  // }
 
-  function closeDeleteModal() {
-    deleteModal.current?.close();
-  }
+  // function closeDeleteModal() {
+  //   deleteModal.current?.close();
+  // }
+
+  // useEffect(() => {
+  //   fetchCombos();
+  // }, [createMode, shownCombo, comboToDelete]);
 
   return (
     <div className="w-full flex flex-col lg:flex-row lg:h-full overflow-scroll no-scrollbar">
@@ -153,10 +154,10 @@ const AllCombos = () => {
                       </div>
                     )}
                   </button>
-                  <button onClick={() => openDeleteModal(combo._id)}>
+                  <button onClick={() => deleteCombo(combo._id)}>
                     <HiOutlineX />
                   </button>
-                  <dialog
+                  {/* <dialog
                     ref={deleteModal}
                     id={combo._id}
                     className="p-5 bg-white dark:bg-bgmaindark rounded-lg drop-shadow-sm"
@@ -167,7 +168,7 @@ const AllCombos = () => {
                         <p>This action is irreversible!</p>
                         <div className="flex gap-3">
                           <button
-                            onClick={(e) => deleteCombo(e, comboToDelete)}
+                            onClick={() => deleteCombo(comboToDelete)}
                             className="bg-main dark:bg-maindark px-4 py-2 rounded-lg text-white"
                           >
                             Yes
@@ -181,12 +182,12 @@ const AllCombos = () => {
                         </div>
                       </div>
                     </div>
-                  </dialog>
+                  </dialog> */}
                 </div>
               );
             })
           ) : (
-            <div className="h-80 flex flex-col gap-5 justify-center items-center text-center py-2 ">
+            <div className="h-80 flex flex-col gap-5 justify-center items-center text-center py-2 text-white">
               <div>🥹🥹🥹</div>
               <div>There are no combos to show yet...</div>
 
