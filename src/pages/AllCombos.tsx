@@ -14,13 +14,13 @@ const AllCombos = () => {
   const [allCombos, setAllCombos] = useState<comboType[]>([]);
   const [shownCombo, setShownCombo] = useState<comboType | null>(null);
   const [createMode, setCreateMode] = useState<boolean>(false);
-  const [comboToDelete, setComboToDelete] = useState<string | null>(null);
+  const [comboToDelete, setComboToDelete] = useState<boolean>(false);
 
   useEffect(() => {
     if (currDiscipline) {
       fetchCombos();
     }
-  }, [currDiscipline, comboToDelete, createMode, shownCombo]);
+  }, [currDiscipline, createMode, shownCombo, comboToDelete]);
 
   async function fetchCombos() {
     try {
@@ -60,17 +60,17 @@ const AllCombos = () => {
   // be able to delete a combo
   async function deleteCombo(comboId: string | null) {
     try {
-      setComboToDelete(comboId);
-      const response = await aerialApi.delete(`/combos/${comboToDelete}`);
+      setComboToDelete(true);
+      const response = await aerialApi.delete(`/combos/${comboId}`);
       console.log(response.data);
       // closeDeleteModal();
       // Fetch updated combos
-      setComboToDelete(null);
     } catch (error) {
       console.log(error);
     }
     // closeDeleteModal();
     // setComboToDelete(null);
+    setComboToDelete(false);
   }
 
   // dialog for deleting a combo
